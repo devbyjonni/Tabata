@@ -1,5 +1,5 @@
 //
-//  TabataTests.swift
+//  StartViewModelTests.swift
 //  TabataTests
 //
 //  Created by Jonni Åkesson on 2026-01-12.
@@ -9,7 +9,7 @@ import XCTest
 
 @testable import Tabata
 
-final class TabataTests: XCTestCase {
+final class StartViewModelTests: XCTestCase {
 
     var viewModel: StartViewModel!
     var config: TabataConfiguration!
