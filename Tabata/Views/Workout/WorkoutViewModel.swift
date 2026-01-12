@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Observation
 
 @Observable
 final class WorkoutViewModel {
@@ -20,9 +19,16 @@ final class WorkoutViewModel {
         return timeRemaining / totalTime
     }
     
+    private var config: TabataConfiguration?
+    var currentSet = 1
+    var currentRound = 1
+    
     /// Starts the workout with the given configuration.
-    /// Currently only handles the Warm Up phase.
     func start(config: TabataConfiguration) {
+        self.config = config
+        self.currentSet = 1
+        self.currentRound = 1
+        
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
         self.totalTime = config.warmUpTime > 0 ? config.warmUpTime : 1
@@ -36,9 +42,57 @@ final class WorkoutViewModel {
         if timeRemaining > 0 {
             timeRemaining -= 1
         } else {
-            // Timer finished for this phase
+            nextPhase()
+        }
+    }
+    
+    private func nextPhase() {
+        guard let config = config else { return }
+        
+        switch phase {
+        case .idle:
+            break
+            
+        case .warmUp:
+            phase = .work
+            timeRemaining = config.workTime
+            totalTime = config.workTime > 0 ? config.workTime : 1
+            
+        case .work:
+            // Check if workout is complete
+            if currentSet == config.sets && currentRound == config.rounds {
+                phase = .coolDown
+                timeRemaining = config.coolDownTime
+                totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
+            } else {
+                phase = .rest
+                timeRemaining = config.restTime
+                totalTime = config.restTime > 0 ? config.restTime : 1
+            }
+            
+        case .rest:
+            if currentSet < config.sets {
+                currentSet += 1
+                phase = .work
+                timeRemaining = config.workTime
+                totalTime = config.workTime > 0 ? config.workTime : 1
+            } else if currentRound < config.rounds {
+                currentRound += 1
+                currentSet = 1
+                phase = .work
+                timeRemaining = config.workTime
+                totalTime = config.workTime > 0 ? config.workTime : 1
+            } else {
+                // Safety fallback, should be caught in Work phase
+                phase = .coolDown
+                timeRemaining = config.coolDownTime
+                totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
+            }
+            
+        case .coolDown:
+            phase = .idle
             isActive = false
-            // Future: Transition to next phase
+            timeRemaining = 0
         }
     }
     
