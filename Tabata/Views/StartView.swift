@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+internal import Combine
 
 // MARK: Start View
 struct StartView: View {
@@ -293,22 +294,41 @@ struct WorkoutView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     
-    @State var workoutPhase: WorkoutPhase = WorkoutPhase.idle
+    @State private var viewModel = WorkoutViewModel()
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
-                title: workoutPhase.rawValue,
+                title: viewModel.phase.rawValue.uppercased(),
                 leftIcon: Icons.xmark.rawValue,
                 rightIcon: Icons.speaker.rawValue,
-                leftAction: { dismiss() },
+                leftAction: {
+                    viewModel.stop()
+                    dismiss()
+                },
                 rightAction: {
                     print("Speaker tapped")
                 }
             )
+            
+            Spacer()
+            
+            Text(viewModel.timeRemaining.formatTime())
+                .font(.system(size: 100, weight: .bold))
+                .monospacedDigit()
+            
             Spacer()
         }
         .padding()
+        .onAppear {
+            if let config = configurations.first {
+                viewModel.start(config: config)
+            }
+        }
+        .onReceive(timer) { _ in
+            viewModel.tick()
+        }
     }
 }
 
