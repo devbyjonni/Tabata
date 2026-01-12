@@ -318,16 +318,20 @@ struct WorkoutView: View {
                     DoneView(action: {
                         dismiss()
                     })
-                    .background(.gray.opacity(0.3)) // Debug
+                    Spacer()
                 } else {
                     VStack(spacing: 2) {
                         
-                        // TODO
-                        Text("Phase Title")
+                        Spacer()
+                        
+                        PhaseTitleView(phase: viewModel.phase)
+                        
+                        Spacer()
                         
                         WorkoutTimerView(viewModel: viewModel)
                         
-                        // TODO
+                        Spacer()
+                        
                         WorkoutStatsView(viewModel: viewModel)
                         
                         Spacer()
@@ -336,16 +340,13 @@ struct WorkoutView: View {
                         HStack{
                             Text("Controllers (Stop, Pause, Skip)")
                         }
-                        .background(.gray.opacity(0.3)) // Debug
                         
                         Spacer()
                     }
-                    .padding()
-                    .background(.gray.opacity(0.3)) // Debug
                 }
             }
-            
-            Spacer()
+            .padding()
+            .background(.gray.opacity(0.3)) // Debug
         }
         .onAppear {
             if let config = configurations.first {
@@ -400,6 +401,7 @@ struct WorkoutStatsView: View {
             StatItemView(title: "Rounds", current: viewModel.currentRound, total: viewModel.totalRounds)
             Spacer()
         }
+        .background(.gray.opacity(0.3)) // Debug
     }
 }
 
@@ -419,6 +421,19 @@ struct StatItemView: View {
                 .fontWeight(.bold)
                 .monospacedDigit()
         }
+    }
+}
+
+// MARK: Phase Title View
+struct PhaseTitleView: View {
+    let phase: WorkoutPhase
+    
+    var body: some View {
+        HStack {
+            Text(phase.rawValue.uppercased())
+                .font(.system(size: 40, weight: .bold))
+        }
+        .background(.gray.opacity(0.3)) // Debug
     }
 }
 
@@ -450,7 +465,6 @@ struct DoneView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
             }
-            .padding(.horizontal, 40)
         }
     }
 }
