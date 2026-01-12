@@ -314,9 +314,7 @@ struct WorkoutView: View {
             
             Spacer()
             
-            Text(viewModel.timeRemaining.formatTime())
-                .font(.system(size: 100, weight: .bold))
-                .monospacedDigit()
+            WorkoutTimerView(viewModel: viewModel)
             
             Spacer()
         }
@@ -329,6 +327,35 @@ struct WorkoutView: View {
         .onReceive(timer) { _ in
             viewModel.tick()
         }
+    }
+}
+
+// MARK: Workout Timer View
+struct WorkoutTimerView: View {
+    var viewModel: WorkoutViewModel
+    
+    var body: some View {
+        ZStack {
+            // Background Circle
+            Circle()
+                .stroke(lineWidth: 20)
+                .opacity(0.3)
+                .foregroundColor(.gray)
+            
+            // Progress Circle
+            Circle()
+                .trim(from: 0.0, to: viewModel.progress)
+                .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                .foregroundColor(.blue)
+                .rotationEffect(Angle(degrees: 270.0))
+                .animation(.linear(duration: 1.0), value: viewModel.progress)
+            
+            // Time Text
+            Text(viewModel.timeRemaining.formatTime())
+                .font(.system(size: 80, weight: .bold)) // Slightly smaller to fit
+                .monospacedDigit()
+        }
+        .padding(40)
     }
 }
 

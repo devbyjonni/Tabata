@@ -12,13 +12,20 @@ import Observation
 final class WorkoutViewModel {
     var phase: WorkoutPhase = .idle
     var timeRemaining: Double = 0
+    var totalTime: Double = 1 // Avoid division by zero
     var isActive: Bool = false
+    
+    var progress: Double {
+        guard totalTime > 0 else { return 0 }
+        return timeRemaining / totalTime
+    }
     
     /// Starts the workout with the given configuration.
     /// Currently only handles the Warm Up phase.
     func start(config: TabataConfiguration) {
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
+        self.totalTime = config.warmUpTime > 0 ? config.warmUpTime : 1
         self.isActive = true
     }
     
