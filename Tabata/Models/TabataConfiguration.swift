@@ -20,12 +20,12 @@ final class TabataConfiguration {
     
     
     init(timestamp: Date = Date(),
-         sets: Int = 10,
-         rounds: Int  = 10,
-         warmUpTime: Double  = 10,
-         workTime: Double  = 10,
+         sets: Int = 8,
+         rounds: Int  = 3,
+         warmUpTime: Double  = 60,
+         workTime: Double  = 20,
          restTime: Double  = 10,
-         coolDownTime: Double  = 10) {
+         coolDownTime: Double  = 60) {
         
         self.timestamp = timestamp
         self.sets = sets
