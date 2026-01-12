@@ -56,6 +56,8 @@ class StartViewModel {
             configuration.restTime = min(600, max(0, configuration.restTime + seconds))
         case .coolDown:
             configuration.coolDownTime = min(600, max(0, configuration.coolDownTime + seconds))
+        case .idle:
+            break
         }
     }
 }

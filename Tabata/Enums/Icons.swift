@@ -10,15 +10,10 @@ import Foundation
 enum Icons: String {
     case minus = "minus"
     case plus = "plus"
-    case settings = "gearshape.fill"
-    case stats = "chart.bar.fill"
+    case settings = "gearshape"
+    case stats = "chart.bar"
     case edit = "pencil"
     case play = "play.fill"
-}
-
-enum WorkoutPhase: String {
-    case warmUp = "Warm Up"
-    case work = "Work"
-    case rest = "Rest"
-    case coolDown = "Cool Down"
+    case speaker = "speaker"
+    case xmark = "xmark"
 }

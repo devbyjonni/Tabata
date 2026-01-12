@@ -13,13 +13,21 @@ struct StartView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     
+    @State private var showWorkout = false
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 2) {
-                NavbarView(title: "Tabata")
+                NavbarView(
+                    title: "Tabata",
+                    leftIcon: Icons.stats.rawValue,
+                    rightIcon: Icons.settings.rawValue,
+                    leftAction: { print("Stats tapped") },
+                    rightAction: { print("Settings tapped") }
+                )
                 TimerTextView()
                 SetsAndRoundsView()
-                SoundButton(icon: "speaker")
+                SoundButton(icon: Icons.speaker.rawValue)
                 TabataTimersView()
                 Spacer()
             }
@@ -27,8 +35,11 @@ struct StartView: View {
         }
         .overlay(alignment: .bottom) {
             StartButton(icon: Icons.play.rawValue) {
-                print("Start")
+                showWorkout = true
             }
+        }
+        .fullScreenCover(isPresented: $showWorkout) {
+            WorkoutView()
         }
         .onAppear {
             if configurations.isEmpty {
@@ -61,14 +72,19 @@ struct StartButton: View {
 // MARK: Navbar View
 struct NavbarView: View {
     let title: String
+    let leftIcon: String
+    let rightIcon: String
+    var leftAction: () -> Void = {}
+    var rightAction: () -> Void = {}
+    
     var body: some View {
         HStack {
-            NavbarButton(icon: Icons.stats.rawValue)
+            NavbarButton(icon: leftIcon, action: leftAction)
             Spacer()
             Text(title)
                 .font(.largeTitle)
             Spacer()
-            NavbarButton(icon: Icons.settings.rawValue)
+            NavbarButton(icon: rightIcon, action: rightAction)
         }
         .background(.gray.opacity(0.3)) // Debug
     }
@@ -76,9 +92,11 @@ struct NavbarView: View {
 
 struct NavbarButton: View {
     let icon: String
+    var action: () -> Void = {}
+    
     var body: some View {
         VStack {
-            Button(action: {}) {
+            Button(action: action) {
                 Image(systemName: icon)
                     .frame(width: 50, height: 50)
             }
@@ -161,12 +179,16 @@ struct SetAndRoundButton: View {
 
 // MARK: Sound Button
 struct SoundButton: View {
+    @Environment(\.modelContext) private var modelContext
+   // @Query private var configurations: [TabataConfiguration] // Change to Settings later.
+    
     let icon: String
-    var action: () -> Void = {}
     
     var body: some View {
         VStack {
-            Button(action: action) {
+            Button(action: {
+                print("Sound tapped")
+            }) {
                 Image(systemName: icon)
                     .frame(width: 50, height: 50)
             }
@@ -228,6 +250,7 @@ struct TabataTimerView: View {
         case .work: time = configuration.workTime
         case .rest: time = configuration.restTime
         case .coolDown: time = configuration.coolDownTime
+        case .idle: time = 0
         }
         
         return time.formatTime()
@@ -246,6 +269,31 @@ struct TabataTimerButton: View {
             }
         }
         .background(.gray.opacity(0.3)) // Debug
+    }
+}
+
+// MARK: Workout View
+struct WorkoutView: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Query private var configurations: [TabataConfiguration]
+    
+    @State var workoutPhase: WorkoutPhase = WorkoutPhase.idle
+
+    var body: some View {
+        VStack(spacing: 2) {
+            NavbarView(
+                title: workoutPhase.rawValue,
+                leftIcon: Icons.xmark.rawValue,
+                rightIcon: Icons.speaker.rawValue,
+                leftAction: { dismiss() },
+                rightAction: {
+                    print("Speaker tapped")
+                }
+            )
+            Spacer()
+        }
+        .padding()
     }
 }
 
