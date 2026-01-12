@@ -64,6 +64,11 @@ final class StartViewModelTests: XCTestCase {
         // When: Boundary Check (Minimum 1)
         viewModel.updateSets(by: -5, configurations: [config])
         XCTAssertEqual(config.sets, 1, "Sets should not go below 1")
+        
+        // When: Boundary Check (Maximum 10)
+        config.sets = 9
+        viewModel.updateSets(by: 2, configurations: [config])
+        XCTAssertEqual(config.sets, 10, "Sets should not go above 10")
     }
     
     func testUpdateRounds() {
@@ -81,6 +86,11 @@ final class StartViewModelTests: XCTestCase {
         // When: Boundary Check (Minimum 1)
         viewModel.updateRounds(by: -10, configurations: [config])
         XCTAssertEqual(config.rounds, 1, "Rounds should not go below 1")
+        
+        // When: Boundary Check (Maximum 10)
+        config.rounds = 9
+        viewModel.updateRounds(by: 2, configurations: [config])
+        XCTAssertEqual(config.rounds, 10, "Rounds should not go above 10")
     }
     
     func testAdjustTime() {
@@ -103,5 +113,18 @@ final class StartViewModelTests: XCTestCase {
         config.restTime = 5
         viewModel.adjustTime(for: .rest, by: -10, configurations: [config])
         XCTAssertEqual(config.restTime, 0, "Rest time should not go below 0")
+    }
+    
+    func testAdjustTimeUpperBound() {
+        // Given
+        config.workTime = 590 // Near limit
+        
+        // When: Increment by 20 (should hit cap)
+        viewModel.adjustTime(for: .work, by: 20, configurations: [config])
+        XCTAssertEqual(config.workTime, 600, "Time should restrict to 600 seconds (10 minutes)")
+        
+        // When: Increment again (should stay at cap)
+        viewModel.adjustTime(for: .work, by: 10, configurations: [config])
+        XCTAssertEqual(config.workTime, 600, "Time should stay at 600")
     }
 }

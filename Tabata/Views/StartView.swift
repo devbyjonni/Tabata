@@ -98,22 +98,12 @@ struct TimerTextView: View {
         VStack {
             Text(viewModel.calculateTotalDuration(configurations: configurations).formatTime())
                 .font(.largeTitle)
-            Text("Seconds")
+            Text("Minutes Total")
                 .font(.caption)
         }
         .frame(height: 200)
         .frame(maxWidth: .infinity)
         .background(.gray.opacity(0.3)) // Debug
-    }
-    
-    // Test
-    private func calculateTotalDuration() -> Double {
-        guard let configuration = configurations.first else { return 0 }
-        
-        let cycleDuration = configuration.workTime + configuration.restTime
-        let totalCycleTime = Double(configuration.sets) * Double(configuration.rounds) * cycleDuration
-        
-        return configuration.warmUpTime + totalCycleTime + configuration.coolDownTime
     }
 }
 

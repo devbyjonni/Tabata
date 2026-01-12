@@ -27,7 +27,7 @@ class StartViewModel {
     ///   - configurations: The list of Tabata configurations.
     func updateSets(by amount: Int, configurations: [TabataConfiguration]) {
         guard let configuration = configurations.first else { return }
-        configuration.sets = max(1, configuration.sets + amount)
+        configuration.sets = min(10, max(1, configuration.sets + amount))
     }
     
     /// Updates the number of rounds.
@@ -36,7 +36,7 @@ class StartViewModel {
     ///   - configurations: The list of Tabata configurations.
     func updateRounds(by amount: Int, configurations: [TabataConfiguration]) {
         guard let configuration = configurations.first else { return }
-        configuration.rounds = max(1, configuration.rounds + amount)
+        configuration.rounds = min(10, max(1, configuration.rounds + amount))
     }
     
     /// Adjusts the time for a specific workout phase.
@@ -49,13 +49,13 @@ class StartViewModel {
         
         switch phase {
         case .warmUp:
-            configuration.warmUpTime = max(0, configuration.warmUpTime + seconds)
+            configuration.warmUpTime = min(600, max(0, configuration.warmUpTime + seconds))
         case .work:
-            configuration.workTime = max(0, configuration.workTime + seconds)
+            configuration.workTime = min(600, max(0, configuration.workTime + seconds))
         case .rest:
-            configuration.restTime = max(0, configuration.restTime + seconds)
+            configuration.restTime = min(600, max(0, configuration.restTime + seconds))
         case .coolDown:
-            configuration.coolDownTime = max(0, configuration.coolDownTime + seconds)
+            configuration.coolDownTime = min(600, max(0, configuration.coolDownTime + seconds))
         }
     }
 }
