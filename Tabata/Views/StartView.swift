@@ -16,22 +16,24 @@ struct StartView: View {
     @State private var showWorkout = false
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 2) {
-                NavbarView(
-                    title: "Tabata",
-                    leftIcon: Icons.stats.rawValue,
-                    rightIcon: Icons.settings.rawValue,
-                    leftAction: { print("Stats tapped") },
-                    rightAction: { print("Settings tapped") }
-                )
-                TimerTextView()
-                SetsAndRoundsView()
-                SoundButton(icon: Icons.speaker.rawValue)
-                TabataTimersView()
-                Spacer()
+        VStack(spacing: 2) {
+            NavbarView(
+                title: "Tabata",
+                leftIcon: Icons.stats.rawValue,
+                rightIcon: Icons.settings.rawValue,
+                leftAction: { print("Stats tapped") },
+                rightAction: { print("Settings tapped") }
+            )
+            ScrollView {
+                VStack(spacing: 2) {
+                    TimerTextView()
+                    SetsAndRoundsView()
+                    SoundButton(icon: Icons.speaker.rawValue)
+                    TabataTimersView()
+                    Spacer()
+                }
+            
             }
-            .padding()
         }
         .overlay(alignment: .bottom) {
             StartButton(icon: Icons.play.rawValue) {
@@ -56,7 +58,10 @@ struct StartButton: View {
     var action: () -> Void = {}
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            HapticManager.shared.play(.medium)
+            action()
+        }) {
             ZStack {
                 Circle()
                     .frame(width: 100, height: 100)
@@ -96,7 +101,10 @@ struct NavbarButton: View {
     
     var body: some View {
         VStack {
-            Button(action: action) {
+            Button(action: {
+                HapticManager.shared.play(.light)
+                action()
+            }) {
                 Image(systemName: icon)
                     .frame(width: 50, height: 50)
             }
@@ -156,41 +164,6 @@ struct SetsAndRoundsView: View {
                 SetAndRoundButton(icon: Icons.plus.rawValue) {
                     viewModel.updateRounds(by: 1, configurations: configurations)
                 }
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
-    }
-}
-
-struct SetAndRoundButton: View {
-    let icon: String
-    var action: () -> Void = {}
-    
-    var body: some View {
-        VStack {
-            Button(action: action) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
-    }
-}
-
-// MARK: Sound Button
-struct SoundButton: View {
-    @Environment(\.modelContext) private var modelContext
-   // @Query private var configurations: [TabataConfiguration] // Change to Settings later.
-    
-    let icon: String
-    
-    var body: some View {
-        VStack {
-            Button(action: {
-                print("Sound tapped")
-            }) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
             }
         }
         .background(.gray.opacity(0.3)) // Debug
@@ -257,13 +230,55 @@ struct TabataTimerView: View {
     }
 }
 
+// MARK: Set And Round Button
+struct SetAndRoundButton: View {
+    let icon: String
+    var action: () -> Void = {}
+    
+    var body: some View {
+        VStack {
+            Button(action: {
+                HapticManager.shared.play(.light)
+                action()
+            }) {
+                Image(systemName: icon)
+                    .frame(width: 50, height: 50)
+            }
+        }
+        .background(.gray.opacity(0.3)) // Debug
+    }
+}
+
+// MARK: Sound Button
+struct SoundButton: View {
+    let icon: String
+    var action: () -> Void = {}
+    
+    var body: some View {
+        VStack {
+            Button(action: {
+                HapticManager.shared.play(.light)
+                action()
+            }) {
+                Image(systemName: icon)
+                    .frame(width: 50, height: 50)
+            }
+        }
+        .background(.gray.opacity(0.3)) // Debug
+    }
+}
+
+// MARK: Tabata Timer Button
 struct TabataTimerButton: View {
     let icon: String
     var action: () -> Void = {}
     
     var body: some View {
         VStack {
-            Button(action: action) {
+            Button(action: {
+                HapticManager.shared.play(.light)
+                action()
+            }) {
                 Image(systemName: icon)
                     .frame(width: 50, height: 50)
             }
