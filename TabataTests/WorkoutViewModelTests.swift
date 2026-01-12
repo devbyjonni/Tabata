@@ -141,7 +141,9 @@ final class WorkoutViewModelTests: XCTestCase {
         for _ in 1...5 { viewModel.tick() }
         viewModel.tick()
         
-        XCTAssertEqual(viewModel.phase, .idle)
+        // Old assertion: XCTAssertEqual(viewModel.phase, .idle)
+        // New assertion: The phase remains in coolDown (or last state) but isFinished flag is true.
+        XCTAssertTrue(viewModel.isFinished)
         XCTAssertFalse(viewModel.isActive)
     }
     

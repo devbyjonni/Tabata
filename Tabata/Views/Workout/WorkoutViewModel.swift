@@ -25,6 +25,9 @@ final class WorkoutViewModel {
     var currentSet = 1
     var currentRound = 1
     
+    var totalSets: Int { config?.sets ?? 0 }
+    var totalRounds: Int { config?.rounds ?? 0 }
+    
     /// Starts the workout with the given configuration.
     func start(config: TabataConfiguration) {
         self.config = config

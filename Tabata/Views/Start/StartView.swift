@@ -33,7 +33,8 @@ struct StartView: View {
                     TabataTimersView()
                     Spacer()
                 }
-            
+                .padding(.horizontal)
+                
             }
         }
         .overlay(alignment: .bottom) {
@@ -296,7 +297,7 @@ struct WorkoutView: View {
     
     @State private var viewModel = WorkoutViewModel()
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
+    
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
@@ -312,19 +313,40 @@ struct WorkoutView: View {
                 }
             )
             
-            Spacer()
-            
-            if viewModel.isFinished {
-                DoneView(action: {
-                    dismiss()
-                })
-            } else {
-                WorkoutTimerView(viewModel: viewModel)
+            VStack(spacing: 2) {
+                if viewModel.isFinished {
+                    DoneView(action: {
+                        dismiss()
+                    })
+                    .background(.gray.opacity(0.3)) // Debug
+                } else {
+                    VStack(spacing: 2) {
+                        
+                        // TODO
+                        Text("Phase Title")
+                        
+                        WorkoutTimerView(viewModel: viewModel)
+                        
+                        // TODO
+                        WorkoutStatsView(viewModel: viewModel)
+                        
+                        Spacer()
+                        
+                        // TODO
+                        HStack{
+                            Text("Controllers (Stop, Pause, Skip)")
+                        }
+                        .background(.gray.opacity(0.3)) // Debug
+                        
+                        Spacer()
+                    }
+                    .padding()
+                    .background(.gray.opacity(0.3)) // Debug
+                }
             }
             
             Spacer()
         }
-        .padding()
         .onAppear {
             if let config = configurations.first {
                 viewModel.start(config: config)
@@ -361,7 +383,42 @@ struct WorkoutTimerView: View {
                 .font(.system(size: 80, weight: .bold)) // Slightly smaller to fit
                 .monospacedDigit()
         }
-        .padding(40)
+        .padding()
+        .background(.gray.opacity(0.3)) // Debug
+    }
+}
+
+// MARK: Workout Stats View
+struct WorkoutStatsView: View {
+    var viewModel: WorkoutViewModel
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            StatItemView(title: "Sets", current: viewModel.currentSet, total: viewModel.totalSets)
+            Spacer()
+            StatItemView(title: "Rounds", current: viewModel.currentRound, total: viewModel.totalRounds)
+            Spacer()
+        }
+    }
+}
+
+// MARK: Stat Item View
+struct StatItemView: View {
+    let title: String
+    let current: Int
+    let total: Int
+    
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text("\(current) of \(total)")
+                .font(.title2)
+                .fontWeight(.bold)
+                .monospacedDigit()
+        }
     }
 }
 
