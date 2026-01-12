@@ -300,7 +300,7 @@ struct WorkoutView: View {
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
-                title: viewModel.phase.rawValue.uppercased(),
+                title: viewModel.isFinished ? "DONE" : viewModel.phase.rawValue.uppercased(),
                 leftIcon: Icons.xmark.rawValue,
                 rightIcon: Icons.speaker.rawValue,
                 leftAction: {
@@ -314,7 +314,13 @@ struct WorkoutView: View {
             
             Spacer()
             
-            WorkoutTimerView(viewModel: viewModel)
+            if viewModel.isFinished {
+                DoneView(action: {
+                    dismiss()
+                })
+            } else {
+                WorkoutTimerView(viewModel: viewModel)
+            }
             
             Spacer()
         }
@@ -356,6 +362,39 @@ struct WorkoutTimerView: View {
                 .monospacedDigit()
         }
         .padding(40)
+    }
+}
+
+// MARK: Done View
+struct DoneView: View {
+    var action: () -> Void = {}
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 100))
+                .foregroundColor(.green)
+            
+            Text("WORKOUT COMPLETE!")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+            
+            Button(action: {
+                HapticManager.shared.play(.medium)
+                action()
+            }) {
+                Text("DONE")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal, 40)
+        }
     }
 }
 

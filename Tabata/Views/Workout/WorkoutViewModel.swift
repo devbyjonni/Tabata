@@ -14,6 +14,8 @@ final class WorkoutViewModel {
     var totalTime: Double = 1 // Avoid division by zero
     var isActive: Bool = false
     
+    var isFinished: Bool = false
+    
     var progress: Double {
         guard totalTime > 0 else { return 0 }
         return timeRemaining / totalTime
@@ -28,6 +30,7 @@ final class WorkoutViewModel {
         self.config = config
         self.currentSet = 1
         self.currentRound = 1
+        self.isFinished = false
         
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
@@ -108,7 +111,7 @@ final class WorkoutViewModel {
             
         case .coolDown:
             // 4. Cool Down Finished -> Done
-            phase = .idle
+            isFinished = true
             isActive = false
             timeRemaining = 0
         }
@@ -117,6 +120,7 @@ final class WorkoutViewModel {
     /// Stops the workout.
     func stop() {
         isActive = false
+        isFinished = false
         phase = .idle
         timeRemaining = 0
     }
