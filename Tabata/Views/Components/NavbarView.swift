@@ -43,13 +43,14 @@ internal struct NavbarButton: View {
             Color.clear
                 .frame(width: 44, height: 44)
         } else {
-            Button(action: action) {
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                    .frame(width: 44, height: 44)
-                    .background(isDarkMode ? Color.slate800 : Color.slate200.opacity(0.5))
-                    .clipShape(Circle())
-                    .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+            ControlButton(
+                icon: icon,
+                backgroundColor: isDarkMode ? Color.slate800 : Color.slate200.opacity(0.5),
+                foregroundColor: isDarkMode ? .white : Color.primaryText,
+                size: 44,
+                iconSize: 20
+            ) {
+                action()
             }
         }
     }

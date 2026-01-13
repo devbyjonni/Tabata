@@ -34,18 +34,14 @@ internal struct TabataTimerView: View {
     var body: some View {
         HStack {
             // Decrement
-            Button(action: {
-                HapticManager.shared.play(.light)
-                viewModel.adjustTime(for: phase, by: -10, configurations: configurations) // Logic adapted to +/- 5 or 10 based on phase? dobata does different steps. keeping existing strategy or adopting dobata's? StartViewModel likely has generic. Let's stick to existing +/-10 or update viewModel later. StartViewModel 'adjustTime' handles logic.
-            }) {
-                Circle()
-                    .fill(Color.white.opacity(0.2))
-                    .frame(width: 40, height: 40)
-                    .overlay(
-                        Image(systemName: Icons.minus.rawValue) // dobata uses "minus", Tabata uses Icons.minus
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(.white)
-                    )
+            ControlButton(
+                icon: Icons.minus.rawValue,
+                backgroundColor: Color.white.opacity(0.2),
+                foregroundColor: .white,
+                size: 40,
+                iconSize: 18
+            ) {
+                 viewModel.adjustTime(for: phase, by: -10, configurations: configurations)
             }
             
             Spacer()
@@ -73,18 +69,14 @@ internal struct TabataTimerView: View {
             Spacer()
             
             // Increment
-            Button(action: {
-                HapticManager.shared.play(.light)
-                viewModel.adjustTime(for: phase, by: 10, configurations: configurations)
-            }) {
-                Circle()
-                    .fill(Color.white.opacity(0.2))
-                    .frame(width: 40, height: 40)
-                    .overlay(
-                        Image(systemName: Icons.plus.rawValue)
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(.white)
-                    )
+            ControlButton(
+                icon: Icons.plus.rawValue,
+                backgroundColor: Color.white.opacity(0.2),
+                foregroundColor: .white,
+                size: 40,
+                iconSize: 18
+            ) {
+                 viewModel.adjustTime(for: phase, by: 10, configurations: configurations)
             }
         }
         .padding(.horizontal, 20)

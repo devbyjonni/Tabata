@@ -52,24 +52,23 @@ struct StartView: View {
         .overlay(alignment: .bottom) {
             VStack {
                 Spacer()
-                Button(action: {
+                ControlButton(
+                    icon: Icons.play.rawValue,
+                    backgroundColor: Theme.primary,
+                    foregroundColor: .white,
+                    size: 80,
+                    iconSize: 40,
+                    shadowColor: Theme.primary.opacity(0.4),
+                    shadowRadius: 10,
+                    shadowX: 0,
+                    shadowY: 10
+                ) {
                     workoutCompleted = false
                     showWorkout = true
                     HapticManager.shared.notification(.success)
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Theme.primary)
-                            .frame(width: 80, height: 80)
-                            .shadow(color: Theme.primary.opacity(0.4), radius: 10, x: 0, y: 10)
-                        
-                        Image(systemName: Icons.play.rawValue)
-                            .font(.system(size: 40))
-                            .foregroundStyle(.white)
-                            .offset(x: 3)
-                    }
                 }
                 .padding(.bottom, 10)
+                .offset(x: 3) // Fine-tune play icon centering if needed, though ControlButton usually centers. Play.fill often needs offset.
             }
         }
         .fullScreenCover(isPresented: $showWorkout, onDismiss: {

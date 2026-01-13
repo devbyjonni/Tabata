@@ -27,18 +27,16 @@ struct SetsAndRoundsView: View {
             )
             
             // Speaker
-            Button(action: {
-                HapticManager.shared.play(.medium)
+            ControlButton(
+                icon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
+                backgroundColor: settings.first?.isDarkMode ?? true ? Color.slate800 : Color.slate200.opacity(0.5),
+                foregroundColor: settings.first?.isDarkMode ?? true ? Color.white.opacity(0.5) : Color.slate900.opacity(0.5),
+                size: 44,
+                iconSize: 16
+            ) {
                 if let currentSettings = settings.first {
                     currentSettings.isSoundEnabled.toggle()
                 }
-            }) {
-                Image(systemName: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue)
-                    .font(.system(size: 16))
-                    .foregroundStyle(settings.first?.isDarkMode ?? true ? Color.white.opacity(0.5) : Color.slate900.opacity(0.5))
-                    .frame(width: 44, height: 44)
-                    .background(settings.first?.isDarkMode ?? true ? Color.slate800 : Color.slate200.opacity(0.5))
-                    .clipShape(Circle())
             }
             .offset(y: 10)
             
@@ -65,7 +63,7 @@ struct CounterControl: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 16) {
-                RoundButton(icon: "minus", isDarkMode: isDarkMode, action: onDecrement)
+                RoundButton(icon: Icons.minus.rawValue, isDarkMode: isDarkMode, action: onDecrement)
                 
                 Text(value)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
@@ -73,7 +71,7 @@ struct CounterControl: View {
                     .foregroundStyle(isDarkMode ? .white : Color.slate900)
                     .frame(minWidth: 60)
                 
-                RoundButton(icon: "plus", isDarkMode: isDarkMode, action: onIncrement)
+                RoundButton(icon: Icons.plus.rawValue, isDarkMode: isDarkMode, action: onIncrement)
             }
             
             Text(label)
@@ -91,19 +89,16 @@ struct RoundButton: View {
     var action: () -> Void = {}
     
     var body: some View {
-        Button(action: {
-            HapticManager.shared.play(.light)
+        ControlButton(
+            icon: icon,
+            backgroundColor: .clear,
+            foregroundColor: isDarkMode ? .white : Color.slate900,
+            size: 32,
+            iconSize: 14,
+            borderColor: isDarkMode ? Color.slate600 : Color.slate300,
+            borderWidth: 2
+        ) {
             action()
-        }) {
-            Circle()
-                .stroke(isDarkMode ? Color.slate600 : Color.slate300, lineWidth: 2)
-                .background(Circle().fill(Color.clear))
-                .frame(width: 32, height: 32)
-                .overlay(
-                    Image(systemName: icon)
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(isDarkMode ? .white : Color.slate900)
-                )
         }
     }
 }

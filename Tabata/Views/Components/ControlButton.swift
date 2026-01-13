@@ -15,6 +15,10 @@ struct ControlButton: View {
     var iconSize: CGFloat = 30
     var borderColor: Color = .clear
     var borderWidth: CGFloat = 0
+    var shadowColor: Color = .clear
+    var shadowRadius: CGFloat = 0
+    var shadowX: CGFloat = 0
+    var shadowY: CGFloat = 0
     var action: () -> Void = {}
     
     var body: some View {
@@ -30,6 +34,7 @@ struct ControlButton: View {
                             .stroke(borderColor, lineWidth: borderWidth)
                     )
                     .frame(width: size, height: size)
+                    .shadow(color: shadowColor, radius: shadowRadius, x: shadowX, y: shadowY)
                 Image(systemName: icon)
                     .font(.system(size: iconSize, weight: .bold, design: .rounded))
                     .foregroundColor(foregroundColor)
