@@ -16,4 +16,7 @@ enum Icons: String {
     case play = "play.fill"
     case speaker = "speaker"
     case xmark = "xmark"
+    case pause = "pause.fill"
+    case stop = "stop.fill"
+    case skip = "forward.fill"
 }

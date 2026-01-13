@@ -19,7 +19,7 @@ struct StartView: View {
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
-                title: "Tabata",
+                title: "Start",
                 leftIcon: Icons.stats.rawValue,
                 rightIcon: Icons.settings.rawValue,
                 leftAction: { print("Stats tapped") },
@@ -301,7 +301,7 @@ struct WorkoutView: View {
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
-                title: viewModel.isFinished ? "DONE" : viewModel.phase.rawValue.uppercased(),
+                title: viewModel.isFinished ? "Done" : "Workout",
                 leftIcon: Icons.xmark.rawValue,
                 rightIcon: Icons.speaker.rawValue,
                 leftAction: {
@@ -336,9 +336,9 @@ struct WorkoutView: View {
                     Spacer()
                     
                     // TODO
-                    HStack{
-                        Text("Controllers (Stop, Pause, Skip)")
-                    }
+                    WorkoutControlsView(viewModel: viewModel, dismissAction: {
+                        dismiss()
+                    })
                     
                     Spacer()
                 }
@@ -471,6 +471,53 @@ struct DoneView: View {
                     .cornerRadius(10)
             }
         }
+    }
+}
+
+// MARK: Workout Controls View
+struct WorkoutControlsView: View {
+    @Bindable var viewModel: WorkoutViewModel
+    var dismissAction: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 60) {
+            // Stop
+            Button(action: {
+                HapticManager.shared.play(.medium)
+                viewModel.stop()
+                dismissAction()
+            }) {
+                Image(systemName: Icons.stop.rawValue)
+                    .font(.system(size: 30))
+                    .foregroundColor(.secondary)
+            }
+            
+            // Play/Pause
+            Button(action: {
+                HapticManager.shared.play(.medium)
+                if viewModel.isActive {
+                    viewModel.pause()
+                } else {
+                    viewModel.play()
+                }
+            }) {
+                Image(systemName: viewModel.isActive ? Icons.pause.rawValue : Icons.play.rawValue)
+                    .font(.system(size: 60))
+                    .foregroundColor(.primary)
+            }
+            
+            // Skip
+            Button(action: {
+                HapticManager.shared.play(.light)
+                viewModel.skip()
+            }) {
+                Image(systemName: Icons.skip.rawValue)
+                    .font(.system(size: 30))
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical)
+        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

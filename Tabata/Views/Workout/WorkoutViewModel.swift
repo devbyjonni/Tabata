@@ -38,6 +38,7 @@ final class WorkoutViewModel {
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
         self.totalTime = config.warmUpTime > 0 ? config.warmUpTime : 1
+        
         self.isActive = false
     }
     
@@ -50,10 +51,24 @@ final class WorkoutViewModel {
     func tick() {
         guard isActive else { return }
         
-        if timeRemaining > 0.001 {
-            timeRemaining -= 0.05
-        } else {
-            nextPhase()
+        let step = 0.05
+        
+        // 2. Decrement Phase Time (Logic handles transitions instantly)
+        var timeToProcess = step
+        
+        while timeToProcess > 0.0001 && !isFinished {
+            if timeRemaining > timeToProcess + 0.0001 {
+                // Current phase has enough time
+                timeRemaining -= timeToProcess
+                timeToProcess = 0
+            } else {
+                // Phase finished (consume remaining time)
+                timeToProcess -= timeRemaining
+                timeRemaining = 0
+                
+                // Switch to next phase
+                nextPhase()
+            }
         }
     }
     
@@ -123,6 +138,16 @@ final class WorkoutViewModel {
             isActive = false
             timeRemaining = 0
         }
+    }
+    
+    /// Pauses the timer.
+    func pause() {
+        isActive = false
+    }
+    
+    /// Skips to the next phase.
+    func skip() {
+        nextPhase()
     }
     
     /// Stops the workout.

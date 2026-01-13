@@ -39,7 +39,7 @@ final class WorkoutViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.isActive)
         XCTAssertEqual(viewModel.phase, .warmUp)
-        XCTAssertEqual(viewModel.timeRemaining, 5)
+        XCTAssertEqual(viewModel.timeRemaining, 5, accuracy: 0.1)
         XCTAssertEqual(viewModel.totalTime, 5)
         XCTAssertEqual(viewModel.progress, 1.0)
     }
@@ -50,11 +50,9 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Tick through Warm Up (5s)
         advanceTime(seconds: 5)
-        // Transition
-        viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .work)
-        XCTAssertEqual(viewModel.timeRemaining, 10) // Work time
+        XCTAssertEqual(viewModel.timeRemaining, 10, accuracy: 0.1) // Work time
         XCTAssertEqual(viewModel.currentSet, 1)
         XCTAssertEqual(viewModel.currentRound, 1)
     }
@@ -68,11 +66,9 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Tick through Work (10s)
         advanceTime(seconds: 10)
-        // Transition
-        viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .rest)
-        XCTAssertEqual(viewModel.timeRemaining, 5) // Rest time
+        XCTAssertEqual(viewModel.timeRemaining, 5, accuracy: 0.1) // Rest time
     }
     
     func testRestToNextSet() {
@@ -84,8 +80,6 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Tick through Rest (5s)
         advanceTime(seconds: 5)
-        // Transition
-        viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .work)
         XCTAssertEqual(viewModel.currentSet, 2) // Incremented
@@ -109,8 +103,6 @@ final class WorkoutViewModelTests: XCTestCase {
         // Now at Rest 2. Completing this should trigger Round 2, Set 1.
         // Tick through Rest (5s)
         advanceTime(seconds: 5)
-        // Transition
-        viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .work)
         XCTAssertEqual(viewModel.currentSet, 1) // Reset to 1
@@ -128,10 +120,9 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Complete Work
         advanceTime(seconds: 10)
-        viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .coolDown)
-        XCTAssertEqual(viewModel.timeRemaining, 5)
+        XCTAssertEqual(viewModel.timeRemaining, 5, accuracy: 0.1)
     }
     
     func testCoolDownToFinish() {
@@ -145,7 +136,6 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Complete CoolDown
         advanceTime(seconds: 5)
-        viewModel.tick()
         
         // Check for finished state
         XCTAssertTrue(viewModel.isFinished)
