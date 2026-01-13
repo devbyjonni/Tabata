@@ -13,6 +13,7 @@ internal import Combine
 struct StartView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
+    @Query private var settings: [TabataSettings]
     
     @State private var showWorkout = false
     @State private var showCompletion = false
@@ -67,8 +68,12 @@ struct StartView: View {
             })
         }
         .onAppear {
-            if configurations.isEmpty {
+            if self.configurations.isEmpty {
                 let newSettings = TabataConfiguration()
+                modelContext.insert(newSettings)
+            }
+            if self.settings.isEmpty {
+                let newSettings = TabataSettings()
                 modelContext.insert(newSettings)
             }
         }
@@ -261,6 +266,7 @@ struct WorkoutView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
+    @Query private var settings: [TabataSettings]
     @Binding var completed: Bool
     
     @State private var viewModel = WorkoutViewModel()
@@ -307,9 +313,9 @@ struct WorkoutView: View {
             .background(.gray.opacity(0.3)) // Debug
         }
         .onAppear {
-            if let config = configurations.first {
+            if let config = configurations.first, let currentSettings = self.settings.first {
                 // Initialize UI immediately
-                viewModel.setup(config: config)
+                viewModel.setup(config: config, settings: currentSettings)
                 
                 // Delay start to allow view transition to complete
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {

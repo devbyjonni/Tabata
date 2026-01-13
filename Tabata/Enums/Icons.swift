@@ -25,5 +25,4 @@ enum Icons: String {
     case work = "figure.highintensity.intervaltraining"
     case rest = "figure.walk"
     case cooldown = "drop.fill"
-    
 }

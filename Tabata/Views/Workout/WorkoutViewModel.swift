@@ -28,9 +28,13 @@ final class WorkoutViewModel {
     var totalSets: Int { config?.sets ?? 0 }
     var totalRounds: Int { config?.rounds ?? 0 }
     
+    private var settings: TabataSettings?
+    private var lastIntegerTime: Int = 0
+    
     /// Sets up the workout state without starting the timer.
-    func setup(config: TabataConfiguration) {
+    func setup(config: TabataConfiguration, settings: TabataSettings) {
         self.config = config
+        self.settings = settings
         self.currentSet = 1
         self.currentRound = 1
         self.isFinished = false
@@ -38,6 +42,9 @@ final class WorkoutViewModel {
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
         self.totalTime = config.warmUpTime > 0 ? config.warmUpTime : 1
+        
+        // Initialize logic state
+        self.lastIntegerTime = Int(ceil(timeRemaining))
         
         self.isActive = false
     }
@@ -61,6 +68,18 @@ final class WorkoutViewModel {
                 // Current phase has enough time
                 timeRemaining -= timeToProcess
                 timeToProcess = 0
+                
+                // Sound Check
+                if let settings = settings, settings.isSoundEnabled && settings.isCountdownEnabled {
+                    let currentIntegerTime = Int(ceil(timeRemaining))
+                    if currentIntegerTime != lastIntegerTime {
+                        // Integer boundary crossed
+                        if currentIntegerTime <= 3 && currentIntegerTime > 0 {
+                            SoundManager.shared.playBeep()
+                        }
+                        lastIntegerTime = currentIntegerTime
+                    }
+                }
             } else {
                 // Phase finished (consume remaining time)
                 timeToProcess -= timeRemaining
@@ -94,6 +113,7 @@ final class WorkoutViewModel {
             phase = .work
             timeRemaining = config.workTime
             totalTime = config.workTime > 0 ? config.workTime : 1
+            lastIntegerTime = Int(ceil(timeRemaining))
             
         case .work:
             // 2. Work Finished -> Check what's next
@@ -102,11 +122,13 @@ final class WorkoutViewModel {
                 phase = .coolDown
                 timeRemaining = config.coolDownTime
                 totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
+                lastIntegerTime = Int(ceil(timeRemaining))
             } else {
                 // More work to do -> Rest
                 phase = .rest
                 timeRemaining = config.restTime
                 totalTime = config.restTime > 0 ? config.restTime : 1
+                lastIntegerTime = Int(ceil(timeRemaining))
             }
             
         case .rest:
@@ -117,6 +139,7 @@ final class WorkoutViewModel {
                 phase = .work
                 timeRemaining = config.workTime
                 totalTime = config.workTime > 0 ? config.workTime : 1
+                lastIntegerTime = Int(ceil(timeRemaining))
             } else if currentRound < config.rounds {
                 // Next Round (Reset Sets)
                 currentRound += 1
@@ -124,12 +147,14 @@ final class WorkoutViewModel {
                 phase = .work
                 timeRemaining = config.workTime
                 totalTime = config.workTime > 0 ? config.workTime : 1
+                lastIntegerTime = Int(ceil(timeRemaining))
             } else {
                 // Fallback: This path should technically be unreachable if logic in .work is correct,
                 // but if we end up here, go to Cool Down.
                 phase = .coolDown
                 timeRemaining = config.coolDownTime
                 totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
+                lastIntegerTime = Int(ceil(timeRemaining))
             }
             
         case .coolDown:

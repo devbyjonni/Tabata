@@ -13,6 +13,7 @@ struct TabataApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             TabataConfiguration.self,
+            TabataSettings.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
