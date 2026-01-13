@@ -17,6 +17,8 @@ struct StartView: View {
     
     @State private var showWorkout = false
     @State private var showCompletion = false
+    @State private var showStats = false
+    @State private var showSettings = false
     @State private var workoutCompleted = false
     
     var body: some View {
@@ -25,8 +27,8 @@ struct StartView: View {
                 title: "Start",
                 leftIcon: Icons.stats.rawValue,
                 rightIcon: Icons.settings.rawValue,
-                leftAction: { print("Stats tapped") },
-                rightAction: { print("Settings tapped") }
+                leftAction: { showStats = true },
+                rightAction: { showSettings = true }
             )
             ScrollView {
                 VStack(spacing: 2) {
@@ -75,6 +77,12 @@ struct StartView: View {
             CompletedView(action: {
                 showCompletion = false
             })
+        }
+        .sheet(isPresented: $showStats) {
+            StatsView()
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
         .onAppear {
             if self.configurations.isEmpty {
