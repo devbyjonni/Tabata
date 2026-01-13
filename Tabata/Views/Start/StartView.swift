@@ -440,7 +440,7 @@ struct CompletedView: View {
                 title: "Completed",
                 leftIcon: Icons.xmark.rawValue,
                 rightIcon: Icons.share.rawValue,
-                leftAction: { print("Xmark tapped") },
+                leftAction: { action() },
                 rightAction: { print("Share tapped") }
             )
             Spacer()
