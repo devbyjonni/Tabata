@@ -51,7 +51,29 @@ final class WorkoutViewModel {
     
     /// Starts or resumes the timer.
     func play() {
+        if !isActive && timeRemaining == totalTime {
+            // Initial Start (or restart of phase, but mostly for first launch)
+            // If it's the very start of the workout (warmup), speak.
+            if phase == .warmUp && timeRemaining == config?.warmUpTime {
+                 speakPhase()
+            }
+        }
         isActive = true
+    }
+    
+    private func speakPhase() {
+        guard let settings = settings, settings.isSoundEnabled else { return }
+        
+        let text: String
+        switch phase {
+        case .warmUp: text = "Warm Up"
+        case .work: text = "Work"
+        case .rest: text = "Rest"
+        case .coolDown: text = "Cool Down"
+        case .idle: return
+        }
+        
+        SoundManager.shared.speak(text)
     }
     
     /// Ticks the timer down by 0.05 seconds.
@@ -114,6 +136,7 @@ final class WorkoutViewModel {
             timeRemaining = config.workTime
             totalTime = config.workTime > 0 ? config.workTime : 1
             lastIntegerTime = Int(ceil(timeRemaining))
+            speakPhase()
             
         case .work:
             // 2. Work Finished -> Check what's next
@@ -123,12 +146,14 @@ final class WorkoutViewModel {
                 timeRemaining = config.coolDownTime
                 totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
                 lastIntegerTime = Int(ceil(timeRemaining))
+                speakPhase()
             } else {
                 // More work to do -> Rest
                 phase = .rest
                 timeRemaining = config.restTime
                 totalTime = config.restTime > 0 ? config.restTime : 1
                 lastIntegerTime = Int(ceil(timeRemaining))
+                speakPhase()
             }
             
         case .rest:
@@ -140,6 +165,7 @@ final class WorkoutViewModel {
                 timeRemaining = config.workTime
                 totalTime = config.workTime > 0 ? config.workTime : 1
                 lastIntegerTime = Int(ceil(timeRemaining))
+                speakPhase()
             } else if currentRound < config.rounds {
                 // Next Round (Reset Sets)
                 currentRound += 1
@@ -148,6 +174,7 @@ final class WorkoutViewModel {
                 timeRemaining = config.workTime
                 totalTime = config.workTime > 0 ? config.workTime : 1
                 lastIntegerTime = Int(ceil(timeRemaining))
+                speakPhase()
             } else {
                 // Fallback: This path should technically be unreachable if logic in .work is correct,
                 // but if we end up here, go to Cool Down.
@@ -155,6 +182,7 @@ final class WorkoutViewModel {
                 timeRemaining = config.coolDownTime
                 totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
                 lastIntegerTime = Int(ceil(timeRemaining))
+                speakPhase()
             }
             
         case .coolDown:
@@ -162,6 +190,7 @@ final class WorkoutViewModel {
             isFinished = true
             isActive = false
             timeRemaining = 0
+            SoundManager.shared.speak("Workout Completed")
         }
     }
     

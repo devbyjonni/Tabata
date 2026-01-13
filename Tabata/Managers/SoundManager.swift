@@ -33,4 +33,20 @@ class SoundManager {
             print("SoundManager: Error playing sound - \(error.localizedDescription)")
         }
     }
+    
+    private let synthesizer = AVSpeechSynthesizer()
+    
+    func speak(_ text: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.5
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .duckOthers)
+            try AVAudioSession.sharedInstance().setActive(true)
+            synthesizer.speak(utterance)
+        } catch {
+            print("SoundManager: Error speaking - \(error.localizedDescription)")
+        }
+    }
 }
