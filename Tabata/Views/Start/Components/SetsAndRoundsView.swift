@@ -57,7 +57,6 @@ struct SetsAndRoundsView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

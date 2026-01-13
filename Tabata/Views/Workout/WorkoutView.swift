@@ -58,7 +58,6 @@ struct WorkoutView: View {
                 Spacer()
             }
             .padding()
-            .background(.gray.opacity(0.3)) // Debug
         }
         .onAppear {
             if let config = configurations.first, let currentSettings = self.settings.first {

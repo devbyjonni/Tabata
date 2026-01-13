@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-internal import Combine
 
 // MARK: Start View
 struct StartView: View {

@@ -20,13 +20,6 @@ struct TabataApp: App {
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
             
-            // Print the database path
-             print("Database Path: \(modelConfiguration.url)")
-            
-            let context = ModelContext(container)
-            let count = try context.fetchCount(FetchDescriptor<TabataConfiguration>())
-            print("Total Configurations: \(count)")
-            
             return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")

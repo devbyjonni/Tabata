@@ -12,13 +12,9 @@ struct TabataTimersView: View {
     var body: some View {
         VStack(spacing: 2) {
             TabataTimerView(phase: WorkoutPhase.warmUp, icon: Icons.warmUp.rawValue)
-                .background(.gray.opacity(0.3)) // Debug
             TabataTimerView(phase: WorkoutPhase.work, icon: Icons.work.rawValue)
-                .background(.gray.opacity(0.3)) // Debug
             TabataTimerView(phase: WorkoutPhase.rest, icon: Icons.rest.rawValue)
-                .background(.gray.opacity(0.3)) // Debug
             TabataTimerView(phase: WorkoutPhase.coolDown, icon: Icons.cooldown.rawValue)
-                .background(.gray.opacity(0.3)) // Debug
         }
     }
 }

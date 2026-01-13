@@ -18,7 +18,6 @@ struct WorkoutStatsView: View {
             StatItemView(title: "Rounds", current: viewModel.currentRound, total: viewModel.totalRounds)
             Spacer()
         }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

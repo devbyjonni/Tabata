@@ -23,7 +23,6 @@ struct TimerTextView: View {
         }
         .frame(height: 200)
         .frame(maxWidth: .infinity)
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

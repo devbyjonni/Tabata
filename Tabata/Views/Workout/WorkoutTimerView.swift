@@ -31,7 +31,6 @@ struct WorkoutTimerView: View {
                 .monospacedDigit()
         }
         .padding()
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

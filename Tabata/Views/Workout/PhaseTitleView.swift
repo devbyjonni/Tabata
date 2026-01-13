@@ -15,7 +15,6 @@ struct PhaseTitleView: View {
             Text(phase.rawValue.uppercased())
                 .font(.system(size: 40, weight: .black, design: .rounded))
         }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 

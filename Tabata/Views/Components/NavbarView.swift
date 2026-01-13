@@ -23,7 +23,6 @@ struct NavbarView: View {
             Spacer()
             NavbarButton(icon: rightIcon, action: rightAction)
         }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 
