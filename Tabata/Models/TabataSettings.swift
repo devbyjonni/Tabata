@@ -12,9 +12,11 @@ import SwiftData
 final class TabataSettings {
     var isSoundEnabled: Bool = true
     var isCountdownEnabled: Bool = true
+    var isDarkMode: Bool = true
     
-    init(isSoundEnabled: Bool = true, isCountdownEnabled: Bool = true) {
+    init(isSoundEnabled: Bool = true, isCountdownEnabled: Bool = true, isDarkMode: Bool = true) {
         self.isSoundEnabled = isSoundEnabled
         self.isCountdownEnabled = isCountdownEnabled
+        self.isDarkMode = isDarkMode
     }
 }

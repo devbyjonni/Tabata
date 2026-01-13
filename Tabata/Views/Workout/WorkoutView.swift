@@ -20,44 +20,49 @@ struct WorkoutView: View {
     @State private var timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        VStack(spacing: 2) {
-            NavbarView(
-                title: viewModel.isFinished ? "Done" : "Workout",
-                leftIcon: Icons.xmark.rawValue,
-                rightIcon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
-                leftAction: {
-                    viewModel.stop()
-                    dismiss()
-                },
-                rightAction: {
-                    settings.first?.isSoundEnabled.toggle()
-                    HapticManager.shared.play(.light)
-                }
-            )
+        ZStack {
+            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+                .ignoresSafeArea()
             
             VStack(spacing: 2) {
+                NavbarView(
+                    title: viewModel.isFinished ? "Done" : "Workout",
+                    leftIcon: Icons.xmark.rawValue,
+                    rightIcon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
+                    leftAction: {
+                        viewModel.stop()
+                        dismiss()
+                    },
+                    rightAction: {
+                        settings.first?.isSoundEnabled.toggle()
+                        HapticManager.shared.play(.light)
+                    }
+                )
                 
-                Spacer()
-                
-                PhaseTitleView(phase: viewModel.phase)
-                
-                Spacer()
-                
-                WorkoutTimerView(viewModel: viewModel)
-                
-                Spacer()
-                
-                WorkoutStatsView(viewModel: viewModel)
-                
-                Spacer()
-                
-                WorkoutControlsView(viewModel: viewModel, dismissAction: {
-                    dismiss()
-                })
-                
-                Spacer()
+                VStack(spacing: 2) {
+                    
+                    Spacer()
+                    
+                    PhaseTitleView(phase: viewModel.phase)
+                    
+                    Spacer()
+                    
+                    WorkoutTimerView(viewModel: viewModel)
+                    
+                    Spacer()
+                    
+                    WorkoutStatsView(viewModel: viewModel)
+                    
+                    Spacer()
+                    
+                    WorkoutControlsView(viewModel: viewModel, dismissAction: {
+                        dismiss()
+                    })
+                    
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
         }
         .onAppear {
             if let config = configurations.first, let currentSettings = self.settings.first {

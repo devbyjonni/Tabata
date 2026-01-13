@@ -21,33 +21,38 @@ struct StartView: View {
     @State private var workoutCompleted = false
     
     var body: some View {
-        VStack(spacing: 2) {
-            NavbarView(
-                title: "Start",
-                leftIcon: Icons.stats.rawValue,
-                rightIcon: Icons.settings.rawValue,
-                leftAction: { showStats = true },
-                rightAction: { showSettings = true }
-            )
-            ScrollView {
-                VStack(spacing: 2) {
-                    TimerTextView()
-                    SetsAndRoundsView()
-                    ControlButton(
-                        icon: (self.settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
-                        backgroundColor: .clear,
-                        foregroundColor: (self.settings.first?.isSoundEnabled ?? true) ? .primary : .secondary,
-                        size: 50,
-                        iconSize: 20
-                    ) {
-                        self.settings.first?.isSoundEnabled.toggle()
-                        HapticManager.shared.play(.light)
+        ZStack {
+            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 2) {
+                NavbarView(
+                    title: "Start",
+                    leftIcon: Icons.stats.rawValue,
+                    rightIcon: Icons.settings.rawValue,
+                    leftAction: { showStats = true },
+                    rightAction: { showSettings = true }
+                )
+                ScrollView {
+                    VStack(spacing: 2) {
+                        TimerTextView()
+                        SetsAndRoundsView()
+                        ControlButton(
+                            icon: (self.settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
+                            backgroundColor: .clear,
+                            foregroundColor: (self.settings.first?.isSoundEnabled ?? true) ? .primary : .secondary,
+                            size: 50,
+                            iconSize: 20
+                        ) {
+                            self.settings.first?.isSoundEnabled.toggle()
+                            HapticManager.shared.play(.light)
+                        }
+                        TabataTimersView()
+                        Spacer()
                     }
-                    TabataTimersView()
-                    Spacer()
+                    .padding(.horizontal)
+                    
                 }
-                .padding(.horizontal)
-                
             }
         }
         .overlay(alignment: .bottom) {
@@ -83,6 +88,7 @@ struct StartView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+        .preferredColorScheme(settings.first?.isDarkMode ?? true ? .dark : .light)
         .onAppear {
             if self.configurations.isEmpty {
                 let newSettings = TabataConfiguration()

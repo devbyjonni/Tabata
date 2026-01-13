@@ -6,27 +6,34 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StatsListView: View {
     @Environment(\.dismiss) var dismiss
+    @Query private var settings: [TabataSettings]
     
     var body: some View {
-        VStack(spacing: 0) {
-            NavbarView(
-                title: "History",
-                leftIcon: Icons.back.rawValue,
-                rightIcon: "",
-                leftAction: { dismiss() },
-                rightAction: {}
-            )
+        ZStack {
+            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+                .ignoresSafeArea()
             
-            Spacer()
-            
-            Text("Workout history coming soon...")
-                .font(.system(size: 20, weight: .medium, design: .rounded))
-                .foregroundColor(.secondary)
-            
-            Spacer()
+            VStack(spacing: 0) {
+                NavbarView(
+                    title: "History",
+                    leftIcon: Icons.back.rawValue,
+                    rightIcon: "",
+                    leftAction: { dismiss() },
+                    rightAction: {}
+                )
+                
+                Spacer()
+                
+                Text("Workout history coming soon...")
+                    .font(.system(size: 20, weight: .medium, design: .rounded))
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+            }
         }
     }
 }

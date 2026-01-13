@@ -6,29 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StatsView: View {
     @Environment(\.dismiss) var dismiss
+    @Query private var settings: [TabataSettings]
+    
     @State private var showHistory = false
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                NavbarView(
-                    title: "Stats",
-                    leftIcon: Icons.xmark.rawValue,
-                    rightIcon: Icons.list.rawValue,
-                    leftAction: { dismiss() },
-                    rightAction: { showHistory = true }
-                )
+            ZStack {
+                (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+                    .ignoresSafeArea()
                 
-                Spacer()
-                
-                Text("Statistics coming soon...")
-                    .font(.system(size: 20, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
-                
-                Spacer()
+                VStack(spacing: 0) {
+                    NavbarView(
+                        title: "Stats",
+                        leftIcon: Icons.xmark.rawValue,
+                        rightIcon: Icons.list.rawValue,
+                        leftAction: { dismiss() },
+                        rightAction: { showHistory = true }
+                    )
+                    
+                    Spacer()
+                    
+                    Text("Statistics coming soon...")
+                        .font(.system(size: 20, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
+                }
             }
             .navigationDestination(isPresented: $showHistory) {
                 StatsListView()
