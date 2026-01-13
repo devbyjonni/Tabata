@@ -15,7 +15,7 @@ struct StartView: View {
     @Query private var configurations: [TabataConfiguration]
     
     @State private var showWorkout = false
-    @State private var showDone = false
+    @State private var showCompletion = false
     @State private var workoutCompleted = false
     
     var body: some View {
@@ -55,15 +55,15 @@ struct StartView: View {
             if workoutCompleted {
                 // Slight delay to allow dismissal animation to finish
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    showDone = true
+                    showCompletion = true
                 }
             }
         }) {
             WorkoutView(completed: $workoutCompleted)
         }
-        .fullScreenCover(isPresented: $showDone) {
-            DoneView(action: {
-                showDone = false
+        .fullScreenCover(isPresented: $showCompletion) {
+            CompletedView(action: {
+                showCompletion = false
             })
         }
         .onAppear {
@@ -382,21 +382,21 @@ struct PhaseTitleView: View {
     }
 }
 
-// MARK: Done View
-struct DoneView: View {
+// MARK: Completed View
+struct CompletedView: View {
     var action: () -> Void = {}
     
     var body: some View {
         VStack(spacing: 2) {
             NavbarView(
-                title: "Done",
+                title: "Completed",
                 leftIcon: Icons.xmark.rawValue,
                 rightIcon: Icons.share.rawValue,
                 leftAction: { print("Xmark tapped") },
                 rightAction: { print("Share tapped") }
             )
             Spacer()
-            Text("WORKOUT COMPLETE!")
+            Text("WORKOUT COMPLETED!")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
