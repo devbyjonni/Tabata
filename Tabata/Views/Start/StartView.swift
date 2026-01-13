@@ -143,27 +143,44 @@ struct SetsAndRoundsView: View {
     var body: some View {
         HStack {
             // Sets
-            HStack() {
-                ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                    viewModel.updateSets(by: -1, configurations: configurations)
+            VStack {
+                HStack() {
+                    ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
+                        viewModel.updateSets(by: -1, configurations: configurations)
+                    }
+                    Text("\(configurations.first?.sets ?? 0)")
+                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .frame(width: 60)
+                        .multilineTextAlignment(.center)
+                    
+                    ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
+                        viewModel.updateSets(by: 1, configurations: configurations)
+                    }
+                    
                 }
-                Text("\(configurations.first?.sets ?? 0)")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                    viewModel.updateSets(by: 1, configurations: configurations)
-                }
+                Text("Sets")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundColor(.secondary)
             }
             Spacer()
             // Rounds
-            HStack() {
-                ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                    viewModel.updateRounds(by: -1, configurations: configurations)
+            VStack {
+                HStack() {
+                    ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
+                        viewModel.updateRounds(by: -1, configurations: configurations)
+                    }
+                    Text("\(configurations.first?.rounds ?? 0)")
+                        .font(.system(size: 34, weight: .bold, design: .rounded))
+                        .frame(width: 60)
+                        .multilineTextAlignment(.center)
+                    
+                    ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
+                        viewModel.updateRounds(by: 1, configurations: configurations)
+                    }
                 }
-                Text("\(configurations.first?.rounds ?? 0)")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                    viewModel.updateRounds(by: 1, configurations: configurations)
-                }
+                Text("Rounds")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundColor(.secondary)
             }
         }
         .background(.gray.opacity(0.3)) // Debug
@@ -174,13 +191,13 @@ struct SetsAndRoundsView: View {
 struct TabataTimersView: View {
     var body: some View {
         VStack(spacing: 2) {
-            TabataTimerView(phase: WorkoutPhase.warmUp)
+            TabataTimerView(phase: WorkoutPhase.warmUp, icon: Icons.warmUp.rawValue)
                 .background(.gray.opacity(0.3)) // Debug
-            TabataTimerView(phase: WorkoutPhase.work)
+            TabataTimerView(phase: WorkoutPhase.work, icon: Icons.work.rawValue)
                 .background(.gray.opacity(0.3)) // Debug
-            TabataTimerView(phase: WorkoutPhase.rest)
+            TabataTimerView(phase: WorkoutPhase.rest, icon: Icons.rest.rawValue)
                 .background(.gray.opacity(0.3)) // Debug
-            TabataTimerView(phase: WorkoutPhase.coolDown)
+            TabataTimerView(phase: WorkoutPhase.coolDown, icon: Icons.cooldown.rawValue)
                 .background(.gray.opacity(0.3)) // Debug
         }
     }
@@ -194,6 +211,8 @@ struct TabataTimerView: View {
     
     let phase: WorkoutPhase
     
+    let icon: String
+    
     var body: some View {
         HStack {
             ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
@@ -203,8 +222,13 @@ struct TabataTimerView: View {
             VStack {
                 Text(time(for: phase))
                     .font(.system(size: 34, weight: .bold, design: .rounded))
-                Text(phase.rawValue.uppercased())
-                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                HStack {
+                    Text(phase.rawValue.uppercased())
+                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                    Image(systemName: icon)
+                        .font(.system(size: 16))
+                        .foregroundColor(.secondary)
+                }
             }
             Spacer()
             ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
