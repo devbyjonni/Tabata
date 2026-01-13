@@ -32,7 +32,16 @@ struct StartView: View {
                 VStack(spacing: 2) {
                     TimerTextView()
                     SetsAndRoundsView()
-                    ControlButton(icon: Icons.speaker.rawValue, backgroundColor: .clear, foregroundColor: .primary, size: 50, iconSize: 20)
+                    ControlButton(
+                        icon: (self.settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
+                        backgroundColor: .clear,
+                        foregroundColor: (self.settings.first?.isSoundEnabled ?? true) ? .primary : .secondary,
+                        size: 50,
+                        iconSize: 20
+                    ) {
+                        self.settings.first?.isSoundEnabled.toggle()
+                        HapticManager.shared.play(.light)
+                    }
                     TabataTimersView()
                     Spacer()
                 }
@@ -277,13 +286,14 @@ struct WorkoutView: View {
             NavbarView(
                 title: viewModel.isFinished ? "Done" : "Workout",
                 leftIcon: Icons.xmark.rawValue,
-                rightIcon: Icons.speaker.rawValue,
+                rightIcon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
                 leftAction: {
                     viewModel.stop()
                     dismiss()
                 },
                 rightAction: {
-                    print("Speaker tapped")
+                    settings.first?.isSoundEnabled.toggle()
+                    HapticManager.shared.play(.light)
                 }
             )
             
