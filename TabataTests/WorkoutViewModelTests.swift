@@ -12,10 +12,12 @@ final class WorkoutViewModelTests: XCTestCase {
     
     var viewModel: WorkoutViewModel!
     var config: TabataConfiguration!
+    var settings: TabataSettings!
     
     override func setUp() {
         super.setUp()
         viewModel = WorkoutViewModel()
+        settings = TabataSettings()
         // Standard config for testing transitions
         config = TabataConfiguration(
             sets: 2,
@@ -30,11 +32,12 @@ final class WorkoutViewModelTests: XCTestCase {
     override func tearDown() {
         viewModel = nil
         config = nil
+        settings = nil
         super.tearDown()
     }
     
     func testInitialization() {
-        viewModel.setup(config: config)
+        viewModel.setup(config: config, settings: settings)
         viewModel.play()
         
         XCTAssertTrue(viewModel.isActive)
@@ -45,7 +48,7 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testWarmUpToWork() {
-        viewModel.setup(config: config)
+        viewModel.setup(config: config, settings: settings)
         viewModel.play()
         
         // Tick through Warm Up (5s)
@@ -58,7 +61,7 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testWorkToRest() {
-        viewModel.setup(config: config)
+        viewModel.setup(config: config, settings: settings)
         viewModel.play()
         
         // Skip to Work Phase
@@ -72,7 +75,7 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testRestToNextSet() {
-        viewModel.setup(config: config) // 2 Sets configured
+        viewModel.setup(config: config, settings: settings) // 2 Sets configured
         viewModel.play()
         
         // Skip to Rest Phase (Set 1)
@@ -87,7 +90,7 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testRestToNextRound() {
-        viewModel.setup(config: config) // 2 Sets, 2 Rounds
+        viewModel.setup(config: config, settings: settings) // 2 Sets, 2 Rounds
         viewModel.play()
         
         // Advance to End of Set 2 (Rest 2)
@@ -112,7 +115,7 @@ final class WorkoutViewModelTests: XCTestCase {
     func testWorkToCoolDown() {
         // Config: 1 Set, 1 Round to reach Cool Down quickly
         config = TabataConfiguration(sets: 1, rounds: 1, warmUpTime: 5, workTime: 10, restTime: 5, coolDownTime: 5)
-        viewModel.setup(config: config)
+        viewModel.setup(config: config, settings: settings)
         viewModel.play()
         
         // WarmUp -> Work
@@ -128,7 +131,7 @@ final class WorkoutViewModelTests: XCTestCase {
     func testCoolDownToFinish() {
         // Config to reach CoolDown immediately after Work
         config = TabataConfiguration(sets: 1, rounds: 1, warmUpTime: 0, workTime: 0, restTime: 0, coolDownTime: 5)
-        viewModel.setup(config: config)
+        viewModel.setup(config: config, settings: settings)
         viewModel.play()
         
         // Manually force CoolDown for speed
