@@ -19,4 +19,5 @@ enum Icons: String {
     case pause = "pause.fill"
     case stop = "stop.fill"
     case skip = "forward.fill"
+    case share = "square.and.arrow.up"
 }

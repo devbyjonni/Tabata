@@ -15,6 +15,8 @@ struct StartView: View {
     @Query private var configurations: [TabataConfiguration]
     
     @State private var showWorkout = false
+    @State private var showDone = false
+    @State private var workoutCompleted = false
     
     var body: some View {
         VStack(spacing: 2) {
@@ -39,11 +41,24 @@ struct StartView: View {
         }
         .overlay(alignment: .bottom) {
             StartButton(icon: Icons.play.rawValue) {
+                workoutCompleted = false
                 showWorkout = true
             }
         }
-        .fullScreenCover(isPresented: $showWorkout) {
-            WorkoutView()
+        .fullScreenCover(isPresented: $showWorkout, onDismiss: {
+            if workoutCompleted {
+                // Slight delay to allow dismissal animation to finish
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    showDone = true
+                }
+            }
+        }) {
+            WorkoutView(completed: $workoutCompleted)
+        }
+        .fullScreenCover(isPresented: $showDone) {
+            DoneView(action: {
+                showDone = false
+            })
         }
         .onAppear {
             if configurations.isEmpty {
@@ -294,6 +309,7 @@ struct WorkoutView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
+    @Binding var completed: Bool
     
     @State private var viewModel = WorkoutViewModel()
     @State private var timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
@@ -313,37 +329,27 @@ struct WorkoutView: View {
                 }
             )
             
-            ZStack(alignment: .top) {
-                DoneView(action: {
+            VStack(spacing: 2) {
+                
+                Spacer()
+                
+                PhaseTitleView(phase: viewModel.phase)
+                
+                Spacer()
+                
+                WorkoutTimerView(viewModel: viewModel)
+                
+                Spacer()
+                
+                WorkoutStatsView(viewModel: viewModel)
+                
+                Spacer()
+                
+                WorkoutControlsView(viewModel: viewModel, dismissAction: {
                     dismiss()
                 })
-                .opacity(viewModel.isFinished ? 1 : 0)
                 
-                VStack(spacing: 2) {
-                    
-                    Spacer()
-                    
-                    PhaseTitleView(phase: viewModel.phase)
-                    
-                    Spacer()
-                    
-                    WorkoutTimerView(viewModel: viewModel)
-                    
-                    Spacer()
-                    
-                    WorkoutStatsView(viewModel: viewModel)
-                    
-                    Spacer()
-                    
-                    // TODO
-                    WorkoutControlsView(viewModel: viewModel, dismissAction: {
-                        dismiss()
-                    })
-                    
-                    Spacer()
-                }
-                .opacity(!viewModel.isFinished ? 1 : 0)
-                
+                Spacer()
             }
             .padding()
             .background(.gray.opacity(0.3)) // Debug
@@ -361,6 +367,12 @@ struct WorkoutView: View {
         }
         .onReceive(timer) { _ in
             viewModel.tick()
+        }
+        .onChange(of: viewModel.isFinished) { _, newValue in
+            if newValue {
+                completed = true
+                dismiss() // Determine done, dismiss view
+            }
         }
     }
 }
@@ -448,9 +460,14 @@ struct DoneView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 100))
-                .foregroundColor(.green)
+            
+            NavbarView(
+                title: "Done",
+                leftIcon: Icons.xmark.rawValue,
+                rightIcon: Icons.share.rawValue,
+                leftAction: { print("Xmark tapped") },
+                rightAction: { print("Share tapped") }
+            )
             
             Text("WORKOUT COMPLETE!")
                 .font(.largeTitle)
