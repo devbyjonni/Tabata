@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NavbarView: View {
     let title: String
@@ -14,35 +15,41 @@ struct NavbarView: View {
     var leftAction: () -> Void = {}
     var rightAction: () -> Void = {}
     
+    @Query private var settings: [TabataSettings]
+    
     var body: some View {
         HStack {
-            NavbarButton(icon: leftIcon, action: leftAction)
+            NavbarButton(icon: leftIcon, isDarkMode: settings.first?.isDarkMode ?? true, action: leftAction)
             Spacer()
-            Text(title)
-                .font(.system(size: 34, weight: .bold, design: .rounded))
+            Text(title.uppercased())
+                .font(.system(size: 20, weight: .black, design: .rounded))
+                .tracking(2)
+                .foregroundStyle(settings.first?.isDarkMode ?? true ? .white : Color.primaryText)
             Spacer()
-            NavbarButton(icon: rightIcon, action: rightAction)
+            NavbarButton(icon: rightIcon, isDarkMode: settings.first?.isDarkMode ?? true, action: rightAction)
         }
+        .padding(.horizontal)
+        .padding(.top, 20)
     }
 }
 
 internal struct NavbarButton: View {
     let icon: String
+    var isDarkMode: Bool
     var action: () -> Void = {}
     
     var body: some View {
         if icon.isEmpty {
-            Spacer()
-                .frame(width: 50, height: 50)
+            Color.clear
+                .frame(width: 44, height: 44)
         } else {
-            ControlButton(
-                icon: icon,
-                backgroundColor: .clear,
-                foregroundColor: .primary,
-                size: 50,
-                iconSize: 20
-            ) {
-                action()
+            Button(action: action) {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                    .frame(width: 44, height: 44)
+                    .background(isDarkMode ? Color.slate800 : Color.slate200.opacity(0.5))
+                    .clipShape(Circle())
+                    .foregroundStyle(isDarkMode ? .white : Color.primaryText)
             }
         }
     }

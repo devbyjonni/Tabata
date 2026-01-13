@@ -24,8 +24,8 @@ enum Icons: String {
     case list = "list.bullet"
     case back = "chevron.left"
     
-    case warmUp = "figure.strengthtraining.functional"
-    case work = "figure.highintensity.intervaltraining"
-    case rest = "figure.walk"
-    case cooldown = "drop.fill"
+    case warmUp = "figure.strengthtraining.functional.circle"
+    case work = "figure.highintensity.intervaltraining.circle"
+    case rest = "figure.mind.and.body.circle"
+    case cooldown = "figure.walk.circle"
 }

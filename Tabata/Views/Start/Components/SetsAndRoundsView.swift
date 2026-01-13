@@ -11,51 +11,99 @@ import SwiftData
 struct SetsAndRoundsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
+    @Query private var settings: [TabataSettings]
     
     private var viewModel: StartViewModel = StartViewModel()
     
     var body: some View {
         HStack {
             // Sets
-            VStack {
-                HStack() {
-                    ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                        viewModel.updateSets(by: -1, configurations: configurations)
-                    }
-                    Text("\(configurations.first?.sets ?? 0)")
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .frame(width: 60)
-                        .multilineTextAlignment(.center)
-                    
-                    ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                        viewModel.updateSets(by: 1, configurations: configurations)
-                    }
-                    
+            CounterControl(
+                label: "SETS",
+                value: "\(configurations.first?.sets ?? 0)",
+                isDarkMode: settings.first?.isDarkMode ?? true,
+                onDecrement: { viewModel.updateSets(by: -1, configurations: configurations) },
+                onIncrement: { viewModel.updateSets(by: 1, configurations: configurations) }
+            )
+            
+            // Speaker
+            Button(action: {
+                HapticManager.shared.play(.medium)
+                if let currentSettings = settings.first {
+                    currentSettings.isSoundEnabled.toggle()
                 }
-                Text("Sets")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
+            }) {
+                Image(systemName: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue)
+                    .font(.system(size: 16))
+                    .foregroundStyle(settings.first?.isDarkMode ?? true ? Color.white.opacity(0.5) : Color.slate900.opacity(0.5))
+                    .frame(width: 44, height: 44)
+                    .background(settings.first?.isDarkMode ?? true ? Color.slate800 : Color.slate200.opacity(0.5))
+                    .clipShape(Circle())
             }
-            Spacer()
+            .offset(y: 10)
+            
             // Rounds
-            VStack {
-                HStack() {
-                    ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                        viewModel.updateRounds(by: -1, configurations: configurations)
-                    }
-                    Text("\(configurations.first?.rounds ?? 0)")
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .frame(width: 60)
-                        .multilineTextAlignment(.center)
-                    
-                    ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
-                        viewModel.updateRounds(by: 1, configurations: configurations)
-                    }
-                }
-                Text("Rounds")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
+            CounterControl(
+                label: "ROUNDS",
+                value: "\(configurations.first?.rounds ?? 0)",
+                isDarkMode: settings.first?.isDarkMode ?? true,
+                onDecrement: { viewModel.updateRounds(by: -1, configurations: configurations) },
+                onIncrement: { viewModel.updateRounds(by: 1, configurations: configurations) }
+            )
+        }
+    }
+}
+
+// MARK: - Helpers
+struct CounterControl: View {
+    let label: String
+    let value: String
+    var isDarkMode: Bool
+    var onDecrement: () -> Void = {}
+    var onIncrement: () -> Void = {}
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 16) {
+                RoundButton(icon: "minus", isDarkMode: isDarkMode, action: onDecrement)
+                
+                Text(value)
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(isDarkMode ? .white : Color.slate900)
+                    .frame(minWidth: 60)
+                
+                RoundButton(icon: "plus", isDarkMode: isDarkMode, action: onIncrement)
             }
+            
+            Text(label)
+                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .tracking(2)
+                .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate900.opacity(0.6))
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct RoundButton: View {
+    let icon: String
+    var isDarkMode: Bool = false
+    var action: () -> Void = {}
+    
+    var body: some View {
+        Button(action: {
+            HapticManager.shared.play(.light)
+            action()
+        }) {
+            Circle()
+                .stroke(isDarkMode ? Color.slate600 : Color.slate300, lineWidth: 2)
+                .background(Circle().fill(Color.clear))
+                .frame(width: 32, height: 32)
+                .overlay(
+                    Image(systemName: icon)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(isDarkMode ? .white : Color.slate900)
+                )
         }
     }
 }

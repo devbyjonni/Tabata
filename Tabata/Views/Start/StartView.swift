@@ -25,46 +25,51 @@ struct StartView: View {
             (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
                 .ignoresSafeArea()
             
-            VStack(spacing: 2) {
+            VStack(spacing: 0) {
                 NavbarView(
-                    title: "Start",
+                    title: "TABATA",
                     leftIcon: Icons.stats.rawValue,
                     rightIcon: Icons.settings.rawValue,
                     leftAction: { showStats = true },
                     rightAction: { showSettings = true }
                 )
+                
                 ScrollView {
-                    VStack(spacing: 2) {
+                    VStack(spacing: 32) {
                         TimerTextView()
+                            .padding(.top, 20)
+                        
                         SetsAndRoundsView()
-                        ControlButton(
-                            icon: (self.settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
-                            backgroundColor: .clear,
-                            foregroundColor: (self.settings.first?.isSoundEnabled ?? true) ? .primary : .secondary,
-                            size: 50,
-                            iconSize: 20
-                        ) {
-                            self.settings.first?.isSoundEnabled.toggle()
-                            HapticManager.shared.play(.light)
-                        }
+                        
                         TabataTimersView()
-                        Spacer()
+                            .padding(.top, 10)
                     }
                     .padding(.horizontal)
-                    
+                    .padding(.bottom, 120)
                 }
             }
         }
         .overlay(alignment: .bottom) {
-            ControlButton(
-                icon: Icons.play.rawValue,
-                backgroundColor: .green,
-                foregroundColor: .white,
-                size: 100,
-                iconSize: 50
-            ) {
-                workoutCompleted = false
-                showWorkout = true
+            VStack {
+                Spacer()
+                Button(action: {
+                    workoutCompleted = false
+                    showWorkout = true
+                    HapticManager.shared.notification(.success)
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Theme.primary)
+                            .frame(width: 80, height: 80)
+                            .shadow(color: Theme.primary.opacity(0.4), radius: 10, x: 0, y: 10)
+                        
+                        Image(systemName: Icons.play.rawValue)
+                            .font(.system(size: 40))
+                            .foregroundStyle(.white)
+                            .offset(x: 3)
+                    }
+                }
+                .padding(.bottom, 10)
             }
         }
         .fullScreenCover(isPresented: $showWorkout, onDismiss: {

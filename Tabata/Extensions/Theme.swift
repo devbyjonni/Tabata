@@ -44,6 +44,11 @@ extension Color {
     /// Dark Gray - Secondary Text, Subtitles
     static let slate400 = Color(hex: "94A3B8")
     
+    static let slate500 = Color(hex: "64748B")
+    static let slate600 = Color(hex: "475569")
+    static let slate700 = Color(hex: "334155")
+    static let slate800 = Color(hex: "1E293B")
+    
     /// Adaptive Primary Text Color
     static var primaryText: Color { Color.slate900 }
     
