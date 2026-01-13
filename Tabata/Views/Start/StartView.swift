@@ -88,7 +88,7 @@ struct NavbarView: View {
             NavbarButton(icon: leftIcon, action: leftAction)
             Spacer()
             Text(title)
-                .font(.largeTitle)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
             Spacer()
             NavbarButton(icon: rightIcon, action: rightAction)
         }
@@ -123,9 +123,9 @@ struct TimerTextView: View {
     var body: some View {
         VStack {
             Text(viewModel.calculateTotalDuration(configurations: configurations).formatTime())
-                .font(.largeTitle)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
             Text("Minutes Total")
-                .font(.caption)
+                .font(.system(size: 14, weight: .medium, design: .rounded))
         }
         .frame(height: 200)
         .frame(maxWidth: .infinity)
@@ -148,7 +148,7 @@ struct SetsAndRoundsView: View {
                     viewModel.updateSets(by: -1, configurations: configurations)
                 }
                 Text("\(configurations.first?.sets ?? 0)")
-                    .font(.largeTitle)
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
                 ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateSets(by: 1, configurations: configurations)
                 }
@@ -160,7 +160,7 @@ struct SetsAndRoundsView: View {
                     viewModel.updateRounds(by: -1, configurations: configurations)
                 }
                 Text("\(configurations.first?.rounds ?? 0)")
-                    .font(.largeTitle)
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
                 ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateRounds(by: 1, configurations: configurations)
                 }
@@ -202,9 +202,9 @@ struct TabataTimerView: View {
             Spacer()
             VStack {
                 Text(time(for: phase))
-                    .font(.largeTitle)
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
                 Text(phase.rawValue.uppercased())
-                    .font(.callout)
+                    .font(.system(size: 16, weight: .medium, design: .rounded))
             }
             Spacer()
             ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
@@ -326,7 +326,7 @@ struct WorkoutTimerView: View {
             
             // Time Text
             Text(viewModel.timeRemaining.formatTime())
-                .font(.system(size: 80, weight: .bold)) // Slightly smaller to fit
+                .font(.system(size: 80, weight: .black, design: .rounded)) // Slightly smaller to fit
                 .monospacedDigit()
         }
         .padding()
@@ -359,10 +359,10 @@ struct StatItemView: View {
     var body: some View {
         VStack {
             Text(title)
-                .font(.caption)
+                .font(.system(size: 14, weight: .medium, design: .rounded))
                 .foregroundColor(.secondary)
             Text("\(current) of \(total)")
-                .font(.title2)
+                .font(.system(size: 22, weight: .bold, design: .rounded))
                 .fontWeight(.bold)
                 .monospacedDigit()
         }
@@ -376,7 +376,7 @@ struct PhaseTitleView: View {
     var body: some View {
         HStack {
             Text(phase.rawValue.uppercased())
-                .font(.system(size: 40, weight: .bold))
+                .font(.system(size: 40, weight: .black, design: .rounded))
         }
         .background(.gray.opacity(0.3)) // Debug
     }
@@ -397,7 +397,7 @@ struct CompletedView: View {
             )
             Spacer()
             Text("WORKOUT COMPLETED!")
-                .font(.largeTitle)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
             Spacer()
@@ -406,7 +406,7 @@ struct CompletedView: View {
                 action()
             }) {
                 Text("DONE")
-                    .font(.title2)
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding()
@@ -493,7 +493,7 @@ struct ControlButton: View {
                     )
                     .frame(width: size, height: size)
                 Image(systemName: icon)
-                    .font(.system(size: iconSize, weight: .bold))
+                    .font(.system(size: iconSize, weight: .bold, design: .rounded))
                     .foregroundColor(foregroundColor)
             }
         }
