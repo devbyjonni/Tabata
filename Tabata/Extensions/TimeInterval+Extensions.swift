@@ -9,7 +9,7 @@ import Foundation
 
 extension TimeInterval {
     func formatTime() -> String {
-        let totalSeconds = Int(self)
+        let totalSeconds = Int(ceil(self))
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = totalSeconds % 60

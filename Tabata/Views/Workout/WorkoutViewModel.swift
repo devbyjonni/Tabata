@@ -28,8 +28,8 @@ final class WorkoutViewModel {
     var totalSets: Int { config?.sets ?? 0 }
     var totalRounds: Int { config?.rounds ?? 0 }
     
-    /// Starts the workout with the given configuration.
-    func start(config: TabataConfiguration) {
+    /// Sets up the workout state without starting the timer.
+    func setup(config: TabataConfiguration) {
         self.config = config
         self.currentSet = 1
         self.currentRound = 1
@@ -38,15 +38,20 @@ final class WorkoutViewModel {
         self.phase = .warmUp
         self.timeRemaining = config.warmUpTime
         self.totalTime = config.warmUpTime > 0 ? config.warmUpTime : 1
-        self.isActive = true
+        self.isActive = false
     }
     
-    /// Ticks the timer down by 1 second.
+    /// Starts or resumes the timer.
+    func play() {
+        isActive = true
+    }
+    
+    /// Ticks the timer down by 0.05 seconds.
     func tick() {
         guard isActive else { return }
         
         if timeRemaining > 0 {
-            timeRemaining -= 1
+            timeRemaining -= 0.05
         } else {
             nextPhase()
         }

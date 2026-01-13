@@ -296,7 +296,7 @@ struct WorkoutView: View {
     @Query private var configurations: [TabataConfiguration]
     
     @State private var viewModel = WorkoutViewModel()
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
     
     var body: some View {
         VStack(spacing: 2) {
@@ -313,44 +313,50 @@ struct WorkoutView: View {
                 }
             )
             
-            VStack(spacing: 2) {
-                if viewModel.isFinished {
-                    DoneView(action: {
-                        dismiss()
-                    })
+            ZStack(alignment: .top) {
+                DoneView(action: {
+                    dismiss()
+                })
+                .opacity(viewModel.isFinished ? 1 : 0)
+                
+                VStack(spacing: 2) {
+                    
                     Spacer()
-                } else {
-                    VStack(spacing: 2) {
-                        
-                        Spacer()
-                        
-                        PhaseTitleView(phase: viewModel.phase)
-                        
-                        Spacer()
-                        
-                        WorkoutTimerView(viewModel: viewModel)
-                        
-                        Spacer()
-                        
-                        WorkoutStatsView(viewModel: viewModel)
-                        
-                        Spacer()
-                        
-                        // TODO
-                        HStack{
-                            Text("Controllers (Stop, Pause, Skip)")
-                        }
-                        
-                        Spacer()
+                    
+                    PhaseTitleView(phase: viewModel.phase)
+                    
+                    Spacer()
+                    
+                    WorkoutTimerView(viewModel: viewModel)
+                    
+                    Spacer()
+                    
+                    WorkoutStatsView(viewModel: viewModel)
+                    
+                    Spacer()
+                    
+                    // TODO
+                    HStack{
+                        Text("Controllers (Stop, Pause, Skip)")
                     }
+                    
+                    Spacer()
                 }
+                .opacity(!viewModel.isFinished ? 1 : 0)
+                
             }
             .padding()
             .background(.gray.opacity(0.3)) // Debug
         }
         .onAppear {
             if let config = configurations.first {
-                viewModel.start(config: config)
+                // Initialize UI immediately
+                viewModel.setup(config: config)
+                
+                // Delay start to allow view transition to complete
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
+                    viewModel.play()
+                }
             }
         }
         .onReceive(timer) { _ in
@@ -377,7 +383,6 @@ struct WorkoutTimerView: View {
                 .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                 .foregroundColor(.blue)
                 .rotationEffect(Angle(degrees: 270.0))
-                .animation(.linear(duration: 1.0), value: viewModel.progress)
             
             // Time Text
             Text(viewModel.timeRemaining.formatTime())
