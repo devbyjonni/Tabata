@@ -50,7 +50,7 @@ final class WorkoutViewModel {
     func tick() {
         guard isActive else { return }
         
-        if timeRemaining > 0 {
+        if timeRemaining > 0.001 {
             timeRemaining -= 0.05
         } else {
             nextPhase()

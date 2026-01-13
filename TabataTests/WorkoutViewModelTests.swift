@@ -34,7 +34,8 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testInitialization() {
-        viewModel.start(config: config)
+        viewModel.setup(config: config)
+        viewModel.play()
         
         XCTAssertTrue(viewModel.isActive)
         XCTAssertEqual(viewModel.phase, .warmUp)
@@ -44,11 +45,12 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testWarmUpToWork() {
-        viewModel.start(config: config)
+        viewModel.setup(config: config)
+        viewModel.play()
         
         // Tick through Warm Up (5s)
-        for _ in 1...5 { viewModel.tick() }
-        // One more tick to trigger transition
+        advanceTime(seconds: 5)
+        // Transition
         viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .work)
@@ -58,13 +60,14 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testWorkToRest() {
-        viewModel.start(config: config)
+        viewModel.setup(config: config)
+        viewModel.play()
         
         // Skip to Work Phase
         advanceToPhase(.work)
         
         // Tick through Work (10s)
-        for _ in 1...10 { viewModel.tick() }
+        advanceTime(seconds: 10)
         // Transition
         viewModel.tick()
         
@@ -73,13 +76,14 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testRestToNextSet() {
-        viewModel.start(config: config) // 2 Sets configured
+        viewModel.setup(config: config) // 2 Sets configured
+        viewModel.play()
         
         // Skip to Rest Phase (Set 1)
         advanceToPhase(.rest)
         
         // Tick through Rest (5s)
-        for _ in 1...5 { viewModel.tick() }
+        advanceTime(seconds: 5)
         // Transition
         viewModel.tick()
         
@@ -89,7 +93,8 @@ final class WorkoutViewModelTests: XCTestCase {
     }
     
     func testRestToNextRound() {
-        viewModel.start(config: config) // 2 Sets, 2 Rounds
+        viewModel.setup(config: config) // 2 Sets, 2 Rounds
+        viewModel.play()
         
         // Advance to End of Set 2 (Rest 2)
         // 1. WarmUp -> Work 1
@@ -103,7 +108,7 @@ final class WorkoutViewModelTests: XCTestCase {
         
         // Now at Rest 2. Completing this should trigger Round 2, Set 1.
         // Tick through Rest (5s)
-        for _ in 1...5 { viewModel.tick() }
+        advanceTime(seconds: 5)
         // Transition
         viewModel.tick()
         
@@ -115,13 +120,14 @@ final class WorkoutViewModelTests: XCTestCase {
     func testWorkToCoolDown() {
         // Config: 1 Set, 1 Round to reach Cool Down quickly
         config = TabataConfiguration(sets: 1, rounds: 1, warmUpTime: 5, workTime: 10, restTime: 5, coolDownTime: 5)
-        viewModel.start(config: config)
+        viewModel.setup(config: config)
+        viewModel.play()
         
         // WarmUp -> Work
         advanceToPhase(.work)
         
         // Complete Work
-        for _ in 1...10 { viewModel.tick() }
+        advanceTime(seconds: 10)
         viewModel.tick()
         
         XCTAssertEqual(viewModel.phase, .coolDown)
@@ -131,30 +137,36 @@ final class WorkoutViewModelTests: XCTestCase {
     func testCoolDownToFinish() {
         // Config to reach CoolDown immediately after Work
         config = TabataConfiguration(sets: 1, rounds: 1, warmUpTime: 0, workTime: 0, restTime: 0, coolDownTime: 5)
-        viewModel.start(config: config)
+        viewModel.setup(config: config)
+        viewModel.play()
         
-        // Manually force CoolDown for speed (or rely on logic if times are 0)
-        // But let's use the helper to be safe
+        // Manually force CoolDown for speed
         advanceToPhase(.coolDown)
         
         // Complete CoolDown
-        for _ in 1...5 { viewModel.tick() }
+        advanceTime(seconds: 5)
         viewModel.tick()
         
-        // Old assertion: XCTAssertEqual(viewModel.phase, .idle)
-        // New assertion: The phase remains in coolDown (or last state) but isFinished flag is true.
+        // Check for finished state
         XCTAssertTrue(viewModel.isFinished)
         XCTAssertFalse(viewModel.isActive)
     }
     
     // MARK: - Helper
     
-    private func advanceToPhase(_ targetPhase: BoxedWorkoutPhase) {
-        // Safety limit to prevent infinite loops
-        var ticks = 0
-        while viewModel.phase != targetPhase.phase && ticks < 1000 {
+    private func advanceTime(seconds: Double) {
+        let ticks = Int(seconds / 0.05)
+        for _ in 0..<ticks {
             viewModel.tick()
-            ticks += 1
+        }
+    }
+    
+    private func advanceToPhase(_ targetPhase: BoxedWorkoutPhase) {
+        // Safety limit to prevent infinite loops (increased for higher tick rate)
+        var limit = 100000
+        while viewModel.phase != targetPhase.phase && limit > 0 {
+            viewModel.tick()
+            limit -= 1
         }
     }
     
