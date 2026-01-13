@@ -77,7 +77,7 @@ struct StartView: View {
                 showCompletion = false
             })
         }
-        .sheet(isPresented: $showStats) {
+        .fullScreenCover(isPresented: $showStats) {
             StatsView()
         }
         .sheet(isPresented: $showSettings) {

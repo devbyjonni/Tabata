@@ -21,6 +21,8 @@ enum Icons: String {
     case stop = "stop.fill"
     case skip = "forward.fill"
     case share = "square.and.arrow.up"
+    case list = "list.bullet"
+    case back = "chevron.left"
     
     case warmUp = "figure.strengthtraining.functional"
     case work = "figure.highintensity.intervaltraining"
