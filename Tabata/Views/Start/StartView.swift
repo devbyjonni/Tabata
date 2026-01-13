@@ -31,7 +31,7 @@ struct StartView: View {
                 VStack(spacing: 2) {
                     TimerTextView()
                     SetsAndRoundsView()
-                    SoundButton(icon: Icons.speaker.rawValue)
+                    ControlButton(icon: Icons.speaker.rawValue, backgroundColor: .clear, foregroundColor: .primary, size: 50, iconSize: 20)
                     TabataTimersView()
                     Spacer()
                 }
@@ -40,7 +40,13 @@ struct StartView: View {
             }
         }
         .overlay(alignment: .bottom) {
-            StartButton(icon: Icons.play.rawValue) {
+            ControlButton(
+                icon: Icons.play.rawValue,
+                backgroundColor: .green,
+                foregroundColor: .white,
+                size: 100,
+                iconSize: 50
+            ) {
                 workoutCompleted = false
                 showWorkout = true
             }
@@ -66,28 +72,6 @@ struct StartView: View {
                 modelContext.insert(newSettings)
             }
         }
-    }
-}
-
-// MARK: Start Button
-struct StartButton: View {
-    let icon: String
-    var action: () -> Void = {}
-    
-    var body: some View {
-        Button(action: {
-            HapticManager.shared.play(.medium)
-            action()
-        }) {
-            ZStack {
-                Circle()
-                    .frame(width: 100, height: 100)
-                Image(systemName: icon)
-                    .font(.system(size: 44))
-                    .foregroundColor(.white)
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 
@@ -117,16 +101,15 @@ struct NavbarButton: View {
     var action: () -> Void = {}
     
     var body: some View {
-        VStack {
-            Button(action: {
-                HapticManager.shared.play(.light)
-                action()
-            }) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
-            }
+        ControlButton(
+            icon: icon,
+            backgroundColor: .clear,
+            foregroundColor: .primary,
+            size: 50,
+            iconSize: 20
+        ) {
+            action()
         }
-        .background(.gray.opacity(0.3)) // Debug
     }
 }
 
@@ -161,24 +144,24 @@ struct SetsAndRoundsView: View {
         HStack {
             // Sets
             HStack() {
-                SetAndRoundButton(icon: Icons.minus.rawValue) {
+                ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateSets(by: -1, configurations: configurations)
                 }
                 Text("\(configurations.first?.sets ?? 0)")
                     .font(.largeTitle)
-                SetAndRoundButton(icon: Icons.plus.rawValue) {
+                ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateSets(by: 1, configurations: configurations)
                 }
             }
             Spacer()
             // Rounds
             HStack() {
-                SetAndRoundButton(icon: Icons.minus.rawValue) {
+                ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateRounds(by: -1, configurations: configurations)
                 }
                 Text("\(configurations.first?.rounds ?? 0)")
                     .font(.largeTitle)
-                SetAndRoundButton(icon: Icons.plus.rawValue) {
+                ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                     viewModel.updateRounds(by: 1, configurations: configurations)
                 }
             }
@@ -213,7 +196,7 @@ struct TabataTimerView: View {
     
     var body: some View {
         HStack {
-            TabataTimerButton(icon: Icons.minus.rawValue) {
+            ControlButton(icon: Icons.minus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                 viewModel.adjustTime(for: phase, by: -10, configurations: configurations)
             }
             Spacer()
@@ -224,7 +207,7 @@ struct TabataTimerView: View {
                     .font(.callout)
             }
             Spacer()
-            TabataTimerButton(icon: Icons.plus.rawValue) {
+            ControlButton(icon: Icons.plus.rawValue, backgroundColor: .gray.opacity(0.2), foregroundColor: .primary, size: 50, iconSize: 20) {
                 viewModel.adjustTime(for: phase, by: 10, configurations: configurations)
             }
         }
@@ -247,62 +230,7 @@ struct TabataTimerView: View {
     }
 }
 
-// MARK: Set And Round Button
-struct SetAndRoundButton: View {
-    let icon: String
-    var action: () -> Void = {}
-    
-    var body: some View {
-        VStack {
-            Button(action: {
-                HapticManager.shared.play(.light)
-                action()
-            }) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
-    }
-}
 
-// MARK: Sound Button
-struct SoundButton: View {
-    let icon: String
-    var action: () -> Void = {}
-    
-    var body: some View {
-        VStack {
-            Button(action: {
-                HapticManager.shared.play(.light)
-                action()
-            }) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
-    }
-}
-
-// MARK: Tabata Timer Button
-struct TabataTimerButton: View {
-    let icon: String
-    var action: () -> Void = {}
-    
-    var body: some View {
-        VStack {
-            Button(action: {
-                HapticManager.shared.play(.light)
-                action()
-            }) {
-                Image(systemName: icon)
-                    .frame(width: 50, height: 50)
-            }
-        }
-        .background(.gray.opacity(0.3)) // Debug
-    }
-}
 
 // MARK: Workout View
 struct WorkoutView: View {
@@ -459,8 +387,7 @@ struct DoneView: View {
     var action: () -> Void = {}
     
     var body: some View {
-        VStack(spacing: 20) {
-            
+        VStack(spacing: 2) {
             NavbarView(
                 title: "Done",
                 leftIcon: Icons.xmark.rawValue,
@@ -468,12 +395,12 @@ struct DoneView: View {
                 leftAction: { print("Xmark tapped") },
                 rightAction: { print("Share tapped") }
             )
-            
+            Spacer()
             Text("WORKOUT COMPLETE!")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
-            
+            Spacer()
             Button(action: {
                 HapticManager.shared.play(.medium)
                 action()
@@ -488,6 +415,7 @@ struct DoneView: View {
                     .cornerRadius(10)
             }
         }
+        Spacer()
     }
 }
 
@@ -497,44 +425,78 @@ struct WorkoutControlsView: View {
     var dismissAction: () -> Void
     
     var body: some View {
-        HStack(spacing: 60) {
+        HStack(spacing: 40) {
             // Stop
-            Button(action: {
-                HapticManager.shared.play(.medium)
+            ControlButton(
+                icon: Icons.stop.rawValue,
+                backgroundColor: .red.opacity(0.8),
+                foregroundColor: .white,
+                size: 60,
+                iconSize: 24
+            ) {
                 viewModel.stop()
                 dismissAction()
-            }) {
-                Image(systemName: Icons.stop.rawValue)
-                    .font(.system(size: 30))
-                    .foregroundColor(.secondary)
             }
             
             // Play/Pause
-            Button(action: {
-                HapticManager.shared.play(.medium)
+            ControlButton(
+                icon: viewModel.isActive ? Icons.pause.rawValue : Icons.play.rawValue,
+                backgroundColor: viewModel.isActive ? .orange : .green,
+                foregroundColor: .white,
+                size: 100,
+                iconSize: 50
+            ) {
                 if viewModel.isActive {
                     viewModel.pause()
                 } else {
                     viewModel.play()
                 }
-            }) {
-                Image(systemName: viewModel.isActive ? Icons.pause.rawValue : Icons.play.rawValue)
-                    .font(.system(size: 60))
-                    .foregroundColor(.primary)
             }
             
             // Skip
-            Button(action: {
-                HapticManager.shared.play(.light)
+            ControlButton(
+                icon: Icons.skip.rawValue,
+                backgroundColor: .blue.opacity(0.8),
+                foregroundColor: .white,
+                size: 60,
+                iconSize: 24
+            ) {
                 viewModel.skip()
-            }) {
-                Image(systemName: Icons.skip.rawValue)
-                    .font(.system(size: 30))
-                    .foregroundColor(.secondary)
             }
         }
         .padding(.vertical)
-        .background(.gray.opacity(0.3)) // Debug
+    }
+}
+
+// MARK: Control Button
+struct ControlButton: View {
+    let icon: String
+    let backgroundColor: Color
+    let foregroundColor: Color
+    var size: CGFloat = 80
+    var iconSize: CGFloat = 30
+    var borderColor: Color = .clear
+    var borderWidth: CGFloat = 0
+    var action: () -> Void = {}
+    
+    var body: some View {
+        Button(action: {
+            HapticManager.shared.play(.medium)
+            action()
+        }) {
+            ZStack {
+                Circle()
+                    .fill(backgroundColor)
+                    .overlay(
+                        Circle()
+                            .stroke(borderColor, lineWidth: borderWidth)
+                    )
+                    .frame(width: size, height: size)
+                Image(systemName: icon)
+                    .font(.system(size: iconSize, weight: .bold))
+                    .foregroundColor(foregroundColor)
+            }
+        }
     }
 }
 
