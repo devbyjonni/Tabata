@@ -24,6 +24,4 @@ struct PhaseTitleView: View {
     }
 }
 
-#Preview {
-    PhaseTitleView(phase: .work)
-}
+

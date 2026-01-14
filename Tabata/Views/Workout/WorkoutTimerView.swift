@@ -37,6 +37,4 @@ struct WorkoutTimerView: View {
     }
 }
 
-#Preview {
-    WorkoutTimerView(viewModel: WorkoutViewModel())
-}
+

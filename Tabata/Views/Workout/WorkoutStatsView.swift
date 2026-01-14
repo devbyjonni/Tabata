@@ -32,6 +32,4 @@ struct WorkoutStatsView: View {
     }
 }
 
-#Preview {
-    WorkoutStatsView(viewModel: WorkoutViewModel())
-}
+

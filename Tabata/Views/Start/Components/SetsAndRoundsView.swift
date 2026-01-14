@@ -54,7 +54,4 @@ struct SetsAndRoundsView: View {
 
 
 
-#Preview {
-    SetsAndRoundsView()
-        .modelContainer(for: TabataConfiguration.self, inMemory: true)
-}
+

@@ -55,10 +55,4 @@ internal struct NavbarButton: View {
     }
 }
 
-#Preview {
-    NavbarView(
-        title: "Navbar",
-        leftIcon: Icons.stats.rawValue,
-        rightIcon: Icons.settings.rawValue
-    )
-}
+

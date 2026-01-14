@@ -36,6 +36,4 @@ struct StatsListView: View {
     }
 }
 
-#Preview {
-    StatsListView()
-}
+

@@ -21,61 +21,21 @@ struct WorkoutStatisticsGrid: View {
         VStack(spacing: 12) {
             // Total Workouts (Optional)
             if let workoutCount = workoutCount {
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("TOTAL WORKOUTS")
-                            .font(.system(size: 10, weight: .bold, design: .rounded))
-                            .tracking(1)
-                            .foregroundStyle(Color.slate400)
-                            .textCase(.uppercase)
-                        
-                        Text("\(workoutCount)")
-                            .font(.system(size: 40, weight: .black, design: .rounded))
-                            .monospacedDigit()
-                            .foregroundStyle(.white)
-                    }
-                    Spacer()
-                    Image(systemName: Icons.trophy.rawValue)
-                        .font(.system(size: 40))
-                        .foregroundStyle(Color.yellow.opacity(0.8))
-                }
-                .padding(24)
-                .background(Color.slate800)
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                StatsSummaryCard(
+                    title: "TOTAL WORKOUTS",
+                    value: "\(workoutCount)",
+                    icon: Icons.trophy.rawValue,
+                    iconColor: Color.yellow.opacity(0.8)
                 )
-                .shadow(color: .clear, radius: 10, x: 0, y: 4)
             }
             
             // Total Duration Card
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("TOTAL DURATION")
-                        .font(.system(size: 10, weight: .bold, design: .rounded))
-                        .tracking(1)
-                        .foregroundStyle(Color.slate400)
-                        .textCase(.uppercase)
-                    
-                    Text(duration.formatTime())
-                        .font(.system(size: 40, weight: .black, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(.white)
-                }
-                Spacer()
-                Image(systemName: Icons.clock.rawValue)
-                    .font(.system(size: 40))
-                    .foregroundStyle(Color.slate500.opacity(0.5))
-            }
-            .padding(24)
-            .background(Color.slate800)
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            StatsSummaryCard(
+                title: "TOTAL DURATION",
+                value: duration.formatTime(),
+                icon: Icons.clock.rawValue,
+                iconColor: Color.slate500.opacity(0.5)
             )
-            .shadow(color: .clear, radius: 10, x: 0, y: 4)
             
             // Phase Breakdown Grid
             HStack(spacing: 12) {
@@ -212,18 +172,4 @@ fileprivate struct StatCard: View {
     }
 }
 
-#Preview {
-    ZStack {
-        Color.black.ignoresSafeArea()
-        WorkoutStatisticsGrid(
-            duration: 90,
-            warmUp: 30,
-            work: 15,
-            rest: 15,
-            coolDown: 30,
-            calories: 13,
-            avgHeartRate: 145
-        )
-        .padding()
-    }
-}
+

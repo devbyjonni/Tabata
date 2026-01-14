@@ -144,7 +144,4 @@ struct WorkoutView: View {
         
 }
 
-#Preview {
-    WorkoutView(completed: .constant(false), savedWorkout: .constant(nil))
-        .modelContainer(for: TabataConfiguration.self, inMemory: true)
-}
+

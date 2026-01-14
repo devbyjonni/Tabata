@@ -30,6 +30,4 @@ struct StatItemView: View {
     }
 }
 
-#Preview {
-    StatItemView(title: "Sets", current: 1, total: 8)
-}
+

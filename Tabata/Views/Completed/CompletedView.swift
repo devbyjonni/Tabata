@@ -93,6 +93,4 @@ struct CompletedView: View {
     }
 }
 
-#Preview {
-    CompletedView()
-}
+

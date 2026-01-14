@@ -61,6 +61,4 @@ struct WorkoutControlsView: View {
     }
 }
 
-#Preview {
-    WorkoutControlsView(viewModel: WorkoutViewModel(), dismissAction: {})
-}
+

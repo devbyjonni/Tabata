@@ -32,11 +32,4 @@ struct TimerTextView: View {
     }
 }
 
-#Preview {
-    ZStack {
-        (Color.slate900)
-            .ignoresSafeArea()
-        TimerTextView()
-            .modelContainer(for: TabataConfiguration.self, inMemory: true)
-    }
-}
+

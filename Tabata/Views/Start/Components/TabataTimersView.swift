@@ -75,7 +75,4 @@ struct TabataTimersView: View {
     }
 }
 
-#Preview {
-    TabataTimersView()
-        .modelContainer(for: TabataConfiguration.self, inMemory: true)
-}
+

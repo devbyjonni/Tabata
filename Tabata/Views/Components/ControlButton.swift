@@ -45,10 +45,4 @@ struct ControlButton: View {
     }
 }
 
-#Preview {
-    ControlButton(
-        icon: Icons.play.rawValue,
-        backgroundColor: .green,
-        foregroundColor: .white
-    )
-}
+

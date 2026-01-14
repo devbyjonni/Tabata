@@ -62,9 +62,4 @@ struct CounterControl: View {
     }
 }
 
-#Preview {
-    ZStack {
-        Color.slate900.ignoresSafeArea()
-        CounterControl(label: "SETS", value: "8")
-    }
-}
+

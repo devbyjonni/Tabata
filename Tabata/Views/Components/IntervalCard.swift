@@ -73,11 +73,4 @@ struct IntervalCard: View {
     }
 }
 
-#Preview {
-    IntervalCard(
-        title: "WORK",
-        time: "00:20",
-        color: .green,
-        icon: Icons.work.rawValue
-    )
-}
+
