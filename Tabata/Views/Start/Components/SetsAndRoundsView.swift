@@ -23,7 +23,6 @@ struct SetsAndRoundsView: View {
             CounterControl(
                 label: "SETS",
                 value: "\(configurations.first?.sets ?? 0)",
-                isDarkMode: settings.first?.isDarkMode ?? true,
                 onDecrement: { viewModel.updateSets(by: -1, configurations: configurations) },
                 onIncrement: { viewModel.updateSets(by: 1, configurations: configurations) }
             )
@@ -31,8 +30,8 @@ struct SetsAndRoundsView: View {
             // Speaker
             ControlButton(
                 icon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
-                backgroundColor: settings.first?.isDarkMode ?? true ? Color.slate800 : Color.slate200.opacity(0.5),
-                foregroundColor: settings.first?.isDarkMode ?? true ? Color.white.opacity(0.5) : Color.slate900.opacity(0.5),
+                backgroundColor: Color.slate800,
+                foregroundColor: Color.white.opacity(0.5),
                 size: 44,
                 iconSize: 16
             ) {
@@ -46,7 +45,6 @@ struct SetsAndRoundsView: View {
             CounterControl(
                 label: "ROUNDS",
                 value: "\(configurations.first?.rounds ?? 0)",
-                isDarkMode: settings.first?.isDarkMode ?? true,
                 onDecrement: { viewModel.updateRounds(by: -1, configurations: configurations) },
                 onIncrement: { viewModel.updateRounds(by: 1, configurations: configurations) }
             )

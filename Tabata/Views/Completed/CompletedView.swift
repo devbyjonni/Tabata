@@ -14,16 +14,10 @@ struct CompletedView: View {
     var workout: CompletedWorkout?
     var action: () -> Void = {}
     @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
-    @Query private var settings: [TabataSettings]
-    
-    private var isDarkMode: Bool {
-        settings.first?.isDarkMode ?? true
-    }
     
     var body: some View {
         ZStack {
-            (isDarkMode ? Color.slate900 : Theme.background)
-                .ignoresSafeArea()
+            Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Header
@@ -62,11 +56,11 @@ struct CompletedView: View {
                             VStack(spacing: 8) {
                                 Text("Congratulations!")
                                     .font(.system(size: 32, weight: .black, design: .rounded))
-                                    .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+                                    .foregroundStyle(.white)
                                 
                                 Text("You crushed your session.")
                                     .font(.system(size: 17, weight: .medium, design: .rounded))
-                                    .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate500)
+                                    .foregroundStyle(Color.slate400)
                             }
                         }
                         .padding(.top, 0)
@@ -80,8 +74,7 @@ struct CompletedView: View {
                                 rest: workout.totalRest,
                                 coolDown: workout.totalCoolDown,
                                 calories: workout.calories,
-                                avgHeartRate: workout.avgHeartRate,
-                                isDarkMode: isDarkMode
+                                avgHeartRate: workout.avgHeartRate
                             )
                         } else {
                             Text("No Statistics Available\n(Workout: \(workout == nil ? "nil" : "ok"), History: \(history.count))")

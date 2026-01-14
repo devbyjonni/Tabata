@@ -13,7 +13,6 @@ import SwiftData
 struct TimerTextView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
-    @Query private var settings: [TabataSettings]
     
     private var viewModel: StartViewModel = StartViewModel()
     
@@ -22,12 +21,12 @@ struct TimerTextView: View {
             Text(viewModel.calculateTotalDuration(configurations: configurations).formatTime())
                 .font(.system(size: 80, weight: .black, design: .rounded))
                 .monospacedDigit()
-                .foregroundStyle(settings.first?.isDarkMode ?? true ? .white : Color.slate900)
+                .foregroundStyle(.white)
             
             Text("MINUTES TOTAL")
                 .font(.system(size: 14, weight: .bold, design: .rounded))
                 .tracking(2)
-                .foregroundStyle(settings.first?.isDarkMode ?? true ? Color.slate400 : Color.slate900.opacity(0.6))
+                .foregroundStyle(Color.slate400)
         }
         .padding(.top, 20)
     }

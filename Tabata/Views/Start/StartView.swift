@@ -26,8 +26,7 @@ struct StartView: View {
     
     var body: some View {
         ZStack {
-            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
-                .ignoresSafeArea()
+            Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 NavbarView(
@@ -96,7 +95,7 @@ struct StartView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
-        .preferredColorScheme(settings.first?.isDarkMode ?? true ? .dark : .light)
+        .preferredColorScheme(.dark)
         .onAppear {
             if self.configurations.isEmpty {
                 let newSettings = TabataConfiguration()

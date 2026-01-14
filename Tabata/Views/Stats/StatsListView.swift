@@ -11,12 +11,9 @@ import SwiftData
 /// Displays a detailed list of all completed workouts.
 struct StatsListView: View {
     @Environment(\.dismiss) var dismiss
-    @Query private var settings: [TabataSettings]
-    
     var body: some View {
         ZStack {
-            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
-                .ignoresSafeArea()
+            Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 NavbarView(

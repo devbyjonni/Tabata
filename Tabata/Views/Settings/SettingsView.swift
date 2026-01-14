@@ -17,8 +17,7 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
-                .ignoresSafeArea()
+            Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 NavbarView(
@@ -32,11 +31,10 @@ struct SettingsView: View {
                 Form {
                     if let currentSettings = settings.first {
                         Section {
-                            Toggle("Dark Mode", isOn: Bindable(currentSettings).isDarkMode)
                             Toggle("Sound Effects", isOn: Bindable(currentSettings).isSoundEnabled)
                             Toggle("Countdown", isOn: Bindable(currentSettings).isCountdownEnabled)
                         } header: {
-                            Text("Appearance & Sound")
+                            Text("Sound & Feedback")
                         }
                     }
                 }

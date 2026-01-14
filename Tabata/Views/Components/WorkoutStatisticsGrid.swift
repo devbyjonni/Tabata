@@ -16,7 +16,6 @@ struct WorkoutStatisticsGrid: View {
     let calories: Int
     let avgHeartRate: Int
     var workoutCount: Int? = nil
-    var isDarkMode: Bool = true
     
     var body: some View {
         VStack(spacing: 12) {
@@ -27,13 +26,13 @@ struct WorkoutStatisticsGrid: View {
                         Text("TOTAL WORKOUTS")
                             .font(.system(size: 10, weight: .bold, design: .rounded))
                             .tracking(1)
-                            .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate500)
+                            .foregroundStyle(Color.slate400)
                             .textCase(.uppercase)
                         
                         Text("\(workoutCount)")
                             .font(.system(size: 40, weight: .black, design: .rounded))
                             .monospacedDigit()
-                            .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+                            .foregroundStyle(.white)
                     }
                     Spacer()
                     Image(systemName: Icons.trophy.rawValue)
@@ -41,13 +40,13 @@ struct WorkoutStatisticsGrid: View {
                         .foregroundStyle(Color.yellow.opacity(0.8))
                 }
                 .padding(24)
-                .background(isDarkMode ? Color.slate800 : .white)
+                .background(Color.slate800)
                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .stroke(isDarkMode ? Color.white.opacity(0.1) : Color.slate200, lineWidth: 1)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
                 )
-                .shadow(color: isDarkMode ? .clear : Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .shadow(color: .clear, radius: 10, x: 0, y: 4)
             }
             
             // Total Duration Card
@@ -56,13 +55,13 @@ struct WorkoutStatisticsGrid: View {
                     Text("TOTAL DURATION")
                         .font(.system(size: 10, weight: .bold, design: .rounded))
                         .tracking(1)
-                        .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate500)
+                        .foregroundStyle(Color.slate400)
                         .textCase(.uppercase)
                     
                     Text(duration.formatTime())
                         .font(.system(size: 40, weight: .black, design: .rounded))
                         .monospacedDigit()
-                        .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+                        .foregroundStyle(.white)
                 }
                 Spacer()
                 Image(systemName: Icons.clock.rawValue)
@@ -70,13 +69,13 @@ struct WorkoutStatisticsGrid: View {
                     .foregroundStyle(Color.slate500.opacity(0.5))
             }
             .padding(24)
-            .background(isDarkMode ? Color.slate800 : .white)
+            .background(Color.slate800)
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .stroke(isDarkMode ? Color.white.opacity(0.1) : Color.slate200, lineWidth: 1)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
             )
-            .shadow(color: isDarkMode ? .clear : Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+            .shadow(color: .clear, radius: 10, x: 0, y: 4)
             
             // Phase Breakdown Grid
             HStack(spacing: 12) {
@@ -86,15 +85,13 @@ struct WorkoutStatisticsGrid: View {
                         title: "TOTAL WARMUP",
                         value: warmUp.formatTime(),
                         color: Theme.warmup,
-                        icon: Icons.warmUp.rawValue,
-                        isDarkMode: isDarkMode
+                        icon: Icons.warmUp.rawValue
                     )
                     StatCard(
                         title: "TOTAL REST",
                         value: rest.formatTime(),
                         color: Theme.rest,
-                        icon: Icons.rest.rawValue,
-                        isDarkMode: isDarkMode
+                        icon: Icons.rest.rawValue
                     )
                 }
                 
@@ -104,15 +101,13 @@ struct WorkoutStatisticsGrid: View {
                         title: "TOTAL WORK",
                         value: work.formatTime(),
                         color: Theme.work,
-                        icon: Icons.work.rawValue,
-                        isDarkMode: isDarkMode
+                        icon: Icons.work.rawValue
                     )
                     StatCard(
                         title: "TOTAL COOL DOWN",
                         value: coolDown.formatTime(),
                         color: Theme.cooldown,
-                        icon: Icons.cooldown.rawValue,
-                        isDarkMode: isDarkMode
+                        icon: Icons.cooldown.rawValue
                     )
                 }
             }
@@ -133,31 +128,31 @@ struct WorkoutStatisticsGrid: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("EST. CALORIES")
                             .font(.system(size: 9, weight: .bold))
-                            .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate500)
+                            .foregroundStyle(Color.slate400)
                         Text("\(calories) kcal")
                             .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+                            .foregroundStyle(.white)
                     }
                     Spacer()
                 }
                 .padding(24)
-                .background(isDarkMode ? Color.slate800 : .white)
+                .background(Color.slate800)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(isDarkMode ? Color.white.opacity(0.1) : Color.slate200, lineWidth: 1)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
                 )
-                .shadow(color: isDarkMode ? .clear : Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .shadow(color: .clear, radius: 10, x: 0, y: 4)
                 
                 // Heart Rate
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("AVG HR")
                             .font(.system(size: 9, weight: .bold))
-                            .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate500)
+                            .foregroundStyle(Color.slate400)
                         Text("\(avgHeartRate)")
                             .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundStyle(isDarkMode ? .white : Color.primaryText)
+                            .foregroundStyle(.white)
                     }
                     Spacer()
                     
@@ -171,13 +166,13 @@ struct WorkoutStatisticsGrid: View {
                     }
                 }
                 .padding(24)
-                .background(isDarkMode ? Color.slate800 : .white)
+                .background(Color.slate800)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(isDarkMode ? Color.white.opacity(0.1) : Color.slate200, lineWidth: 1)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
                 )
-                .shadow(color: isDarkMode ? .clear : Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .shadow(color: .clear, radius: 10, x: 0, y: 4)
             }
         }
     }
@@ -189,7 +184,6 @@ fileprivate struct StatCard: View {
     let value: String
     let color: Color
     let icon: String
-    var isDarkMode: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -214,7 +208,7 @@ fileprivate struct StatCard: View {
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         // Colored cards don't change much in light mode, but maybe a shadow?
-        .shadow(color: isDarkMode ? .clear : color.opacity(0.3), radius: 8, x: 0, y: 4)
+        .shadow(color: .clear, radius: 8, x: 0, y: 4)
     }
 }
 

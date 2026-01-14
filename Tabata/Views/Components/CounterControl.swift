@@ -12,7 +12,6 @@ import SwiftUI
 struct CounterControl: View {
     let label: String
     let value: String
-    var isDarkMode: Bool
     var onDecrement: () -> Void = {}
     var onIncrement: () -> Void = {}
     
@@ -23,10 +22,10 @@ struct CounterControl: View {
                 ControlButton(
                     icon: Icons.minus.rawValue,
                     backgroundColor: .clear,
-                    foregroundColor: isDarkMode ? .white : Color.slate900,
+                    foregroundColor: .white,
                     size: 32,
                     iconSize: 14,
-                    borderColor: isDarkMode ? Color.slate600 : Color.slate300,
+                    borderColor: Color.slate600,
                     borderWidth: 2
                 ) {
                     onDecrement()
@@ -36,17 +35,17 @@ struct CounterControl: View {
                 Text(value)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
                     .monospacedDigit()
-                    .foregroundStyle(isDarkMode ? .white : Color.slate900)
+                    .foregroundStyle(.white)
                     .frame(minWidth: 60)
                 
                 // Increment Button
                 ControlButton(
                     icon: Icons.plus.rawValue,
                     backgroundColor: .clear,
-                    foregroundColor: isDarkMode ? .white : Color.slate900,
+                    foregroundColor: .white,
                     size: 32,
                     iconSize: 14,
-                    borderColor: isDarkMode ? Color.slate600 : Color.slate300,
+                    borderColor: Color.slate600,
                     borderWidth: 2
                 ) {
                     onIncrement()
@@ -57,7 +56,7 @@ struct CounterControl: View {
             Text(label)
                 .font(.system(size: 12, weight: .bold, design: .rounded))
                 .tracking(2)
-                .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate900.opacity(0.6))
+                .foregroundStyle(Color.slate400)
         }
         .frame(maxWidth: .infinity)
     }
@@ -66,6 +65,6 @@ struct CounterControl: View {
 #Preview {
     ZStack {
         Color.slate900.ignoresSafeArea()
-        CounterControl(label: "SETS", value: "8", isDarkMode: true)
+        CounterControl(label: "SETS", value: "8")
     }
 }
