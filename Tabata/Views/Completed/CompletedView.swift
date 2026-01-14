@@ -11,43 +11,100 @@ import SwiftData
 /// Displayed when a workout is finished.
 /// Shows a summary and allows the user to return to the start screen.
 struct CompletedView: View {
+    var workout: CompletedWorkout?
     var action: () -> Void = {}
-    @Query private var settings: [TabataSettings]
+    @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
     
     var body: some View {
         ZStack {
-            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
-                .ignoresSafeArea()
+            Color.slate900.ignoresSafeArea()
             
-            VStack(spacing: 2) {
-                NavbarView(
-                    title: "Completed",
-                    leftIcon: Icons.xmark.rawValue,
-                    rightIcon: Icons.share.rawValue,
-                    leftAction: { action() },
-                    rightAction: { print("Share tapped") }
-                )
-                Spacer()
-                Text("WORKOUT COMPLETED!")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                Spacer()
-                Button(action: {
-                    HapticManager.shared.play(.medium)
-                    action()
-                }) {
-                    Text("DONE")
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    ControlButton(
+                        icon: Icons.xmark.rawValue,
+                        backgroundColor: .white.opacity(0.1),
+                        foregroundColor: .white,
+                        size: 44,
+                        iconSize: 18
+                    ) {
+                        action()
+                    }
+                    
+                    Spacer()
+                    
+                    ControlButton(
+                        icon: Icons.share.rawValue,
+                        backgroundColor: .white.opacity(0.1),
+                        foregroundColor: .white,
+                        size: 44,
+                        iconSize: 18
+                    ) {
+                        // Share logic placeholder
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top, 10)
+                
+                ScrollView {
+                    VStack(spacing: 32) {
+                        // Hero Section
+                        VStack(spacing: 24) {
+                            ZStack {
+                                // Glow
+                                Circle()
+                                    .fill(Color.yellow.opacity(0.15))
+                                    .frame(width: 140, height: 140)
+                                    .blur(radius: 30)
+                                
+                                // Trophy Ring
+                                Circle()
+                                    .stroke(Color.yellow, lineWidth: 3)
+                                    .frame(width: 100, height: 100)
+                                
+                                // Trophy Icon
+                                Image(systemName: Icons.trophy.rawValue)
+                                    .font(.system(size: 44))
+                                    .foregroundStyle(.yellow)
+                            }
+                            
+                            VStack(spacing: 8) {
+                                Text("Congratulations!")
+                                    .font(.system(size: 32, weight: .black, design: .rounded))
+                                    .foregroundStyle(.white)
+                                
+                                Text("You crushed your session.")
+                                    .font(.system(size: 17, weight: .medium, design: .rounded))
+                                    .foregroundStyle(Color.slate400)
+                            }
+                        }
+                        .padding(.top, 20)
+                        
+                        // Stats Grid
+                        if let workout = workout ?? history.first {
+                            WorkoutStatisticsGrid(
+                                duration: workout.duration,
+                                warmUp: workout.totalWarmUp,
+                                work: workout.totalWork,
+                                rest: workout.totalRest,
+                                coolDown: workout.totalCoolDown,
+                                calories: workout.calories,
+                                avgHeartRate: workout.avgHeartRate
+                            )
+                        } else {
+                            Text("No Statistics Available\n(Workout: \(workout == nil ? "nil" : "ok"), History: \(history.count))")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(Color.slate500)
+                                .padding()
+                        }
+                        
+                        // Bottom Padding
+                        Color.clear.frame(height: 20)
+                    }
+                    .padding()
                 }
             }
-            .padding() // Add padding for the button
         }
     }
 }

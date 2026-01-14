@@ -14,6 +14,7 @@ struct TabataApp: App {
         let schema = Schema([
             TabataConfiguration.self,
             TabataSettings.self,
+            CompletedWorkout.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

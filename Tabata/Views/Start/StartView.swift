@@ -20,7 +20,9 @@ struct StartView: View {
     @State private var showCompletion = false
     @State private var showStats = false
     @State private var showSettings = false
+
     @State private var workoutCompleted = false
+    @State private var lastCompletedWorkout: CompletedWorkout?
     
     var body: some View {
         ZStack {
@@ -81,10 +83,10 @@ struct StartView: View {
                 }
             }
         }) {
-            WorkoutView(completed: $workoutCompleted)
+            WorkoutView(completed: $workoutCompleted, savedWorkout: $lastCompletedWorkout)
         }
         .fullScreenCover(isPresented: $showCompletion) {
-            CompletedView(action: {
+            CompletedView(workout: lastCompletedWorkout, action: {
                 showCompletion = false
             })
         }

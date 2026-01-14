@@ -28,4 +28,10 @@ enum Icons: String {
     case work = "figure.highintensity.intervaltraining.circle"
     case rest = "figure.mind.and.body.circle"
     case cooldown = "figure.walk.circle"
+    
+    // Stats Icons
+    case clock = "stopwatch"
+    case flame = "flame.fill"
+    case heart = "heart.fill"
+    case trophy = "trophy.fill"
 }
