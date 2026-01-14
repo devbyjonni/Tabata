@@ -33,8 +33,11 @@ struct WorkoutControlsView: View {
                 foregroundColor: .white,
                 size: 100,
                 iconSize: 40,
-                borderColor: .white.opacity(0.3),
-                borderWidth: 4
+                borderColor: .white.opacity(0.5),
+                borderWidth: 1,
+                shadowColor: .black.opacity(0.1),
+                shadowRadius: 10,
+                shadowY: 5
             ) {
                 if viewModel.isActive {
                     viewModel.pause()
