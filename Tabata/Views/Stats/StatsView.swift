@@ -13,12 +13,14 @@ import SwiftData
 struct StatsView: View {
     @Environment(\.dismiss) var dismiss
     @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
+    @Query private var settings: [TabataSettings]
     @State private var showHistory = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.slate900.ignoresSafeArea()
+                (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+                    .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     NavbarView(
@@ -58,7 +60,8 @@ struct StatsView: View {
                                 coolDown: totalCoolDown,
                                 calories: totalCalories,
                                 avgHeartRate: avgHR,
-                                workoutCount: history.count
+                                workoutCount: history.count,
+                                isDarkMode: settings.first?.isDarkMode ?? true
                             )
                             .padding()
                         }
