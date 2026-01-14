@@ -115,32 +115,17 @@ struct WorkoutView: View {
         }
         .onChange(of: viewModel.isFinished) { _, newValue in
             if newValue {
-                // Save Workout to History
-                let config = configurations.first ?? TabataConfiguration()
-                
-                let warmUp = config.warmUpTime
-                let work = config.workTime * Double(config.sets * config.rounds)
-                let rest = config.restTime * Double((config.sets - 1) * config.rounds)
-                let coolDown = config.coolDownTime
-                let totalDuration = warmUp + work + rest + coolDown
-                
-                let completedWorkout = CompletedWorkout(
-                    duration: totalDuration,
-                    totalWarmUp: warmUp,
-                    totalWork: work,
-                    totalRest: rest,
-                    totalCoolDown: coolDown,
-                    calories: Int(totalDuration * 0.15), // Estimate: ~9 kcal/min
-                    avgHeartRate: Int.random(in: 130...160) // Simulation
-                )
-                modelContext.insert(completedWorkout)
-                try? modelContext.save() // Force save
-                savedWorkout = completedWorkout
-                
-                completed = true
-                
-                // Slight delay to ensure binding propagates before dismissal
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if let completedWorkout = viewModel.generateCompletedWorkout() {
+                    modelContext.insert(completedWorkout)
+                    try? modelContext.save() // Force save
+                    savedWorkout = completedWorkout
+                    completed = true
+                    
+                    // Slight delay to ensure binding propagates before dismissal
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        dismiss()
+                    }
+                } else {
                     dismiss()
                 }
             }

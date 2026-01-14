@@ -145,6 +145,30 @@ final class WorkoutViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isActive)
     }
     
+    func testGenerateCompletedWorkout() {
+        // Config: 2 Sets, 2 Rounds
+        // WarmUp: 5
+        // Work: 10 * 4 = 40
+        // Rest: 5 * 2 = 10 (Rest occurs between sets: (2-1) * 2 rounds)
+        // CoolDown: 5
+        // Total: 60
+        config = TabataConfiguration(sets: 2, rounds: 2, warmUpTime: 5, workTime: 10, restTime: 5, coolDownTime: 5)
+        viewModel.setup(config: config, settings: settings)
+        
+        guard let workout = viewModel.generateCompletedWorkout() else {
+            XCTFail("Failed to generate workout")
+            return
+        }
+        
+        XCTAssertEqual(workout.duration, 60, accuracy: 0.1)
+        XCTAssertEqual(workout.totalWarmUp, 5, accuracy: 0.1)
+        XCTAssertEqual(workout.totalWork, 40, accuracy: 0.1)
+        XCTAssertEqual(workout.totalRest, 10, accuracy: 0.1)
+        XCTAssertEqual(workout.totalCoolDown, 5, accuracy: 0.1)
+        XCTAssertEqual(workout.calories, 9) // 60 * 0.15
+        XCTAssertTrue((130...160).contains(workout.avgHeartRate))
+    }
+    
     // MARK: - Helper
     
     private func advanceTime(seconds: Double) {
