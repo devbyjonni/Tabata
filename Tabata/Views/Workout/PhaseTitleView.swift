@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// Displays the name of the current workout phase (e.g., "WARM UP", "WORK").
+/// Updates with animation as the phase changes.
 struct PhaseTitleView: View {
     let phase: WorkoutPhase
     

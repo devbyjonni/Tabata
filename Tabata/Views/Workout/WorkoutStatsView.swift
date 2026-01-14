@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// Shows real-time statistics during the workout (Sets, Rounds, Total Time).
+/// Uses StatItemView for individual metrics.
 struct WorkoutStatsView: View {
     var viewModel: WorkoutViewModel
     

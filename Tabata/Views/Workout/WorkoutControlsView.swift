@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Playback controls for the workout (Pause, Resume, Stop, Skip).
 struct WorkoutControlsView: View {
     @Bindable var viewModel: WorkoutViewModel
     var dismissAction: () -> Void

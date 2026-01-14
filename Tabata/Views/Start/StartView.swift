@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 // MARK: Start View
+/// The main entry point of the app.
+/// Configures the workout (Sets, Rounds, Intervals) and navigates to other screens.
 struct StartView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]

@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// Displays the total calculated duration of the workout.
+/// Updates dynamically based on changes to sets, rounds, and intervals.
 struct TimerTextView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
@@ -32,6 +34,10 @@ struct TimerTextView: View {
 }
 
 #Preview {
-    TimerTextView()
-        .modelContainer(for: TabataConfiguration.self, inMemory: true)
+    ZStack {
+        (Color.slate900)
+            .ignoresSafeArea()
+        TimerTextView()
+            .modelContainer(for: TabataConfiguration.self, inMemory: true)
+    }
 }

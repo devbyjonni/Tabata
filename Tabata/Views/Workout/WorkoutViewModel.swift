@@ -7,22 +7,38 @@
 
 import Foundation
 
+/// Manages the active workout state, timer logic, and phase transitions.
+/// Coordinates the flow from Warm Up -> Work -> Rest -> Cool Down.
 @Observable
 final class WorkoutViewModel {
+    /// The current phase of the workout (e.g., .work, .rest).
     var phase: WorkoutPhase = .idle
+    
+    /// Time remaining in the current phase (in seconds).
     var timeRemaining: Double = 0
+    
+    /// Total duration of the current phase (used for progress calculation).
     var totalTime: Double = 1 // Avoid division by zero
+    
+    /// Whether the timer is currently running.
     var isActive: Bool = false
     
+    /// Flag indicating if the entire workout sequence is complete.
     var isFinished: Bool = false
     
+    /// Progress of the current phase (0.0 to 1.0).
+    /// Used for visualizing the timer ring.
     var progress: Double {
         guard totalTime > 0 else { return 0 }
         return timeRemaining / totalTime
     }
     
     private var config: TabataConfiguration?
+    
+    /// The current set number within the current round.
     var currentSet = 1
+    
+    /// The current round number.
     var currentRound = 1
     
     var totalSets: Int { config?.sets ?? 0 }

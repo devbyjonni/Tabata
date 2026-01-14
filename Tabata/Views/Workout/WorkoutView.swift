@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 import Combine
 
+/// The active workout screen.
+/// Manages the workout timer, displays the current phase, and handles user controls (Pause, Resume, Stop).
 struct WorkoutView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext

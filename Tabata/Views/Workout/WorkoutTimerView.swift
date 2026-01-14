@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// Displays the circular progress timer and the countdown text.
+/// Visualizes time remaining in the current phase.
 struct WorkoutTimerView: View {
     var viewModel: WorkoutViewModel
     

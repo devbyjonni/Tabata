@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// Displays aggregate workout statistics.
+/// Provides entry point to detailed workout history.
 struct StatsView: View {
     @Environment(\.dismiss) var dismiss
     @Query private var settings: [TabataSettings]

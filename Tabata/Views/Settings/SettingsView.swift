@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// App settings screen.
+/// Allows configuration of globally applied preferences like Dark Mode.
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext

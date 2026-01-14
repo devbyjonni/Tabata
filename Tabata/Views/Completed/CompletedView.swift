@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// Displayed when a workout is finished.
+/// Shows a summary and allows the user to return to the start screen.
 struct CompletedView: View {
     var action: () -> Void = {}
     @Query private var settings: [TabataSettings]

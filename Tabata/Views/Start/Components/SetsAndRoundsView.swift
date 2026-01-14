@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// Controls for setting the number of Sets and Rounds.
+/// Also includes the global Sound Toggle control.
 struct SetsAndRoundsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
@@ -38,7 +40,7 @@ struct SetsAndRoundsView: View {
                     currentSettings.isSoundEnabled.toggle()
                 }
             }
-            .offset(y: 10)
+            .offset(y: 40)
             
             // Rounds
             CounterControl(
@@ -52,56 +54,7 @@ struct SetsAndRoundsView: View {
     }
 }
 
-// MARK: - Helpers
-struct CounterControl: View {
-    let label: String
-    let value: String
-    var isDarkMode: Bool
-    var onDecrement: () -> Void = {}
-    var onIncrement: () -> Void = {}
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 16) {
-                RoundButton(icon: Icons.minus.rawValue, isDarkMode: isDarkMode, action: onDecrement)
-                
-                Text(value)
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(isDarkMode ? .white : Color.slate900)
-                    .frame(minWidth: 60)
-                
-                RoundButton(icon: Icons.plus.rawValue, isDarkMode: isDarkMode, action: onIncrement)
-            }
-            
-            Text(label)
-                .font(.system(size: 12, weight: .bold, design: .rounded))
-                .tracking(2)
-                .foregroundStyle(isDarkMode ? Color.slate400 : Color.slate900.opacity(0.6))
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
 
-struct RoundButton: View {
-    let icon: String
-    var isDarkMode: Bool = false
-    var action: () -> Void = {}
-    
-    var body: some View {
-        ControlButton(
-            icon: icon,
-            backgroundColor: .clear,
-            foregroundColor: isDarkMode ? .white : Color.slate900,
-            size: 32,
-            iconSize: 14,
-            borderColor: isDarkMode ? Color.slate600 : Color.slate300,
-            borderWidth: 2
-        ) {
-            action()
-        }
-    }
-}
 
 #Preview {
     SetsAndRoundsView()

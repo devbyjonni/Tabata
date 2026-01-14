@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// A customizable circular button with optional border and shadow.
+/// Used for primary actions (Play), navigation, and controls (+/-).
 struct ControlButton: View {
     let icon: String
     let backgroundColor: Color

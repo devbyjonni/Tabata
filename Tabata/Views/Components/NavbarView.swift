@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+/// Navigation bar component with title and optional left/right action buttons.
+/// Adapts its style based on the current context and theme (Dark Mode support).
 struct NavbarView: View {
     let title: String
     let leftIcon: String
