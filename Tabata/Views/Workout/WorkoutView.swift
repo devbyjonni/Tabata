@@ -23,23 +23,54 @@ struct WorkoutView: View {
     
     var body: some View {
         ZStack {
-            (settings.first?.isDarkMode ?? true ? Color.slate900 : Theme.background)
+            // Dynamic Background based on phase
+            backgroundColor(for: viewModel.phase)
                 .ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.5), value: viewModel.phase)
             
             VStack(spacing: 2) {
-                NavbarView(
-                    title: viewModel.isFinished ? "Done" : "Workout",
-                    leftIcon: Icons.xmark.rawValue,
-                    rightIcon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
-                    leftAction: {
+                // Header
+                HStack {
+                    // Close Button
+                    ControlButton(
+                        icon: Icons.xmark.rawValue,
+                        backgroundColor: Color.white.opacity(0.3),
+                        foregroundColor: .white,
+                        size: 44,
+                        iconSize: 18
+                    ) {
                         viewModel.stop()
                         dismiss()
-                    },
-                    rightAction: {
-                        settings.first?.isSoundEnabled.toggle()
-                        HapticManager.shared.play(.light)
                     }
-                )
+                    
+                    Spacer()
+                    
+                    // Title
+                    Text(viewModel.isFinished ? "DONE" : "WORKOUT")
+                        .font(.system(size: 20, weight: .black, design: .rounded))
+                        .tracking(2)
+                        .foregroundStyle(.white)
+                        //.textCase(.uppercase) // text is already uppercased in string literal for "WORKOUT", "DONE" is uppercase? "Done" in code. so .textCase(.uppercase) is good.
+                        .textCase(.uppercase)
+                    
+                    Spacer()
+                    
+                    // Sound Toggle
+                    ControlButton(
+                        icon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
+                        backgroundColor: Color.white.opacity(0.3),
+                        foregroundColor: .white,
+                        size: 44,
+                        iconSize: 16
+                    ) {
+                        if let currentSettings = settings.first {
+                            currentSettings.isSoundEnabled.toggle()
+                            HapticManager.shared.play(.light)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top, 10)
                 
                 VStack(spacing: 2) {
                     
@@ -66,6 +97,7 @@ struct WorkoutView: View {
                 .padding()
             }
         }
+        .preferredColorScheme(.dark) // Force light text for status bar and alerts
         .onAppear {
             if let config = configurations.first, let currentSettings = self.settings.first {
                 // Initialize UI immediately
@@ -87,6 +119,17 @@ struct WorkoutView: View {
             }
         }
     }
+    
+    private func backgroundColor(for phase: WorkoutPhase) -> Color {
+        switch phase {
+        case .warmUp: return Theme.warmup
+        case .work: return Theme.work
+        case .rest: return Theme.rest
+        case .coolDown: return Theme.cooldown
+        case .idle: return Theme.background
+        }
+    }
+        
 }
 
 #Preview {

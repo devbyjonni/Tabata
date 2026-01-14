@@ -18,19 +18,20 @@ struct WorkoutTimerView: View {
             Circle()
                 .stroke(lineWidth: 20)
                 .opacity(0.3)
-                .foregroundColor(.gray)
+                .foregroundColor(.white) // Always white track
             
             // Progress Circle
             Circle()
                 .trim(from: 0.0, to: viewModel.progress)
                 .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
-                .foregroundColor(.blue)
+                .foregroundColor(.white) // Always white ring
                 .rotationEffect(Angle(degrees: 270.0))
             
             // Time Text
             Text(viewModel.timeRemaining.formatTime())
                 .font(.system(size: 80, weight: .black, design: .rounded)) // Slightly smaller to fit
                 .monospacedDigit()
+                .foregroundColor(.white) // Always white text
         }
         .padding()
     }

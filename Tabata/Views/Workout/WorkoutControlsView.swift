@@ -17,22 +17,24 @@ struct WorkoutControlsView: View {
             // Stop
             ControlButton(
                 icon: Icons.stop.rawValue,
-                backgroundColor: .red.opacity(0.8),
+                backgroundColor: Color.white.opacity(0.3),
                 foregroundColor: .white,
-                size: 60,
+                size: 64,
                 iconSize: 24
             ) {
                 viewModel.stop()
                 dismissAction()
             }
             
-            // Play/Pause
+            // Pause / Resume
             ControlButton(
                 icon: viewModel.isActive ? Icons.pause.rawValue : Icons.play.rawValue,
-                backgroundColor: viewModel.isActive ? .orange : .green,
+                backgroundColor: Color.white.opacity(0.3),
                 foregroundColor: .white,
                 size: 100,
-                iconSize: 50
+                iconSize: 40,
+                borderColor: .white.opacity(0.3),
+                borderWidth: 4
             ) {
                 if viewModel.isActive {
                     viewModel.pause()
@@ -44,9 +46,9 @@ struct WorkoutControlsView: View {
             // Skip
             ControlButton(
                 icon: Icons.skip.rawValue,
-                backgroundColor: .blue.opacity(0.8),
+                backgroundColor: Color.white.opacity(0.3),
                 foregroundColor: .white,
-                size: 60,
+                size: 64,
                 iconSize: 24
             ) {
                 viewModel.skip()

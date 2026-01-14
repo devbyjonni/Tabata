@@ -16,6 +16,10 @@ struct PhaseTitleView: View {
         HStack {
             Text(phase.rawValue.uppercased())
                 .font(.system(size: 40, weight: .black, design: .rounded))
+                .textCase(.uppercase)
+                .contentTransition(.numericText())
+                .animation(.snappy, value: phase.rawValue)
+                .foregroundColor(.white)
         }
     }
 }
