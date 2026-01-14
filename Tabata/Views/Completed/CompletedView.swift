@@ -21,31 +21,15 @@ struct CompletedView: View {
             
             VStack(spacing: 0) {
                 // Header
-                HStack {
-                    ControlButton(
-                        icon: Icons.xmark.rawValue,
-                        backgroundColor: .white.opacity(0.1),
-                        foregroundColor: .white,
-                        size: 44,
-                        iconSize: 18
-                    ) {
-                        action()
-                    }
-                    
-                    Spacer()
-                    
-                    ControlButton(
-                        icon: Icons.share.rawValue,
-                        backgroundColor: .white.opacity(0.1),
-                        foregroundColor: .white,
-                        size: 44,
-                        iconSize: 18
-                    ) {
+                NavbarView(
+                    title: "Completed",
+                    leftIcon: Icons.xmark.rawValue,
+                    rightIcon: Icons.share.rawValue,
+                    leftAction: { action() },
+                    rightAction: {
                         // Share logic placeholder
                     }
-                }
-                .padding(.horizontal)
-                .padding(.top, 10)
+                )
                 
                 ScrollView {
                     VStack(spacing: 32) {
@@ -79,7 +63,7 @@ struct CompletedView: View {
                                     .foregroundStyle(Color.slate400)
                             }
                         }
-                        .padding(.top, 20)
+                        .padding(.top, 0)
                         
                         // Stats Grid
                         if let workout = workout ?? history.first {

@@ -57,7 +57,8 @@ struct StatsView: View {
                                 rest: totalRest,
                                 coolDown: totalCoolDown,
                                 calories: totalCalories,
-                                avgHeartRate: avgHR
+                                avgHeartRate: avgHR,
+                                workoutCount: history.count
                             )
                             .padding()
                         }

@@ -15,9 +15,39 @@ struct WorkoutStatisticsGrid: View {
     let coolDown: TimeInterval
     let calories: Int
     let avgHeartRate: Int
+    var workoutCount: Int? = nil
     
     var body: some View {
         VStack(spacing: 12) {
+            // Total Workouts (Optional)
+            if let workoutCount = workoutCount {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("TOTAL WORKOUTS")
+                            .font(.system(size: 10, weight: .bold, design: .rounded))
+                            .tracking(1)
+                            .foregroundStyle(Color.slate400)
+                            .textCase(.uppercase)
+                        
+                        Text("\(workoutCount)")
+                            .font(.system(size: 40, weight: .black, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                    }
+                    Spacer()
+                    Image(systemName: Icons.trophy.rawValue)
+                        .font(.system(size: 40))
+                        .foregroundStyle(Color.yellow.opacity(0.8))
+                }
+                .padding(24)
+                .background(Color.slate800)
+                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                )
+            }
+            
             // Total Duration Card
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
@@ -103,7 +133,7 @@ struct WorkoutStatisticsGrid: View {
                     }
                     Spacer()
                 }
-                .padding(12)
+                .padding(24)
                 .background(Color.slate800)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
@@ -132,7 +162,7 @@ struct WorkoutStatisticsGrid: View {
                             .foregroundStyle(.red)
                     }
                 }
-                .padding(12)
+                .padding(24)
                 .background(Color.slate800)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
