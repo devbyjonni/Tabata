@@ -1,5 +1,4 @@
-//
-//  SetsAndRoundsView.swift
+//  SetsRoundsSelector.swift
 //  Tabata
 //
 //  Created by Jonni Åkesson on 2026-01-13.
@@ -10,7 +9,7 @@ import SwiftData
 
 /// Controls for setting the number of Sets and Rounds.
 /// Also includes the global Sound Toggle control.
-struct SetsAndRoundsView: View {
+struct SetsRoundsSelector: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     @Query private var settings: [TabataSettings]

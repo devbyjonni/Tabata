@@ -39,12 +39,12 @@ struct StartView: View {
                 
                 ScrollView {
                     VStack(spacing: 32) {
-                        TimerTextView()
+                        TotalDurationView()
                             .padding(.top, 20)
                         
-                        SetsAndRoundsView()
+                        SetsRoundsSelector()
                         
-                        TabataTimersView()
+                        PhaseSettingsList()
                             .padding(.top, 10)
                     }
                     .padding(.horizontal)

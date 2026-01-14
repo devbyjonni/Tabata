@@ -1,5 +1,4 @@
-//
-//  TimerTextView.swift
+//  TotalDurationView.swift
 //  Tabata
 //
 //  Created by Jonni Åkesson on 2026-01-13.
@@ -10,7 +9,7 @@ import SwiftData
 
 /// Displays the total calculated duration of the workout.
 /// Updates dynamically based on changes to sets, rounds, and intervals.
-struct TimerTextView: View {
+struct TotalDurationView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     

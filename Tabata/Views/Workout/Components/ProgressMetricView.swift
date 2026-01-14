@@ -1,5 +1,4 @@
-//
-//  StatItemView.swift
+//  ProgressMetricView.swift
 //  Tabata
 //
 //  Created by Jonni Åkesson on 2026-01-13.
@@ -9,7 +8,7 @@ import SwiftUI
 
 /// A standard view for displaying a single statistic (Value + Label).
 /// Used in StatsView and WorkoutStatsView.
-struct StatItemView: View {
+struct ProgressMetricView: View {
     let title: String
     let current: Int
     let total: Int

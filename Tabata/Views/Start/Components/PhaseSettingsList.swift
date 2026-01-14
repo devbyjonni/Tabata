@@ -1,5 +1,4 @@
-//
-//  TabataTimersView.swift
+//  PhaseSettingsList.swift
 //  Tabata
 //
 //  Created by Jonni Åkesson on 2026-01-13.
@@ -10,7 +9,7 @@ import SwiftData
 
 /// A list of IntervalCards for adjusting the duration of each workout phase.
 /// covering Warm Up, Work, Rest, and Cool Down.
-struct TabataTimersView: View {
+struct PhaseSettingsList: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     
