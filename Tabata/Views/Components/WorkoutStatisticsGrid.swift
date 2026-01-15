@@ -43,17 +43,13 @@ struct WorkoutStatisticsGrid: View {
                 // Rounds
                 SmallStatCard(
                     title: "ROUNDS",
-                    value: "\(rounds)",
-                    icon: Icons.trophy.rawValue,
-                    iconColor: .yellow
+                    value: "\(rounds)"
                 )
                 
                 // Reps
                 SmallStatCard(
                     title: "REPS",
-                    value: "\(reps)",
-                    icon: Icons.repeatIcon.rawValue,
-                    iconColor: .blue
+                    value: "\(reps)"
                 )
             }
             
@@ -130,8 +126,6 @@ fileprivate struct StatCard: View {
 fileprivate struct SmallStatCard: View {
     let title: String
     let value: String
-    let icon: String
-    let iconColor: Color
     
     var body: some View {
         HStack {
@@ -144,15 +138,6 @@ fileprivate struct SmallStatCard: View {
                     .foregroundStyle(.white)
             }
             Spacer()
-            
-            ZStack {
-                Circle()
-                    .fill(iconColor.opacity(0.2))
-                    .frame(width: 32, height: 32)
-                Image(systemName: icon)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(iconColor)
-            }
         }
         .padding(24)
         .background(Color.slate800)
