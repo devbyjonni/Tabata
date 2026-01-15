@@ -235,7 +235,9 @@ final class WorkoutViewModel {
         
         let warmUp = config.warmUpTime
         let work = config.workTime * Double(config.sets * config.rounds)
-        let rest = config.restTime * Double((config.sets - 1) * config.rounds)
+        // Total Rests = (Total Work Segments) - 1. (Rest occurs after every work segment except the very last one)
+        let totalSegments = config.sets * config.rounds
+        let rest = config.restTime * Double(max(0, totalSegments - 1))
         let coolDown = config.coolDownTime
         let totalDuration = warmUp + work + rest + coolDown
         

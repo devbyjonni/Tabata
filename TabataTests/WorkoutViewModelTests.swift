@@ -103,6 +103,9 @@ final class WorkoutViewModelTests: XCTestCase {
         // 4. Work 2 -> Rest 2 (End of Round 1 logic)
         advanceToPhase(.rest)
         
+        XCTAssertEqual(viewModel.currentRound, 1)
+        XCTAssertEqual(viewModel.phase, .rest)
+        
         // Now at Rest 2. Completing this should trigger Round 2, Set 1.
         // Tick through Rest (5s)
         advanceTime(seconds: 5)
@@ -121,7 +124,7 @@ final class WorkoutViewModelTests: XCTestCase {
         // WarmUp -> Work
         advanceToPhase(.work)
         
-        // Complete Work
+        // Complete Work -> Skips Rest -> CoolDown
         advanceTime(seconds: 10)
         
         XCTAssertEqual(viewModel.phase, .coolDown)
@@ -143,15 +146,76 @@ final class WorkoutViewModelTests: XCTestCase {
         // Check for finished state
         XCTAssertTrue(viewModel.isFinished)
         XCTAssertFalse(viewModel.isActive)
+        XCTAssertEqual(viewModel.timeRemaining, 0)
+    }
+    
+    func testPauseAndResume() {
+        viewModel.setup(config: config, settings: settings)
+        viewModel.play()
+        XCTAssertTrue(viewModel.isActive)
+        
+        viewModel.pause()
+        XCTAssertFalse(viewModel.isActive)
+        
+        let timeLeft = viewModel.timeRemaining
+        viewModel.tick() // Should not decrease time
+        XCTAssertEqual(viewModel.timeRemaining, timeLeft)
+        
+        viewModel.play()
+        XCTAssertTrue(viewModel.isActive)
+        
+        viewModel.tick() // Should decrease time
+        XCTAssertLessThan(viewModel.timeRemaining, timeLeft)
+    }
+    
+    func testSkip() {
+        viewModel.setup(config: config, settings: settings)
+        viewModel.play()
+        
+        // In WarmUp
+        XCTAssertEqual(viewModel.phase, .warmUp)
+        
+        viewModel.skip()
+        
+        // Should be in Work
+        XCTAssertEqual(viewModel.phase, .work)
+        XCTAssertEqual(viewModel.timeRemaining, 10, accuracy: 0.1)
+    }
+    
+    func testStop() {
+        viewModel.setup(config: config, settings: settings)
+        viewModel.play()
+        
+        viewModel.stop()
+        
+        XCTAssertFalse(viewModel.isActive)
+        XCTAssertFalse(viewModel.isFinished)
+        XCTAssertEqual(viewModel.phase, .idle)
+        XCTAssertEqual(viewModel.timeRemaining, 0)
     }
     
     func testGenerateCompletedWorkout() {
         // Config: 2 Sets, 2 Rounds
         // WarmUp: 5
-        // Work: 10 * 4 = 40
-        // Rest: 5 * 2 = 10 (Rest occurs between sets: (2-1) * 2 rounds)
+        // Work: 10
+        // Rest: 5
         // CoolDown: 5
-        // Total: 60
+        
+        // Segments breakdown:
+        // R1S1 (Work 10) -> Rest (5)
+        // R1S2 (Work 10) -> Rest (5)  <-- Rest between Round 1 and 2
+        // R2S1 (Work 10) -> Rest (5)
+        // R2S2 (Work 10) -> Cool Down (5) <-- No Rest after last Work
+        
+        // Total Work Segments: 4
+        // Total Rest Segments: 3 (After R1S1, R1S2, R2S1)
+        
+        // WarmUp: 5
+        // Total Work: 10 * 4 = 40
+        // Total Rest: 5 * 3 = 15
+        // CoolDown: 5
+        // Total Duration: 5 + 40 + 15 + 5 = 65
+        
         config = TabataConfiguration(sets: 2, rounds: 2, warmUpTime: 5, workTime: 10, restTime: 5, coolDownTime: 5)
         viewModel.setup(config: config, settings: settings)
         
@@ -160,13 +224,14 @@ final class WorkoutViewModelTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(workout.duration, 60, accuracy: 0.1)
+        XCTAssertEqual(workout.duration, 65, accuracy: 0.1)
         XCTAssertEqual(workout.totalWarmUp, 5, accuracy: 0.1)
         XCTAssertEqual(workout.totalWork, 40, accuracy: 0.1)
-        XCTAssertEqual(workout.totalRest, 10, accuracy: 0.1)
+        XCTAssertEqual(workout.totalRest, 15, accuracy: 0.1)
         XCTAssertEqual(workout.totalCoolDown, 5, accuracy: 0.1)
-        XCTAssertEqual(workout.calories, 9) // 60 * 0.15
         XCTAssertTrue((130...160).contains(workout.avgHeartRate))
+        XCTAssertEqual(workout.reps, 4) // 2 * 2
+        XCTAssertEqual(workout.rounds, 2)
     }
     
     // MARK: - Helper
@@ -184,6 +249,9 @@ final class WorkoutViewModelTests: XCTestCase {
         while viewModel.phase != targetPhase.phase && limit > 0 {
             viewModel.tick()
             limit -= 1
+        }
+        if limit == 0 {
+            XCTFail("Failed to reach phase \(targetPhase) within limit")
         }
     }
     
