@@ -89,8 +89,6 @@ struct CompletedView: View {
                                 .padding()
                         }
                         
-                        }
-                        
                         Color.clear.frame(height: 20)
                     }
                     .padding()

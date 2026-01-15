@@ -27,7 +27,6 @@ struct StatsListView: View {
             
             if history.isEmpty {
                 VStack {
-                VStack {
                     NavbarView(
                         title: "History",
                         leftIcon: Icons.back.rawValue,
@@ -44,7 +43,6 @@ struct StatsListView: View {
                         )
                         .foregroundStyle(Color.slate400)
                     } else {
-                    } else {
                         VStack(spacing: 16) {
                             Spacer()
                             Image(systemName: "figure.highintensity.intervaltraining")
@@ -59,7 +57,6 @@ struct StatsListView: View {
                     Spacer()
                 }
             } else {
-                VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     NavbarView(
                         title: "History",
@@ -131,8 +128,6 @@ fileprivate struct HistoryRow: View {
                 .font(.caption)
                 .foregroundStyle(Color.slate400)
             }
-            Spacer()
-            
             Spacer()
             
              Image(systemName: "chevron.right")
