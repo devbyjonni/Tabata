@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 
+/// A fun confetti celebration view.
+/// Uses a timer to drive a simple physics simulation for particles.
 struct ConfettiView: View {
     @State private var confetti: [ConfettiParticle] = []
     
@@ -59,12 +61,12 @@ struct ConfettiView: View {
             confetti[i].velocity.x += CGFloat.random(in: -0.1...0.1)
         }
         
-        // Remove particles that have fallen off screen (performance)
-        // keeping it simple for now, just let them fall
+        // Optimization: In a real app we'd remove off-screen particles
     }
 }
 
-// Model
+// MARK: - Models
+
 struct ConfettiParticle: Identifiable {
     let id = UUID()
     var position: CGPoint
@@ -74,7 +76,6 @@ struct ConfettiParticle: Identifiable {
     let rotationSpeed: Double
 }
 
-// Particle View
 struct ConfettiParticleView: View {
     let particle: ConfettiParticle
     
@@ -86,6 +87,8 @@ struct ConfettiParticleView: View {
             .rotationEffect(.degrees(particle.rotation))
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     ConfettiView()
