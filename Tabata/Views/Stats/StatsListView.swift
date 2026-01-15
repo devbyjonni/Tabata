@@ -74,6 +74,7 @@ struct StatsListView: View {
                     List {
                         ForEach(history) { workout in
                             // Use ZStack to support tap navigation while allowing Edit mode selection
+                            ZStack {
                                 NavigationLink(destination: CompletedView(workout: workout, leftIcon: Icons.back.rawValue)) {
                                     EmptyView()
                                 }
