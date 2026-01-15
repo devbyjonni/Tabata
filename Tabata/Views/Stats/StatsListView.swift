@@ -31,7 +31,7 @@ struct StatsListView: View {
                     NavbarView(
                         title: "History",
                         leftIcon: Icons.back.rawValue,
-                        rightIcon: "",
+                        rightIcon: Icons.share.rawValue,
                         leftAction: { dismiss() },
                         rightAction: {}
                     )
@@ -126,6 +126,8 @@ fileprivate struct HistoryRow: View {
                 
                 HStack(spacing: 6) {
                     Label(workout.duration.formatTime(), systemImage: Icons.clock.rawValue)
+                    Text("•")
+                    Label("\(workout.rounds) rounds", systemImage: Icons.trophy.rawValue)
                     Text("•")
                     Label("\(workout.reps) reps", systemImage: Icons.repeatIcon.rawValue)
                 }
