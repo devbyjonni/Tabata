@@ -106,6 +106,15 @@ struct StartView: View {
                 let newSettings = TabataSettings()
                 modelContext.insert(newSettings)
             }
+            
+            // Sync settings to Managers
+            if let currentSettings = settings.first {
+                 SoundManager.shared.isSoundEnabled = currentSettings.isSoundEnabled
+                 SoundManager.shared.isVoiceGuideEnabled = currentSettings.isVoiceGuideEnabled
+                 SoundManager.shared.volume = currentSettings.volume
+                 SoundManager.shared.countdownDuration = currentSettings.countdownDuration
+                 HapticManager.shared.isHapticsEnabled = currentSettings.isHapticsEnabled
+            }
         }
     }
 }
