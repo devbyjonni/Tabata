@@ -101,7 +101,7 @@ struct CompletedView: View {
             ConfettiView()
         }
         .sheet(isPresented: $isSharePresented) {
-            ShareSheet(activityItems: [shareText, Bundle.main.icon].compactMap { $0 })
+            ShareSheet(activityItems: [shareText, Bundle.main.icon as Any?].compactMap { $0 })
         }
     }
     
