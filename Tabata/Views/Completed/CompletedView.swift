@@ -11,8 +11,10 @@ import SwiftData
 /// Displayed when a workout is finished.
 /// Shows a summary and allows the user to return to the start screen.
 struct CompletedView: View {
+    @Environment(\.dismiss) private var dismiss
     var workout: CompletedWorkout?
-    var action: () -> Void = {}
+    var leftIcon: String = Icons.xmark.rawValue
+    var action: (() -> Void)? = nil
     @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
     
     var body: some View {
@@ -23,9 +25,15 @@ struct CompletedView: View {
                 // Header
                 NavbarView(
                     title: "Completed",
-                    leftIcon: Icons.xmark.rawValue,
+                    leftIcon: leftIcon,
                     rightIcon: Icons.share.rawValue,
-                    leftAction: { action() },
+                    leftAction: {
+                        if let action = action {
+                            action()
+                        } else {
+                            dismiss()
+                        }
+                    },
                     rightAction: {
                         // Share logic placeholder
                     }
