@@ -36,6 +36,13 @@ struct SetsRoundsSelector: View {
             ) {
                 if let currentSettings = settings.first {
                     currentSettings.isSoundEnabled.toggle()
+                    
+                    // Safety: If enabling sound but volume is 0, reset to 50%
+                    if currentSettings.isSoundEnabled && currentSettings.volume == 0 {
+                        currentSettings.volume = 0.5
+                        SoundManager.shared.volume = 0.5
+                    }
+                    
                     SoundManager.shared.isSoundEnabled = currentSettings.isSoundEnabled
                     HapticManager.shared.play(.light)
                 }
