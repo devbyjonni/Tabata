@@ -30,7 +30,7 @@ struct StartView: View {
             
             VStack(spacing: 0) {
                 NavbarView(
-                    title: "TABATA",
+                    title: "TABATA PRO",
                     leftIcon: Icons.stats.rawValue,
                     rightIcon: Icons.settings.rawValue,
                     leftAction: { showStats = true },

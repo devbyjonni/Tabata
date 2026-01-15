@@ -24,27 +24,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		FA77E3592F15216900128988 /* Tabata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tabata.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA77E3592F15216900128988 /* Tabata Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tabata Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA77E3682F15216A00128988 /* TabataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA77E3722F15216A00128988 /* TabataUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabataUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FA5D400D2F19359B00DEDF29 /* Exceptions for "Tabata" folder in "Tabata" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = FA77E3582F15216900128988 /* Tabata */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FA77E35B2F15216900128988 /* Tabata */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FA5D400D2F19359B00DEDF29 /* Exceptions for "Tabata" folder in "Tabata" target */,
-			);
 			path = Tabata;
 			sourceTree = "<group>";
 		};
@@ -98,7 +85,7 @@
 		FA77E35A2F15216900128988 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA77E3592F15216900128988 /* Tabata.app */,
+				FA77E3592F15216900128988 /* Tabata Pro.app */,
 				FA77E3682F15216A00128988 /* TabataTests.xctest */,
 				FA77E3722F15216A00128988 /* TabataUITests.xctest */,
 			);
@@ -127,7 +114,7 @@
 			packageProductDependencies = (
 			);
 			productName = Tabata;
-			productReference = FA77E3592F15216900128988 /* Tabata.app */;
+			productReference = FA77E3592F15216900128988 /* Tabata Pro.app */;
 			productType = "com.apple.product-type.application";
 		};
 		FA77E3672F15216A00128988 /* TabataTests */ = {
@@ -411,7 +398,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tabata/Info.plist;
+				INFOPLIST_FILE = AppInfo.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -428,7 +415,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = devbyjonni.Tabata;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tabata Pro";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -457,7 +444,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tabata/Info.plist;
+				INFOPLIST_FILE = AppInfo.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -474,7 +461,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = devbyjonni.Tabata;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tabata Pro";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
