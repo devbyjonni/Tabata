@@ -13,7 +13,7 @@ struct SplashScreenView: View {
     
     var body: some View {
         ZStack {
-            Color.slate900.ignoresSafeArea()
+           Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 20) {
                 if let icon = Bundle.main.icon {
@@ -39,6 +39,8 @@ struct SplashScreenView: View {
             .scaleEffect(scale)
             .opacity(opactiy)
         }
+        .background(Color.slate900)
+        .preferredColorScheme(.dark)
         .onAppear {
             withAnimation(.easeOut(duration: 0.8)) {
                 self.opactiy = 1.0

@@ -27,7 +27,7 @@ struct WorkoutView: View {
             // Dynamic Background based on phase
             backgroundColor(for: viewModel.phase)
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.5), value: viewModel.phase)
+                .animation(.easeInOut(duration: 0), value: viewModel.phase)
             
             VStack(spacing: 2) {
                 // Header

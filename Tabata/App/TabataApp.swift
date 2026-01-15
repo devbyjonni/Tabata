@@ -47,8 +47,8 @@ struct TabataApp: App {
                     }
                 }
             }
+            .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
-        .preferredColorScheme(.dark)
     }
 }
