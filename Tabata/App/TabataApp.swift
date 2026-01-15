@@ -27,9 +27,24 @@ struct TabataApp: App {
         }
     }()
 
+    @State private var showSplash = true
+
     var body: some Scene {
         WindowGroup {
-            StartView()
+            ZStack {
+                if showSplash {
+                    SplashScreenView()
+                } else {
+                    StartView()
+                }
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        showSplash = false
+                    }
+                }
+            }
         }
         .modelContainer(sharedModelContainer)
     }
