@@ -24,6 +24,7 @@ final class CompletedWorkout: Identifiable {
     // Health Metrics (Estimated or Placeholder)
     var calories: Int
     var avgHeartRate: Int
+    var reps: Int
     
     init(date: Date = Date(), 
          duration: TimeInterval, 
@@ -32,7 +33,8 @@ final class CompletedWorkout: Identifiable {
          totalRest: TimeInterval, 
          totalCoolDown: TimeInterval, 
          calories: Int = 0, 
-         avgHeartRate: Int = 0) {
+         avgHeartRate: Int = 0,
+         reps: Int = 0) {
         self.id = UUID()
         self.date = date
         self.duration = duration
@@ -42,5 +44,6 @@ final class CompletedWorkout: Identifiable {
         self.totalCoolDown = totalCoolDown
         self.calories = calories
         self.avgHeartRate = avgHeartRate
+        self.reps = reps
     }
 }

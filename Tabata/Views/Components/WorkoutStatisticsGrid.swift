@@ -13,25 +13,16 @@ struct WorkoutStatisticsGrid: View {
     let work: TimeInterval
     let rest: TimeInterval
     let coolDown: TimeInterval
-    let calories: Int
-    let avgHeartRate: Int
+    let reps: Int
     var workoutCount: Int? = nil
     
     var body: some View {
         VStack(spacing: 12) {
-            // Total Workouts (Optional)
-            if let workoutCount = workoutCount {
-                StatsSummaryCard(
-                    title: "TOTAL WORKOUTS",
-                    value: "\(workoutCount)",
-                    icon: Icons.trophy.rawValue,
-                    iconColor: Color.yellow.opacity(0.8)
-                )
-            }
+
             
             // Total Duration Card
             StatsSummaryCard(
-                title: "TOTAL DURATION",
+                title: "DURATION",
                 value: duration.formatTime(),
                 icon: Icons.clock.rawValue,
                 iconColor: Color.slate500.opacity(0.5)
@@ -42,13 +33,13 @@ struct WorkoutStatisticsGrid: View {
                 // Left Column
                 VStack(spacing: 12) {
                     StatCard(
-                        title: "TOTAL WARMUP",
+                        title: "WARMUP",
                         value: warmUp.formatTime(),
                         color: Theme.warmup,
                         icon: Icons.warmUp.rawValue
                     )
                     StatCard(
-                        title: "TOTAL REST",
+                        title: "REST",
                         value: rest.formatTime(),
                         color: Theme.rest,
                         icon: Icons.rest.rawValue
@@ -58,13 +49,13 @@ struct WorkoutStatisticsGrid: View {
                 // Right Column
                 VStack(spacing: 12) {
                     StatCard(
-                        title: "TOTAL WORK",
+                        title: "WORK",
                         value: work.formatTime(),
                         color: Theme.work,
                         icon: Icons.work.rawValue
                     )
                     StatCard(
-                        title: "TOTAL COOL DOWN",
+                        title: "COOL DOWN",
                         value: coolDown.formatTime(),
                         color: Theme.cooldown,
                         icon: Icons.cooldown.rawValue
@@ -72,24 +63,24 @@ struct WorkoutStatisticsGrid: View {
                 }
             }
             
-            // Bottom Row: Calories & Heart Rate
+            // Bottom Row: Workouts & Reps
             HStack(spacing: 12) {
-                // Calories
+                // Workouts
                 HStack {
                     ZStack {
                         Circle()
-                            .fill(Color.green.opacity(0.2))
+                            .fill(Color.yellow.opacity(0.2))
                             .frame(width: 32, height: 32)
-                        Image(systemName: Icons.flame.rawValue)
+                        Image(systemName: Icons.trophy.rawValue)
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.green)
+                            .foregroundStyle(.yellow)
                     }
                     
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("EST. CALORIES")
-                            .font(.system(size: 9, weight: .bold))
+                        Text("WORKOUTS")
+                            .font(.system(size: 13, weight: .bold))
                             .foregroundStyle(Color.slate400)
-                        Text("\(calories) kcal")
+                        Text(workoutCount != nil ? "\(workoutCount!)" : "-")
                             .font(.system(size: 18, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
                     }
@@ -104,13 +95,13 @@ struct WorkoutStatisticsGrid: View {
                 )
                 .shadow(color: .clear, radius: 10, x: 0, y: 4)
                 
-                // Heart Rate
+                // Reps
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("AVG HR")
-                            .font(.system(size: 9, weight: .bold))
+                        Text("TOTAL REPS")
+                            .font(.system(size: 13, weight: .bold))
                             .foregroundStyle(Color.slate400)
-                        Text("\(avgHeartRate)")
+                        Text("\(reps)")
                             .font(.system(size: 18, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
                     }
@@ -118,11 +109,11 @@ struct WorkoutStatisticsGrid: View {
                     
                     ZStack {
                         Circle()
-                            .fill(Color.red.opacity(0.2))
+                            .fill(Color.blue.opacity(0.2))
                             .frame(width: 32, height: 32)
-                        Image(systemName: Icons.heart.rawValue)
+                        Image(systemName: Icons.repeatIcon.rawValue)
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.red)
+                            .foregroundStyle(.blue)
                     }
                 }
                 .padding(24)
@@ -149,12 +140,8 @@ fileprivate struct StatCard: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .top) {
                 Text(title)
-                    .font(.system(size: 10, weight: .bold))
+                    .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(.white.opacity(0.9))
-                Spacer()
-                Image(systemName: icon)
-                    .font(.system(size: 24))
-                    .foregroundStyle(.white.opacity(0.3))
             }
             .padding(.bottom, 24)
             
@@ -167,9 +154,6 @@ fileprivate struct StatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-        // Colored cards don't change much in light mode, but maybe a shadow?
         .shadow(color: .clear, radius: 8, x: 0, y: 4)
     }
 }
-
-

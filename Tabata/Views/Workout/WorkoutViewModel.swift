@@ -246,7 +246,8 @@ final class WorkoutViewModel {
             totalRest: rest,
             totalCoolDown: coolDown,
             calories: Int(totalDuration * 0.15), // Estimate: ~9 kcal/min
-            avgHeartRate: Int.random(in: 130...160) // Simulation
+            avgHeartRate: Int.random(in: 130...160), // Simulation
+            reps: config.sets * config.rounds
         )
     }
 }

@@ -40,15 +40,13 @@ struct IntervalCard: View {
                 
                 HStack(spacing: 4) {
                     Text(title)
-                        .font(.system(size: 10, weight: .black, design: .rounded))
+                        .font(.system(size: 15, weight: .black, design: .rounded))
                         .textCase(.uppercase)
                         .tracking(2)
                         .opacity(0.8)
                         .foregroundStyle(.white)
                     
-                    Image(systemName: icon)
-                        .font(.system(size: 12))
-                        .foregroundStyle(.white.opacity(0.8))
+                
                 }
             }
             

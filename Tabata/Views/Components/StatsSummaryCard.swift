@@ -16,9 +16,9 @@ struct StatsSummaryCard: View {
     
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 15) {
                 Text(title)
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
                     .tracking(1)
                     .foregroundStyle(Color.slate400)
                     .textCase(.uppercase)

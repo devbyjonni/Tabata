@@ -22,7 +22,7 @@ struct StatsView: View {
                 
                 VStack(spacing: 0) {
                     NavbarView(
-                        title: "Overview",
+                        title: "Stats",
                         leftIcon: Icons.xmark.rawValue,
                         rightIcon: Icons.list.rawValue,
                         leftAction: { dismiss() },
@@ -47,8 +47,7 @@ struct StatsView: View {
                             let totalWork = history.reduce(0) { $0 + $1.totalWork }
                             let totalRest = history.reduce(0) { $0 + $1.totalRest }
                             let totalCoolDown = history.reduce(0) { $0 + $1.totalCoolDown }
-                            let totalCalories = history.reduce(0) { $0 + $1.calories }
-                            let avgHR = history.isEmpty ? 0 : history.reduce(0) { $0 + $1.avgHeartRate } / history.count
+                            let totalReps = history.reduce(0) { $0 + $1.reps }
                             
                             WorkoutStatisticsGrid(
                                 duration: totalDuration,
@@ -56,11 +55,11 @@ struct StatsView: View {
                                 work: totalWork,
                                 rest: totalRest,
                                 coolDown: totalCoolDown,
-                                calories: totalCalories,
-                                avgHeartRate: avgHR,
+                                reps: totalReps,
                                 workoutCount: history.count
                             )
                             .padding()
+                            .padding(.top, 24)
                         }
                     }
                 }
