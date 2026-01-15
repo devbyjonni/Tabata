@@ -36,6 +36,8 @@ struct SetsRoundsSelector: View {
             ) {
                 if let currentSettings = settings.first {
                     currentSettings.isSoundEnabled.toggle()
+                    SoundManager.shared.isSoundEnabled = currentSettings.isSoundEnabled
+                    HapticManager.shared.play(.light)
                 }
             }
             .offset(y: 40)

@@ -44,7 +44,6 @@ struct StartView: View {
                         
                         SetsRoundsSelector()
                           
-                        
                         PhaseSettingsList()
                             .padding(.top, 10)
                     }
