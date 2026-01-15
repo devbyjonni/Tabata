@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// Displays a grid of workout statistics, including total duration, workouts, breakdown by phase, rounds, and reps.
+/// Used in `StatsView` and `CompletedView`.
 struct WorkoutStatisticsGrid: View {
     let duration: TimeInterval
     let warmUp: TimeInterval
@@ -33,7 +35,7 @@ struct WorkoutStatisticsGrid: View {
                 title: "DURATION",
                 value: duration.formatTime(),
                 icon: Icons.clock.rawValue,
-                iconColor: Color.white
+                iconColor: Color.white.opacity(0.8)
             )
             
             // Bottom Row: Rounds & Reps
