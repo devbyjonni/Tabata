@@ -179,7 +179,7 @@ struct SettingsView: View {
                             .foregroundStyle(Color.red)
                         
                         Text("This action cannot be undone")
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
                             .foregroundStyle(Color.slate400)
                     }
                     Spacer()
@@ -223,7 +223,7 @@ struct SettingsView: View {
                             .foregroundStyle(.white)
                         
                         Text("Tabata is a high-intensity interval training (HIIT) protocol: 20 seconds of ultra-intense exercise followed by 10 seconds of rest, repeated continuously for 4 minutes (8 rounds).")
-                            .font(.system(size: 14, weight: .regular, design: .rounded))
+                            .font(.system(size: 15, weight: .regular, design: .rounded))
                             .foregroundStyle(Color.slate400)
                             .lineSpacing(4)
                     }
@@ -243,7 +243,7 @@ struct SettingsView: View {
                             .foregroundStyle(.white)
                         
                         Text("• Improves aerobic & anaerobic capacity\n• Boosts metabolism\n• Extremely time-efficient")
-                            .font(.system(size: 14, weight: .regular, design: .rounded))
+                            .font(.system(size: 15, weight: .regular, design: .rounded))
                             .foregroundStyle(Color.slate400)
                             .lineSpacing(4)
                     }
@@ -272,7 +272,7 @@ struct SettingsView: View {
     
     private func sectionHeader(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 12, weight: .black, design: .rounded))
+            .font(.system(size: 14, weight: .black, design: .rounded))
             .tracking(2)
             .foregroundStyle(Color.slate500)
             .padding(.leading, 4)

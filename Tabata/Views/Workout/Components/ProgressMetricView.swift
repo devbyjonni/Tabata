@@ -18,10 +18,10 @@ struct ProgressMetricView: View {
     var body: some View {
         VStack {
             Text(title)
-                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .font(.system(size: 15, weight: .medium, design: .rounded))
                 .foregroundColor(titleColor)
             Text("\(current) of \(total)")
-                .font(.system(size: 22, weight: .bold, design: .rounded))
+                .font(.system(size: 26, weight: .bold, design: .rounded))
                 .fontWeight(.bold)
                 .monospacedDigit()
                 .foregroundColor(valueColor)

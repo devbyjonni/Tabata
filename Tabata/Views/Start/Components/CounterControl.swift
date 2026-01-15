@@ -17,7 +17,7 @@ struct CounterControl: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 // Decrement Button
                 ControlButton(
                     icon: Icons.minus.rawValue,
@@ -51,10 +51,11 @@ struct CounterControl: View {
                     onIncrement()
                 }
             }
+          
             
             // Label
             Text(label)
-                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .font(.system(size: 13, weight: .bold, design: .rounded))
                 .tracking(2)
                 .foregroundStyle(Color.slate400)
         }
