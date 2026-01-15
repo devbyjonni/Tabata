@@ -27,7 +27,7 @@ struct StatsListView: View {
             
             if history.isEmpty {
                 VStack {
-                    // Header
+                VStack {
                     NavbarView(
                         title: "History",
                         leftIcon: Icons.back.rawValue,
@@ -44,7 +44,7 @@ struct StatsListView: View {
                         )
                         .foregroundStyle(Color.slate400)
                     } else {
-                        // Fallback for older iOS (though we target recent)
+                    } else {
                         VStack(spacing: 16) {
                             Spacer()
                             Image(systemName: "figure.highintensity.intervaltraining")
@@ -60,11 +60,10 @@ struct StatsListView: View {
                 }
             } else {
                 VStack(spacing: 0) {
-                    // Header with Edit Button Logic
+                VStack(spacing: 0) {
                     NavbarView(
                         title: "History",
                         leftIcon: Icons.back.rawValue,
-                        // Show checkmark if editing, pencil if not. Only if history exists.
                         rightIcon: isEditing ? "checkmark" : Icons.edit.rawValue,
                         leftAction: { dismiss() },
                         rightAction: {
@@ -78,12 +77,10 @@ struct StatsListView: View {
                     List {
                         ForEach(history) { workout in
                             // Use ZStack to support tap navigation while allowing Edit mode selection
-                            ZStack {
                                 NavigationLink(destination: CompletedView(workout: workout, leftIcon: Icons.back.rawValue)) {
                                     EmptyView()
                                 }
-                                .opacity(0) // Hide the chevron if we want custom look, or keep it.
-                                // dobata hides the list row background
+                                .opacity(0)
                                 
                                 HistoryRow(workout: workout)
                             }
@@ -136,8 +133,8 @@ fileprivate struct HistoryRow: View {
             }
             Spacer()
             
-            // Chevron is handled by NavigationLink explicitly or implicitly. 
-            // If we want custom chevron:
+            Spacer()
+            
              Image(systemName: "chevron.right")
                  .font(.caption)
                  .foregroundStyle(Color.slate600)

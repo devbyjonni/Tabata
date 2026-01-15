@@ -22,7 +22,6 @@ struct CompletedView: View {
             Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Header
                 NavbarView(
                     title: "Completed",
                     leftIcon: leftIcon,
@@ -41,7 +40,6 @@ struct CompletedView: View {
                 
                 ScrollView {
                     VStack(spacing: 32) {
-                        // Hero Section
                         VStack(spacing: 24) {
                             ZStack {
                                 // Glow
@@ -73,7 +71,6 @@ struct CompletedView: View {
                         }
                         .padding(.top, 0)
                         
-                        // Stats Grid
                         if let workout = workout ?? history.first {
                             WorkoutStatisticsGrid(
                                 duration: workout.duration,
@@ -92,7 +89,8 @@ struct CompletedView: View {
                                 .padding()
                         }
                         
-                        // Bottom Padding
+                        }
+                        
                         Color.clear.frame(height: 20)
                     }
                     .padding()
