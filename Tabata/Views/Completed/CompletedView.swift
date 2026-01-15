@@ -34,7 +34,7 @@ struct CompletedView: View {
                         }
                     },
                     rightAction: {
-                        // Share logic placeholder
+                        isSharePresented = true
                     }
                 )
                 
@@ -100,7 +100,22 @@ struct CompletedView: View {
         .overlay {
             ConfettiView()
         }
+        .sheet(isPresented: $isSharePresented) {
+            ShareSheet(activityItems: [shareText])
+        }
     }
-}
+    
+    // MARK: - Share Logic
+    
+    @State private var isSharePresented = false
+    
+    private var shareText: String {
+        guard let w = workout ?? history.first else {
+            return "Check out Tabata Pro! A great app for HIIT workouts."
+        }
+        
+        // Example: "I just crushed a Tabata workout! 🔥 4:00 • 8 Rounds • 64 Reps #TabataPro"
+        return "I just crushed a Tabata workout! 🔥 \(w.duration.formatTime()) • \(w.rounds) Rounds • \(w.reps) Reps #TabataPro"
+    }
 
 

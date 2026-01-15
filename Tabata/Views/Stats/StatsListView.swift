@@ -20,6 +20,7 @@ struct StatsListView: View {
     
     // Local state to manage edit mode if not using Environment driven EditButton
     @State private var isEditing: Bool = false
+    @State private var isSharePresented = false
     
     var body: some View {
         ZStack {
@@ -32,8 +33,11 @@ struct StatsListView: View {
                         leftIcon: Icons.back.rawValue,
                         rightIcon: Icons.share.rawValue,
                         leftAction: { dismiss() },
-                        rightAction: {}
+                        rightAction: { isSharePresented = true }
                     )
+                    .sheet(isPresented: $isSharePresented) {
+                        ShareSheet(activityItems: ["Check out Tabata Pro! The best app for HIIT training."])
+                    }
                     
                     if #available(iOS 17.0, *) {
                         ContentUnavailableView(
