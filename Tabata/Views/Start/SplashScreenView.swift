@@ -16,8 +16,8 @@ struct SplashScreenView: View {
            Color.slate900.ignoresSafeArea()
             
             VStack(spacing: 20) {
-                if let icon = Bundle.main.icon {
-                    Image(uiImage: icon)
+                if let _ = UIImage(named: "SpashScreenImage") {
+                    Image("SpashScreenImage")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 180, height: 180)
