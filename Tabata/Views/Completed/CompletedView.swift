@@ -99,6 +99,7 @@ struct CompletedView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

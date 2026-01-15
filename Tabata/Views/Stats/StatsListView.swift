@@ -31,7 +31,7 @@ struct StatsListView: View {
                     NavbarView(
                         title: "History",
                         leftIcon: Icons.back.rawValue,
-                        rightIcon: nil,
+                        rightIcon: "",
                         leftAction: { dismiss() },
                         rightAction: {}
                     )
