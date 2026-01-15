@@ -12,6 +12,15 @@ Tabata Pro is a native iOS application designed for High-Intensity Interval Trai
 - **Declarative Storage**: Abandoned legacy Core Data boilerplate in favor of the new `@Model` macro. Settings (`TabataSettings`) and History (`CompletedWorkout`) are managed with type-safe, observable models that integrate seamlessly with SwiftUI using `@Query`.
 - **Automatic Migration**: Leverages SwiftData's schema evolution capabilities to ensure data integrity across version updates.
 
+<!-- 
+## 📸 Screenshots
+<p align="center">
+  <img src="assets/screenshot1.png" width="30%" alt="Start Screen" />
+  <img src="assets/screenshot2.png" width="30%" alt="Workout Screen" />
+  <img src="assets/screenshot3.png" width="30%" alt="Stats Screen" />
+</p>
+-->
+
 ### 2. Testable Audio Architecture (Dependency Injection)
 - **Protocol-Oriented Design**: The `SoundManager` does not rely on concrete system classes. Instead, it interacts with abstract protocols (`AudioPlayerService`, `SpeechSynthesizerService`).
 - **Mocking Strategy**: This decouple allows for "noisy" system dependencies (AVFoundation) to be swapped with silent Mocks during Unit Testing, ensuring 100% reliable assertions on audio logic without playing actual sounds.
