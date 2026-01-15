@@ -95,7 +95,11 @@ struct CompletedView: View {
                 }
             }
         }
+
         .navigationBarBackButtonHidden(true)
+        .overlay {
+            ConfettiView()
+        }
     }
 }
 
