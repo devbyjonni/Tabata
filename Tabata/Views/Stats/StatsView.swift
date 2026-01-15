@@ -48,6 +48,7 @@ struct StatsView: View {
                             let totalRest = history.reduce(0) { $0 + $1.totalRest }
                             let totalCoolDown = history.reduce(0) { $0 + $1.totalCoolDown }
                             let totalReps = history.reduce(0) { $0 + $1.reps }
+                            let totalRounds = history.reduce(0) { $0 + $1.rounds }
                             
                             WorkoutStatisticsGrid(
                                 duration: totalDuration,
@@ -56,6 +57,7 @@ struct StatsView: View {
                                 rest: totalRest,
                                 coolDown: totalCoolDown,
                                 reps: totalReps,
+                                rounds: totalRounds,
                                 workoutCount: history.count
                             )
                             .padding()

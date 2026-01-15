@@ -14,11 +14,19 @@ struct WorkoutStatisticsGrid: View {
     let rest: TimeInterval
     let coolDown: TimeInterval
     let reps: Int
-    var workoutCount: Int? = nil
+    let rounds: Int
+    let workoutCount: Int
     
     var body: some View {
         VStack(spacing: 12) {
-
+            
+            // Total Workouts Card
+            StatsSummaryCard(
+                title: "WORKOUTS",
+                value: "\(workoutCount)",
+                icon: Icons.trophy.rawValue,
+                iconColor: Color.yellow.opacity(0.8)
+            )
             
             // Total Duration Card
             StatsSummaryCard(
@@ -27,6 +35,25 @@ struct WorkoutStatisticsGrid: View {
                 icon: Icons.clock.rawValue,
                 iconColor: Color.slate500.opacity(0.5)
             )
+            
+            // Bottom Row: Rounds & Reps
+            HStack(spacing: 12) {
+                // Rounds
+                SmallStatCard(
+                    title: "ROUNDS",
+                    value: "\(rounds)",
+                    icon: Icons.trophy.rawValue,
+                    iconColor: .yellow
+                )
+                
+                // Reps
+                SmallStatCard(
+                    title: "TOTAL REPS",
+                    value: "\(reps)",
+                    icon: Icons.repeatIcon.rawValue,
+                    iconColor: .blue
+                )
+            }
             
             // Phase Breakdown Grid
             HStack(spacing: 12) {
@@ -63,73 +90,12 @@ struct WorkoutStatisticsGrid: View {
                 }
             }
             
-            // Bottom Row: Workouts & Reps
-            HStack(spacing: 12) {
-                // Workouts
-                HStack {
-                    ZStack {
-                        Circle()
-                            .fill(Color.yellow.opacity(0.2))
-                            .frame(width: 32, height: 32)
-                        Image(systemName: Icons.trophy.rawValue)
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.yellow)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("WORKOUTS")
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundStyle(Color.slate400)
-                        Text(workoutCount != nil ? "\(workoutCount!)" : "-")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                    }
-                    Spacer()
-                }
-                .padding(24)
-                .background(Color.slate800)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                )
-                .shadow(color: .clear, radius: 10, x: 0, y: 4)
-                
-                // Reps
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("TOTAL REPS")
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundStyle(Color.slate400)
-                        Text("\(reps)")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                    }
-                    Spacer()
-                    
-                    ZStack {
-                        Circle()
-                            .fill(Color.blue.opacity(0.2))
-                            .frame(width: 32, height: 32)
-                        Image(systemName: Icons.repeatIcon.rawValue)
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.blue)
-                    }
-                }
-                .padding(24)
-                .background(Color.slate800)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                )
-                .shadow(color: .clear, radius: 10, x: 0, y: 4)
-            }
+           
         }
     }
 }
 
-// Internal Stat Card Component
+// Internal Stat Card Component (Big Colored Cards)
 fileprivate struct StatCard: View {
     let title: String
     let value: String
@@ -155,5 +121,44 @@ fileprivate struct StatCard: View {
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         .shadow(color: .clear, radius: 8, x: 0, y: 4)
+    }
+}
+
+// Reusable Small Stat Card (Bottom Row)
+fileprivate struct SmallStatCard: View {
+    let title: String
+    let value: String
+    let icon: String
+    let iconColor: Color
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color.slate400)
+                Text(value)
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+            }
+            Spacer()
+            
+            ZStack {
+                Circle()
+                    .fill(iconColor.opacity(0.2))
+                    .frame(width: 32, height: 32)
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(iconColor)
+            }
+        }
+        .padding(24)
+        .background(Color.slate800)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+        )
+        .shadow(color: .clear, radius: 10, x: 0, y: 4)
     }
 }

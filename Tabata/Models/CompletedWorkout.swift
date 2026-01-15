@@ -25,6 +25,7 @@ final class CompletedWorkout: Identifiable {
     var calories: Int
     var avgHeartRate: Int
     var reps: Int
+    var rounds: Int
     
     init(date: Date = Date(), 
          duration: TimeInterval, 
@@ -34,7 +35,8 @@ final class CompletedWorkout: Identifiable {
          totalCoolDown: TimeInterval, 
          calories: Int = 0, 
          avgHeartRate: Int = 0,
-         reps: Int = 0) {
+         reps: Int = 0,
+         rounds: Int = 0) {
         self.id = UUID()
         self.date = date
         self.duration = duration
@@ -45,5 +47,6 @@ final class CompletedWorkout: Identifiable {
         self.calories = calories
         self.avgHeartRate = avgHeartRate
         self.reps = reps
+        self.rounds = rounds
     }
 }

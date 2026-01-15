@@ -73,7 +73,9 @@ struct CompletedView: View {
                                 work: workout.totalWork,
                                 rest: workout.totalRest,
                                 coolDown: workout.totalCoolDown,
-                                reps: workout.reps
+                                reps: workout.reps,
+                                rounds: workout.rounds,
+                                workoutCount: 1
                             )
                         } else {
                             Text("No Statistics Available\n(Workout: \(workout == nil ? "nil" : "ok"), History: \(history.count))")
