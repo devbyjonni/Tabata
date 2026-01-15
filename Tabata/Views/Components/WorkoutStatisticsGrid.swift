@@ -33,7 +33,7 @@ struct WorkoutStatisticsGrid: View {
                 title: "DURATION",
                 value: duration.formatTime(),
                 icon: Icons.clock.rawValue,
-                iconColor: Color.slate500.opacity(0.5)
+                iconColor: Color.white
             )
             
             // Bottom Row: Rounds & Reps
@@ -48,7 +48,7 @@ struct WorkoutStatisticsGrid: View {
                 
                 // Reps
                 SmallStatCard(
-                    title: "TOTAL REPS",
+                    title: "REPS",
                     value: "\(reps)",
                     icon: Icons.repeatIcon.rawValue,
                     iconColor: .blue
@@ -133,12 +133,12 @@ fileprivate struct SmallStatCard: View {
     
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(title)
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(Color.slate400)
                 Text(value)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
             }
             Spacer()
