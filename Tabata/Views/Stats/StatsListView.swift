@@ -36,7 +36,7 @@ struct StatsListView: View {
                         rightAction: { isSharePresented = true }
                     )
                     .sheet(isPresented: $isSharePresented) {
-                        ShareSheet(activityItems: ["Check out Tabata Pro! The best app for HIIT training."])
+                        ShareSheet(activityItems: ["Check out Tabata Pro! The best app for HIIT training.", Bundle.main.icon].compactMap { $0 })
                     }
                     
                     if #available(iOS 17.0, *) {

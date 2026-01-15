@@ -95,13 +95,13 @@ struct CompletedView: View {
                 }
             }
         }
-
+        
         .navigationBarBackButtonHidden(true)
         .overlay {
             ConfettiView()
         }
         .sheet(isPresented: $isSharePresented) {
-            ShareSheet(activityItems: [shareText])
+            ShareSheet(activityItems: [shareText, Bundle.main.icon].compactMap { $0 })
         }
     }
     
@@ -117,5 +117,5 @@ struct CompletedView: View {
         // Example: "I just crushed a Tabata workout! 🔥 4:00 • 8 Rounds • 64 Reps #TabataPro"
         return "I just crushed a Tabata workout! 🔥 \(w.duration.formatTime()) • \(w.rounds) Rounds • \(w.reps) Reps #TabataPro"
     }
-
-
+    
+}
