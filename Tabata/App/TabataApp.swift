@@ -32,6 +32,8 @@ struct TabataApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
+                Color.black.ignoresSafeArea()
+                
                 if showSplash {
                     SplashScreenView()
                 } else {
@@ -47,5 +49,6 @@ struct TabataApp: App {
             }
         }
         .modelContainer(sharedModelContainer)
+        .preferredColorScheme(.dark)
     }
 }
