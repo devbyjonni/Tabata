@@ -19,22 +19,30 @@ struct CompletedView: View {
     
     var body: some View {
         ZStack {
-            Color.slate900.ignoresSafeArea()
-            
             VStack(spacing: 0) {
                 NavbarView(
                     title: "Completed",
-                    leftIcon: leftIcon,
-                    rightIcon: Icons.share.rawValue,
-                    leftAction: {
-                        if let action = action {
-                            action()
-                        } else {
-                            dismiss()
+                    leftContent: {
+                        NavbarButton(icon: leftIcon) {
+                            if let action = action {
+                                action()
+                            } else {
+                                dismiss()
+                            }
                         }
                     },
-                    rightAction: {
-                        isSharePresented = true
+                    rightContent: {
+                        ShareLink(item: shareText) {
+                            // Replicating NavbarButton styling
+                            ZStack {
+                                Circle()
+                                    .fill(Color.slate800)
+                                    .frame(width: 44, height: 44)
+                                Image(systemName: Icons.share.rawValue)
+                                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }
                 )
                 
@@ -58,7 +66,6 @@ struct CompletedView: View {
                                     .font(.system(size: 44))
                                     .foregroundStyle(.yellow)
                             }
-                            
                             VStack(spacing: 8) {
                                 Text("Congratulations!")
                                     .font(.system(size: 32, weight: .black, design: .rounded))
@@ -88,34 +95,25 @@ struct CompletedView: View {
                                 .foregroundStyle(Color.slate500)
                                 .padding()
                         }
-                        
-                        Color.clear.frame(height: 20)
                     }
                     .padding()
                 }
             }
         }
-        
+        .background(Color.slate900)
         .navigationBarBackButtonHidden(true)
         .overlay {
             ConfettiView()
         }
-        .sheet(isPresented: $isSharePresented) {
-            ShareSheet(activityItems: [shareText, Bundle.main.icon as Any?].compactMap { $0 })
-        }
     }
     
     // MARK: - Share Logic
-    
-    @State private var isSharePresented = false
     
     private var shareText: String {
         guard let w = workout ?? history.first else {
             return "Check out Tabata Pro! A great app for HIIT workouts."
         }
         
-        // Example: "I just crushed a Tabata workout! 🔥 4:00 • 8 Rounds • 64 Reps #TabataPro"
         return "I just crushed a Tabata workout! 🔥 \(w.duration.formatTime()) • \(w.rounds) Rounds • \(w.reps) Reps #TabataPro"
     }
-    
 }

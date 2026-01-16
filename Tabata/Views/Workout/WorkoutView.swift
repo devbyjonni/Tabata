@@ -51,11 +51,10 @@ struct WorkoutView: View {
                         .font(.system(size: 20, weight: .black, design: .rounded))
                         .tracking(2)
                         .foregroundStyle(.white)
-                        //.textCase(.uppercase) // text is already uppercased in string literal for "WORKOUT", "DONE" is uppercase? "Done" in code. so .textCase(.uppercase) is good.
                         .textCase(.uppercase)
                     
                     Spacer()
-                    
+    
                     // Sound Toggle
                     ControlButton(
                         icon: (settings.first?.isSoundEnabled ?? true) ? Icons.speaker.rawValue : Icons.speakerSlash.rawValue,
@@ -82,31 +81,21 @@ struct WorkoutView: View {
                 .padding(.top, 10)
                 
                 VStack(spacing: 2) {
-                    
                     Spacer()
-                    
                     PhaseTitleView(phase: viewModel.phase)
-                    
                     Spacer()
-                    
                     WorkoutTimerView(viewModel: viewModel)
-                    
                     Spacer()
-                    
                     WorkoutStatsView(viewModel: viewModel)
-                    
                     Spacer()
-                    
                     WorkoutControlsView(viewModel: viewModel, dismissAction: {
                         dismiss()
                     })
-                    
                     Spacer()
                 }
                 .padding()
             }
         }
-        .preferredColorScheme(.dark) // Force light text for status bar and alerts
         .onAppear {
             if let config = configurations.first, let currentSettings = self.settings.first {
                 // Initialize UI immediately
@@ -149,7 +138,6 @@ struct WorkoutView: View {
         case .idle: return Theme.background
         }
     }
-        
 }
 
 

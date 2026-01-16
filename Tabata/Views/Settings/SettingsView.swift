@@ -22,16 +22,16 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-            Color.slate900.ignoresSafeArea()
-            
             VStack(spacing: 0) {
                 // Header
                 NavbarView(
                     title: "Settings",
-                    leftIcon: Icons.xmark.rawValue,
-                    rightIcon: "",
-                    leftAction: { dismiss() },
-                    rightAction: {}
+                    leftContent: {
+                        NavbarButton(icon: Icons.xmark.rawValue, action: { dismiss() })
+                    },
+                    rightContent: {
+                        Color.clear.frame(width: 44, height: 44)
+                    }
                 )
                 .padding(.bottom, 20)
                 
@@ -49,7 +49,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
+        .background(Color.slate900)
     }
     
     // MARK: - Sections

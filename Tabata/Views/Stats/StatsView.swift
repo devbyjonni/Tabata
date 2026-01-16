@@ -18,15 +18,15 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.slate900.ignoresSafeArea()
-                
                 VStack(spacing: 0) {
                     NavbarView(
                         title: "Stats",
-                        leftIcon: Icons.xmark.rawValue,
-                        rightIcon: Icons.list.rawValue,
-                        leftAction: { dismiss() },
-                        rightAction: { showHistory = true }
+                        leftContent: {
+                            NavbarButton(icon: Icons.xmark.rawValue, action: { dismiss() })
+                        },
+                        rightContent: {
+                            NavbarButton(icon: Icons.list.rawValue, action: { showHistory = true })
+                        }
                     )
                     
                     ScrollView {
@@ -66,6 +66,7 @@ struct StatsView: View {
                     }
                 }
             }
+            .background(Color.slate900)
             .navigationDestination(isPresented: $showHistory) {
                 StatsListView()
                     .navigationBarBackButtonHidden(true)

@@ -26,15 +26,15 @@ struct StartView: View {
     
     var body: some View {
         ZStack {
-            Color.slate900.ignoresSafeArea()
-            
             VStack(spacing: 0) {
                 NavbarView(
                     title: "TABATA PRO",
-                    leftIcon: Icons.stats.rawValue,
-                    rightIcon: Icons.settings.rawValue,
-                    leftAction: { showStats = true },
-                    rightAction: { showSettings = true }
+                    leftContent: {
+                        NavbarButton(icon: Icons.stats.rawValue, action: { showStats = true })
+                    },
+                    rightContent: {
+                        NavbarButton(icon: Icons.settings.rawValue, action: { showSettings = true })
+                    }
                 )
                 
                 ScrollView {
@@ -52,6 +52,7 @@ struct StartView: View {
                 }
             }
         }
+        .background(Color.slate900)
         .overlay(alignment: .bottom) {
             VStack {
                 Spacer()
@@ -95,7 +96,6 @@ struct StartView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
-        .preferredColorScheme(.dark)
         .onAppear {
             if self.configurations.isEmpty {
                 let newSettings = TabataConfiguration()

@@ -18,26 +18,30 @@ struct StatsListView: View {
     // Sort logic handled by Query
     @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
     
-    // Local state to manage edit mode if not using Environment driven EditButton
     @State private var isEditing: Bool = false
-    @State private var isSharePresented = false
     
     var body: some View {
         ZStack {
-            Color.slate900.ignoresSafeArea()
-            
             if history.isEmpty {
                 VStack {
                     NavbarView(
                         title: "History",
-                        leftIcon: Icons.back.rawValue,
-                        rightIcon: Icons.share.rawValue,
-                        leftAction: { dismiss() },
-                        rightAction: { isSharePresented = true }
+                        leftContent: {
+                            NavbarButton(icon: Icons.back.rawValue, action: { dismiss() })
+                        },
+                        rightContent: {
+                            ShareLink(item: "Check out Tabata Pro! The best app for HIIT training.") {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.slate800)
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: Icons.share.rawValue)
+                                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                        }
                     )
-                    .sheet(isPresented: $isSharePresented) {
-                        ShareSheet(activityItems: ["Check out Tabata Pro! The best app for HIIT training.", Bundle.main.icon as Any?].compactMap { $0 })
-                    }
                     
                     if #available(iOS 17.0, *) {
                         ContentUnavailableView(
@@ -64,12 +68,14 @@ struct StatsListView: View {
                 VStack(spacing: 0) {
                     NavbarView(
                         title: "History",
-                        leftIcon: Icons.back.rawValue,
-                        rightIcon: isEditing ? "checkmark" : Icons.edit.rawValue,
-                        leftAction: { dismiss() },
-                        rightAction: {
-                            withAnimation {
-                                isEditing.toggle()
+                        leftContent: {
+                            NavbarButton(icon: Icons.back.rawValue, action: { dismiss() })
+                        },
+                        rightContent: {
+                            NavbarButton(icon: isEditing ? "checkmark" : Icons.edit.rawValue) {
+                                withAnimation {
+                                    isEditing.toggle()
+                                }
                             }
                         }
                     )
@@ -97,6 +103,7 @@ struct StatsListView: View {
                 }
             }
         }
+        .background(Color.slate900)
         .navigationBarBackButtonHidden(true)
     }
     
@@ -135,9 +142,9 @@ fileprivate struct HistoryRow: View {
             }
             Spacer()
             
-             Image(systemName: "chevron.right")
-                 .font(.caption)
-                 .foregroundStyle(Color.slate600)
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(Color.slate600)
         }
         .padding(.vertical, 8)
     }

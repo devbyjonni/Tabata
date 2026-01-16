@@ -32,14 +32,14 @@ struct TabataApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                Color.black.ignoresSafeArea()
-                
                 if showSplash {
                     SplashScreenView()
                 } else {
                     StartView()
                 }
             }
+            .background(Color.slate900)
+            .preferredColorScheme(.dark)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation(.easeOut(duration: 0.5)) {
@@ -47,7 +47,6 @@ struct TabataApp: App {
                     }
                 }
             }
-            .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }
