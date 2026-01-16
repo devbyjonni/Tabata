@@ -15,7 +15,7 @@ Tabata Pro is a native iOS application designed for High-Intensity Interval Trai
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="assets/image1.png" width="100%" alt="Tabata Pro App Screenshot" />
+  <img src="screenshots/showcase.png" width="100%" alt="Tabata Pro App Screenshot" />
 </p>
 
 ### 2. Testable Audio Architecture (Dependency Injection)
