@@ -25,8 +25,12 @@ final class WorkoutViewModel {
     // is unaffected by system time changes or suspended states.
     // This creates "Drift-Free" timing by relying on absolute duration
     // rather than accumulating error-prone relative ticks.
-    private let clock = ContinuousClock()
+    private let timeProvider: () -> ContinuousClock.Instant
     private var lastTickTime: ContinuousClock.Instant?
+
+    init(timeProvider: @escaping () -> ContinuousClock.Instant = { ContinuousClock().now }) {
+        self.timeProvider = timeProvider
+    }
     
     /// Progress of the current phase (0.0 to 1.0) for the UI ring.
     var progress: Double {
@@ -62,7 +66,7 @@ final class WorkoutViewModel {
             }
         }
         isActive = true
-        lastTickTime = clock.now
+        lastTickTime = timeProvider()
     }
     
     func pause() {
@@ -87,7 +91,7 @@ final class WorkoutViewModel {
     func tick() {
         guard isActive else { return }
         
-        let now = clock.now
+        let now = timeProvider()
         
         guard let lastTime = lastTickTime else {
             lastTickTime = now

@@ -8,15 +8,25 @@
 import XCTest
 @testable import Tabata
 
+@MainActor
 final class WorkoutViewModelTests: XCTestCase {
     
     var viewModel: WorkoutViewModel!
     var config: TabataConfiguration!
     var settings: TabataSettings!
+    // Simulated Time Control
+    var simulatedTime: ContinuousClock.Instant!
     
     override func setUp() {
         super.setUp()
-        viewModel = WorkoutViewModel()
+        // Anchor time at "now"
+        simulatedTime = ContinuousClock.now
+        
+        // Inject provider that returns our simulated time
+        viewModel = WorkoutViewModel(timeProvider: { [weak self] in
+            return self?.simulatedTime ?? ContinuousClock.now
+        })
+        
         settings = TabataSettings()
         // Standard config for testing transitions
         config = TabataConfiguration(
@@ -239,6 +249,8 @@ final class WorkoutViewModelTests: XCTestCase {
     private func advanceTime(seconds: Double) {
         let ticks = Int(seconds / 0.05)
         for _ in 0..<ticks {
+            // Advance the simulated clock by one tick duration
+            simulatedTime += .seconds(0.05)
             viewModel.tick()
         }
     }
