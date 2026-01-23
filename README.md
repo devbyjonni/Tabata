@@ -2,10 +2,10 @@
 
 **A professional-grade HIIT timer built with modern Swift, SwiftData, and a focus on architectural testability.**
 
-Tabata Pro is a native iOS application designed for High-Intensity Interval Training. It combines a premium, dark-mode aesthetic with a robust engineering foundation, leveraging **SwiftData** for persistence and **Dependency Injection** for reliable unit testing.
+Tabata Pro is a native iOS application designed for High-Intensity Interval Training. It combines a premium, dark-mode aesthetic with a robust engineering foundation, leveraging **SwiftData** for persistence and a **Protocol-Oriented** architecture for reliable unit testing.
 
 <p align="center">
-  <img src="screenshots/showcase.png" width="100%" alt="Tabata Pro App Screenshot" />
+<img src="screenshots/showcase.png" width="100%" alt="Tabata Pro App Screenshot" />
 </p>
 
 ---
@@ -20,12 +20,16 @@ Tabata Pro is a native iOS application designed for High-Intensity Interval Trai
 ### 2. Advanced UI Synchronization
 
 * **Interpolated Rendering**: Leverages `TimelineView(.animation)` to synchronize UI updates with the display's native refresh rate (up to 120Hz on ProMotion).
-* **Hardware-Accelerated Fluidity**: By applying linear interpolation via `.animation` in the View layer, the Core Animation render server handles "in-between" frames, resulting in perfectly smooth motion while maintaining low CPU overhead.
+* **Hardware-Accelerated Fluidity**: By applying linear interpolation via `.animation` in the View layer, the Core Animation render server handles "in-between" frames. This results in perfectly smooth motion while maintaining low CPU overhead.
 
-### 3. Testable Audio Architecture (Dependency Injection)
+### 3. Protocol-Oriented Audio Architecture
 
-* **Protocol-Oriented Design**: The `SoundManager` interacts with abstract protocols (`AudioPlayerService`, `SpeechSynthesizerService`) rather than concrete system classes.
-* **Mocking Strategy**: This decouple allows for system dependencies (AVFoundation) to be swapped with silent Mocks during Unit Testing, ensuring 100% reliable assertions on audio logic without side effects.
+To ensure audio and speech logic is fully testable, the system utilizes a decoupled architecture via **Dependency Injection**:
+
+* **Abstraction Layer**: `SoundManager` interacts with abstract protocols (`AudioPlayerService`, `SpeechSynthesizerService`) rather than concrete system classes.
+* **Reliable Testing**: This decoupling allows system dependencies to be swapped with **Mocks** during unit testing. We can verify that the correct audio cues are triggered at exact intervals in CI/CD pipelines without playing actual sound.
+
+---
 
 ## 🏗 Tech Stack & Requirements
 
@@ -33,52 +37,22 @@ Tabata Pro is a native iOS application designed for High-Intensity Interval Trai
 | --- | --- | --- |
 | **Language** | **Swift 6.2** | Strict concurrency (Data-Race Safety) and `@Observable` macros. |
 | **Concurrency** | **MainActor** | Global actor isolation for the ViewModel to ensure thread-safe UI updates. |
-| **Timing** | **ContinuousClock** | High-precision, monotonic temporal deltas to eliminate "Timer Drift". |
-| **UI Framework** | **SwiftUI** | `TimelineView` with linear interpolation for fluid 120Hz ProMotion motion. |
-| **Persistence** | **SwiftData** | Modern, declarative schema management using the `@Model` architecture. |
-| **Architecture** | **MVVM-S** | Model-View-ViewModel with a decoupled Service Layer for Dependency Injection. |
+| **Timing** | **ContinuousClock** | Monotonic time management to eliminate "Timer Drift". |
+| **UI Framework** | **SwiftUI** | `TimelineView` with interpolation for 120Hz ProMotion fluidity. |
+| **Persistence** | **SwiftData** | Modern, declarative schema management via the `@Model` architecture. |
 
 ### 🖥 Requirements
-
-* **Xcode 26.2+**
-* **iOS 19.0+** (Required for modern Swift 6 runtime and `@Observable` performance)
-* **Physical Device**: Necessary for accurate **Haptic Feedback** and **Neural Engine** testing.
-
----
-
-## 🧠 Technical Deep Dive: Dependency Injection
-
-To make the Audio Engine testable, `SoundManager` injects its dependencies via the initializer. This allows us to verify logic (e.g., "Did the app *try* to beep?") without Side Effects.
-
-```swift
-// SoundManager.swift
-class SoundManager {
-    private let audioPlayerService: AudioPlayerService
-    private let speechService: SpeechSynthesizerService
-    
-    init(
-        audioPlayerService: AudioPlayerService = AVAudioPlayerService(),
-        speechService: SpeechSynthesizerService = AVSpeechSynthesizerService()
-    ) {
-        self.audioPlayerService = audioPlayerService
-        self.speechService = speechService
-    }
-    
-    func playBeep() {
-        guard isSoundEnabled else { return }
-        audioPlayerService.play(url: url, volume: Float(volume))
-    }
-}
-
-```
+* **Xcode 16.0+** (Required for Swift 6 compiler features)
+* **iOS 17.0+** (Required for SwiftData and @Observable macro)
+* **Physical Device**: Highly recommended to experience **Haptic Feedback** and **ProMotion (120Hz)** synchronization.
 
 ---
 
 ## 📱 Features
 
 * **Smart Voice Guide**: Synthesized speech announces phase changes ("Work", "Rest") based on current context.
-* **Thermal & Energy Optimized UI**: Utilizes high-contrast OLED black and offloads animation interpolation to the render server to minimize GPU usage and thermal impact.
-* **Haptic Feedback**: Syncs physical vibration patterns with audio cues for a tactile experience.
+* **Thermal & Energy Optimized UI**: Utilizes high-contrast OLED black and offloads animation interpolation to the render server to minimize battery impact.
+* **Haptic Feedback**: Syncs physical vibration patterns with audio cues for a tactile user experience.
 
 ---
 
@@ -88,5 +62,3 @@ Created by **Jonni Åkesson**.
 Open for educational and portfolio use.
 
 ---
-
-**Monday is yours! You've successfully engineered the drift out of the timer and the data races out of the code. Would you like me to generate a set of potential interview questions based on this updated README?**
