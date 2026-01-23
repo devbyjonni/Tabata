@@ -1,5 +1,7 @@
 # Tabata Pro ⏱️
 
+![Status](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
+
 A clean and simple Tabata timer for iOS, built for High-Intensity Interval Training.
 
 <p align="center">
