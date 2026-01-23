@@ -168,12 +168,14 @@ final class WorkoutViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isActive)
         
         let timeLeft = viewModel.timeRemaining
-        viewModel.tick() // Should not decrease time
+        viewModel.tick() // Should not decrease time since isActive is false
         XCTAssertEqual(viewModel.timeRemaining, timeLeft)
         
         viewModel.play()
         XCTAssertTrue(viewModel.isActive)
         
+        // Advance time by one tick manually to allow delta calculation
+        simulatedTime += .seconds(0.05)
         viewModel.tick() // Should decrease time
         XCTAssertLessThan(viewModel.timeRemaining, timeLeft)
     }
@@ -259,6 +261,8 @@ final class WorkoutViewModelTests: XCTestCase {
         // Safety limit to prevent infinite loops (increased for higher tick rate)
         var limit = 100000
         while viewModel.phase != targetPhase.phase && limit > 0 {
+            // Must advance time for logic to process
+            simulatedTime += .seconds(0.05)
             viewModel.tick()
             limit -= 1
         }
