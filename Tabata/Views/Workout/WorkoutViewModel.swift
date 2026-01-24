@@ -224,15 +224,14 @@ final class WorkoutViewModel {
         let totalSegments = config.sets * config.rounds
         let rest = config.restTime * Double(max(0, totalSegments - 1))
         let coolDown = config.coolDownTime
-        let totalDuration = warmUp + work + rest + coolDown
         
         return CompletedWorkout(
-            duration: totalDuration,
+            duration: config.totalDuration,
             totalWarmUp: warmUp,
             totalWork: work,
             totalRest: rest,
             totalCoolDown: coolDown,
-            calories: Int(totalDuration * 0.15),
+            calories: Int(config.totalDuration * 0.15),
             avgHeartRate: Int.random(in: 130...160),
             reps: config.sets * config.rounds,
             rounds: config.rounds

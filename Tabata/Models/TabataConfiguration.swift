@@ -36,4 +36,10 @@ final class TabataConfiguration {
         self.restTime = restTime
         self.coolDownTime = coolDownTime
     }
+    
+    var totalDuration: Double {
+        let cycleDuration = workTime + restTime
+        let totalCycleTime = Double(sets) * Double(rounds) * cycleDuration
+        return warmUpTime + totalCycleTime + coolDownTime
+    }
 }

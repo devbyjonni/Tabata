@@ -17,7 +17,7 @@ struct TabataApp: App {
             CompletedWorkout.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
             
@@ -26,27 +26,14 @@ struct TabataApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     @State private var showSplash = true
-
+    
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                if showSplash {
-                    SplashScreenView()
-                } else {
-                    StartView()
-                }
-            }
-            .background(Color.slate900)
-            .preferredColorScheme(.dark)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    withAnimation(.easeOut(duration: 0.5)) {
-                        showSplash = false
-                    }
-                }
-            }
+            StartView()
+                .background(Color.slate900)
+                .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }
