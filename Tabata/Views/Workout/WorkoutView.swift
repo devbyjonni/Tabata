@@ -10,12 +10,18 @@ import SwiftData
 import Combine
 
 /// The active workout screen.
-/// Manages the workout timer, displays the current phase, and handles user controls (Pause, Resume, Stop).
+///
+/// **Responsibilities:**
+/// *   **Presentation**: Displays the current workout phase, timer, and statistics.
+/// *   **Input Handling**: Captures user interactions (Pause, Resume, Stop) and delegates to `WorkoutViewModel`.
+/// *   **State Observation**: Observes the ViewModel's state to trigger dismissal or completion saves.
+/// *   **Data Injection**: Fetches `TabataConfiguration` and passes it to the ViewModel.
 struct WorkoutView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     @Query private var settings: [TabataSettings]
+    
     @Binding var completed: Bool
     @Binding var savedWorkout: CompletedWorkout?
     
@@ -139,5 +145,3 @@ struct WorkoutView: View {
         }
     }
 }
-
-

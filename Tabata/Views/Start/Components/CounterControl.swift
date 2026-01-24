@@ -88,7 +88,7 @@ struct CounterControl: View {
     private func updateValue(by amount: Int) {
         guard let config = configurations.first else { return }
         
-        var newValue = value + amount
+        let newValue = value + amount
         if !range.contains(newValue) { return }
         
         switch type {
