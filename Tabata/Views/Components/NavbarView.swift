@@ -8,15 +8,18 @@
 import SwiftUI
 import SwiftData
 
-/// Navigation bar component with title and optional left/right action buttons.
-/// Adapts its style based on the current context and theme (Dark Mode support).
+/// A flexible navigation bar component that accepts generic views for left and right utility areas.
+///
+/// Uses `@ViewBuilder` to allow any SwiftUI view (buttons, text, empty views) to be passed
+/// seamlessly, providing a standardized title layout with customizable actions.
 struct NavbarView<LeftContent: View, RightContent: View>: View {
     let title: String
-    @ViewBuilder let leftContent: () -> LeftContent
-    @ViewBuilder let rightContent: () -> RightContent
     
-    // Convenience init for legacy usage (migrating this helps, but we can also just update call sites)
-    // For now, let's making it purely generic to be clean.
+    /// The content to place on the left side (e.g., Back button, Cancel).
+    @ViewBuilder let leftContent: () -> LeftContent
+    
+    /// The content to place on the right side (e.g., Save, Edit, Share).
+    @ViewBuilder let rightContent: () -> RightContent
     
     var body: some View {
         HStack {
