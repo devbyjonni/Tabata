@@ -119,6 +119,12 @@ struct StartView: View {
                  SoundManager.shared.countdownDuration = currentSettings.countdownDuration
                  HapticManager.shared.isHapticsEnabled = currentSettings.isHapticsEnabled
             }
+            
+            // Warm up engines
+            Task(priority: .background) {
+                SoundManager.shared.prepare()
+                HapticManager.shared.prepare()
+            }
         }
     }
 }

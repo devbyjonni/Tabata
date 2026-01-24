@@ -140,6 +140,7 @@ struct WorkoutView: View {
         case .warmUp: return Theme.warmup
         case .work: return Theme.work
         case .rest: return Theme.rest
+        case .restBetweenRounds: return Theme.rest.opacity(0.8) // Slightly different shade
         case .coolDown: return Theme.cooldown
         case .idle: return Theme.background
         }

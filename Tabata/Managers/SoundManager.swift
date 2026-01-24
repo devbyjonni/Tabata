@@ -43,6 +43,12 @@ class SoundManager {
         guard isSoundEnabled && isVoiceGuideEnabled else { return }
         speechService.speak(text, volume: Float(volume))
     }
+    
+    /// Preloads audio resources to prevent lag on first playback.
+    func prepare() {
+        audioPlayerService.warmUp()
+        speechService.warmUp()
+    }
 }
 
 // MARK: - Audio Protocols
@@ -50,11 +56,13 @@ class SoundManager {
 /// Protocol for playing audio files (e.g. beeps)
 protocol AudioPlayerService {
     func play(url: URL, volume: Float)
+    func warmUp()
 }
 
 /// Protocol for synthesizing speech
 protocol SpeechSynthesizerService {
     func speak(_ text: String, volume: Float)
+    func warmUp()
 }
 
 // MARK: - Concrete Implementations
@@ -62,18 +70,35 @@ protocol SpeechSynthesizerService {
 /// Real implementation using AVAudioPlayer
 class AVAudioPlayerService: AudioPlayerService {
     private var audioPlayer: AVAudioPlayer?
+    private let queue = DispatchQueue(label: "com.tabata.audio.player", qos: .userInitiated)
     
     func play(url: URL, volume: Float) {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.volume = volume
-            audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
-        } catch {
-            print("AudioPlayerService: Error playing sound - \(error.localizedDescription)")
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                let player = try AVAudioPlayer(contentsOf: url)
+                player.volume = volume
+                player.prepareToPlay()
+                player.play()
+                
+                // Keep reference to avoid deallocation
+                self.audioPlayer = player
+            } catch {
+                print("AudioPlayerService: Error playing sound - \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func warmUp() {
+        queue.async {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            } catch {
+                print("AudioPlayerService: Warmup error - \(error.localizedDescription)")
+            }
         }
     }
 }
@@ -81,19 +106,29 @@ class AVAudioPlayerService: AudioPlayerService {
 /// Real implementation using AVSpeechSynthesizer
 class AVSpeechSynthesizerService: SpeechSynthesizerService {
     private let synthesizer = AVSpeechSynthesizer()
+    private let queue = DispatchQueue(label: "com.tabata.audio.speech", qos: .userInitiated)
     
     func speak(_ text: String, volume: Float) {
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.rate = 0.5
-        utterance.volume = volume
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .duckOthers)
-            try AVAudioSession.sharedInstance().setActive(true)
-            synthesizer.speak(utterance)
-        } catch {
-            print("SpeechSynthesizerService: Error speaking - \(error.localizedDescription)")
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            let utterance = AVSpeechUtterance(string: text)
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+            utterance.rate = 0.5
+            utterance.volume = volume
+            
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .duckOthers)
+                try AVAudioSession.sharedInstance().setActive(true)
+                self.synthesizer.speak(utterance)
+            } catch {
+                print("SpeechSynthesizerService: Error speaking - \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func warmUp() {
+        queue.async { [weak self] in
+            _ = self?.synthesizer
         }
     }
 }

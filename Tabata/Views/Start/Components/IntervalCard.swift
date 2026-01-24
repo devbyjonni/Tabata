@@ -31,6 +31,7 @@ struct IntervalCard: View {
         case .warmUp: return config.warmUpTime
         case .work: return config.workTime
         case .rest: return config.restTime
+        case .restBetweenRounds: return config.restBetweenRounds
         case .coolDown: return config.coolDownTime
         case .idle: return 0
         }
@@ -104,6 +105,7 @@ struct IntervalCard: View {
         case .warmUp: config.warmUpTime = newValue
         case .work: config.workTime = newValue
         case .rest: config.restTime = newValue
+        case .restBetweenRounds: config.restBetweenRounds = newValue
         case .coolDown: config.coolDownTime = newValue
         case .idle: break // Idle phase doesn't have a time to update
         }
