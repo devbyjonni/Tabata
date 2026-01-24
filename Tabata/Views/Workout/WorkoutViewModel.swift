@@ -77,7 +77,7 @@ final class WorkoutViewModel {
     func stop() {
         isActive = false
         isFinished = false
-        phase = .idle
+        // phase = .idle // Removed to prevent UI flash on dismissal
         timeRemaining = 0
     }
 
