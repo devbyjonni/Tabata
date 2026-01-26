@@ -14,12 +14,22 @@ struct ProgressMetricView: View {
     let total: Int
     var titleColor: Color = .secondary
     var valueColor: Color = .primary
+    var icon: String? = nil
     
     var body: some View {
-        VStack {
-            Text(title)
-                .font(.system(size: 15, weight: .medium, design: .rounded))
-                .foregroundColor(titleColor)
+        VStack(spacing: 4) {
+             HStack(spacing: 6) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .renderingMode(.template)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                Text(title)
+                    .font(.system(size: 15, weight: .medium, design: .rounded))
+            }
+            .foregroundColor(titleColor)
+            
             Text("\(current) of \(total)")
                 .font(.system(size: 26, weight: .bold, design: .rounded))
                 .fontWeight(.bold)
@@ -28,5 +38,3 @@ struct ProgressMetricView: View {
         }
     }
 }
-
-

@@ -36,4 +36,6 @@ enum Icons: String {
     case trophy = "trophy.fill"
     case hourglass = "hourglass"
     case repeatIcon = "repeat"
+    case dumbbell = "dumbbell.fill"
+    case flag = "flag.fill"
 }

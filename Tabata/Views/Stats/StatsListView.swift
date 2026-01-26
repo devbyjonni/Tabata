@@ -133,9 +133,9 @@ fileprivate struct HistoryRow: View {
                 HStack(spacing: 6) {
                     Label(workout.duration.formatTime(), systemImage: Icons.clock.rawValue)
                     Text("•")
-                    Label("\(workout.rounds) rounds", systemImage: Icons.trophy.rawValue)
+                    Label("\(workout.rounds) rounds", systemImage: Icons.flag.rawValue)
                     Text("•")
-                    Label("\(workout.reps) reps", systemImage: Icons.repeatIcon.rawValue)
+                    Label("\(workout.reps) reps", systemImage: Icons.dumbbell.rawValue)
                 }
                 .font(.caption)
                 .foregroundStyle(Color.slate400)

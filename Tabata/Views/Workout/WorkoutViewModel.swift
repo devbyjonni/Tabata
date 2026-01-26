@@ -146,7 +146,7 @@ final class WorkoutViewModel {
         case .warmUp: text = "Warm Up"
         case .work: text = "Work"
         case .rest: text = "Rest"
-        case .restBetweenRounds: text = "Rest Between Rounds"
+        case .restBetweenRounds: text = "Rest Rounds"
         case .coolDown: text = "Cool Down"
         case .idle: return
         }

@@ -12,6 +12,6 @@ enum WorkoutPhase: String {
     case warmUp = "Warm Up"
     case work = "Work"
     case rest = "Rest"
-    case restBetweenRounds = "Rest Between Rounds"
+    case restBetweenRounds = "Rest Rounds"
     case coolDown = "Cool Down"
 }
