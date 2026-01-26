@@ -55,6 +55,10 @@ class MockAudioPlayerService: AudioPlayerService {
         lastPlayedURL = url
         lastVolume = volume
     }
+    
+    func warmUp() {
+        // No-op for mock
+    }
 }
 
 class MockSpeechSynthesizerService: SpeechSynthesizerService {
@@ -66,6 +70,10 @@ class MockSpeechSynthesizerService: SpeechSynthesizerService {
         speakCalledCount += 1
         lastSpokenText = text
         lastVolume = volume
+    }
+    
+    func warmUp() {
+        // No-op for mock
     }
 }
 
