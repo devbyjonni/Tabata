@@ -35,7 +35,7 @@ struct WorkoutStatisticsGrid: View {
                 title: "DURATION",
                 value: duration.formatTime(),
                 icon: Icons.clock.rawValue,
-                iconColor: Color.white.opacity(0.8)
+                iconColor: Color.white.opacity(0.3)
             )
             
             // Bottom Row: Rounds & Reps
@@ -44,14 +44,16 @@ struct WorkoutStatisticsGrid: View {
                 SmallStatCard(
                     title: "ROUNDS",
                     value: "\(rounds)",
-                    icon: Icons.flag.rawValue
+                    icon: Icons.flag.rawValue,
+                    iconColor: Color.white.opacity(0.3)
                 )
                 
                 // Reps
                 SmallStatCard(
                     title: "REPS",
                     value: "\(reps)",
-                    icon: Icons.dumbbell.rawValue
+                    icon: Icons.dumbbell.rawValue,
+                    iconColor: Color.white.opacity(0.3)
                 )
             }
             
@@ -90,7 +92,7 @@ struct WorkoutStatisticsGrid: View {
                 }
             }
             
-           
+            
         }
     }
 }
@@ -128,7 +130,8 @@ fileprivate struct StatCard: View {
 fileprivate struct SmallStatCard: View {
     let title: String
     let value: String
-    var icon: String? = nil
+    var icon: String
+    let iconColor: Color
     
     var body: some View {
         HStack {
@@ -141,12 +144,10 @@ fileprivate struct SmallStatCard: View {
                     .foregroundStyle(.white)
             }
             Spacer()
-            
-            if let icon = icon {
-                Image(systemName: icon)
-                    .font(.system(size: 24))
-                    .foregroundStyle(.white)
-            }
+            Image(systemName: icon)
+                .font(.system(size: 24))
+                .foregroundStyle(iconColor)
+                .offset(y: -20)
         }
         .padding(24)
         .background(Color.slate800)

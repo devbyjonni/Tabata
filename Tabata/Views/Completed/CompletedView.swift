@@ -14,6 +14,8 @@ struct CompletedView: View {
     @Environment(\.dismiss) private var dismiss
     var workout: CompletedWorkout?
     var leftIcon: String = Icons.xmark.rawValue
+    var title: String? = nil
+    var showConfetti: Bool = true
     var action: (() -> Void)? = nil
     @Query(sort: \CompletedWorkout.date, order: .reverse) private var history: [CompletedWorkout]
     
@@ -21,7 +23,7 @@ struct CompletedView: View {
         ZStack {
             VStack(spacing: 0) {
                 NavbarView(
-                    title: "Completed",
+                    title: title ?? "Completed",
                     leftContent: {
                         NavbarButton(icon: leftIcon) {
                             if let action = action {
@@ -103,7 +105,9 @@ struct CompletedView: View {
         .background(Color.slate900)
         .navigationBarBackButtonHidden(true)
         .overlay {
-            ConfettiView()
+            if showConfetti {
+                ConfettiView()
+            }
         }
     }
     

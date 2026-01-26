@@ -24,7 +24,7 @@ struct StatsSummaryCard: View {
                     .textCase(.uppercase)
                 
                 Text(value)
-                    .font(.system(size: 40, weight: .black, design: .rounded))
+                    .font(.system(size: 42, weight: .black, design: .rounded))
                     .monospacedDigit()
                     .foregroundStyle(.white)
             }
@@ -32,6 +32,7 @@ struct StatsSummaryCard: View {
             Image(systemName: icon)
                 .font(.system(size: 40))
                 .foregroundStyle(iconColor)
+                .offset(y: -20)
         }
         .padding(24)
         .background(Color.slate800)

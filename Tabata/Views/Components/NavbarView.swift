@@ -22,15 +22,22 @@ struct NavbarView<LeftContent: View, RightContent: View>: View {
     @ViewBuilder let rightContent: () -> RightContent
     
     var body: some View {
-        HStack {
-            leftContent()
-            Spacer()
+        ZStack {
+            // Side Buttons
+            HStack {
+                leftContent()
+                Spacer()
+                rightContent()
+            }
+            
+            // Centered Title
             Text(title.uppercased())
                 .font(.system(size: 20, weight: .black, design: .rounded))
                 .tracking(2)
                 .foregroundStyle(.white)
-            Spacer()
-            rightContent()
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .padding(.horizontal, 60) // Prevent overlap with buttons
         }
         .padding(.horizontal)
         .padding(.top, 20)
