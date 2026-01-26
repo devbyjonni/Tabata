@@ -7,17 +7,17 @@
 import SwiftUI
 import SwiftData
 
-/// Displays the total calculated duration of the workout.
-/// Updates dynamically based on changes to sets, rounds, and intervals.
+/// Displays the total estimated duration of the workout.
+///
+/// It queries `TabataConfiguration` directly to compute the total time
+/// via its `totalDuration` computed property.
 struct TotalDurationView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
     
-    private var viewModel: StartViewModel = StartViewModel()
-    
     var body: some View {
         VStack(spacing: 5) {
-            Text(viewModel.calculateTotalDuration(configurations: configurations).formatTime())
+            Text((configurations.first?.totalDuration ?? 0).formatTime())
                 .font(.system(size: 80, weight: .black, design: .rounded))
                 .monospacedDigit()
                 .foregroundStyle(.white)
@@ -30,5 +30,3 @@ struct TotalDurationView: View {
         .padding(.top, 20)
     }
 }
-
-

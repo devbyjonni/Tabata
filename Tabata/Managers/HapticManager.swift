@@ -34,4 +34,18 @@ final class HapticManager {
         generator.prepare()
         generator.selectionChanged()
     }
+    
+    /// Prepares the haptic engine to reduce latency.
+    func prepare() {
+        guard isHapticsEnabled else { return }
+        // Warming up all types of feedback generators
+        let impact = UIImpactFeedbackGenerator(style: .medium)
+        impact.prepare()
+        
+        let notification = UINotificationFeedbackGenerator()
+        notification.prepare()
+        
+        let selection = UISelectionFeedbackGenerator()
+        selection.prepare()
+    }
 }

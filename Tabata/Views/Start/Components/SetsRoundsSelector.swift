@@ -7,24 +7,18 @@
 import SwiftUI
 import SwiftData
 
-/// Controls for setting the number of Sets and Rounds.
-/// Also includes the global Sound Toggle control.
+/// A container view for configuring Sets and Rounds.
+///
+/// Composes `CounterControl` components for data modification and
+/// also hosts the global Sound Toggle control.
 struct SetsRoundsSelector: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var configurations: [TabataConfiguration]
     @Query private var settings: [TabataSettings]
-    
-    private var viewModel: StartViewModel = StartViewModel()
     
     var body: some View {
         HStack {
             // Sets
-            CounterControl(
-                label: "SETS",
-                value: "\(configurations.first?.sets ?? 0)",
-                onDecrement: { viewModel.updateSets(by: -1, configurations: configurations) },
-                onIncrement: { viewModel.updateSets(by: 1, configurations: configurations) }
-            )
+            CounterControl(type: .sets)
             
             // Speaker
             ControlButton(
@@ -50,16 +44,7 @@ struct SetsRoundsSelector: View {
             .offset(y: 40)
             
             // Rounds
-            CounterControl(
-                label: "ROUNDS",
-                value: "\(configurations.first?.rounds ?? 0)",
-                onDecrement: { viewModel.updateRounds(by: -1, configurations: configurations) },
-                onIncrement: { viewModel.updateRounds(by: 1, configurations: configurations) }
-            )
+            CounterControl(type: .rounds)
         }
     }
 }
-
-
-
-

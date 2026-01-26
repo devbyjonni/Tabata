@@ -43,13 +43,15 @@ struct WorkoutStatisticsGrid: View {
                 // Rounds
                 SmallStatCard(
                     title: "ROUNDS",
-                    value: "\(rounds)"
+                    value: "\(rounds)",
+                    icon: Icons.flag.rawValue
                 )
                 
                 // Reps
                 SmallStatCard(
                     title: "REPS",
-                    value: "\(reps)"
+                    value: "\(reps)",
+                    icon: Icons.dumbbell.rawValue
                 )
             }
             
@@ -126,6 +128,7 @@ fileprivate struct StatCard: View {
 fileprivate struct SmallStatCard: View {
     let title: String
     let value: String
+    var icon: String? = nil
     
     var body: some View {
         HStack {
@@ -138,6 +141,12 @@ fileprivate struct SmallStatCard: View {
                     .foregroundStyle(.white)
             }
             Spacer()
+            
+            if let icon = icon {
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                    .foregroundStyle(.white)
+            }
         }
         .padding(24)
         .background(Color.slate800)

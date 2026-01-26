@@ -77,7 +77,7 @@ final class WorkoutViewModel {
     func stop() {
         isActive = false
         isFinished = false
-        phase = .idle
+        // phase = .idle // Removed to prevent UI flash on dismissal
         timeRemaining = 0
     }
 
@@ -146,6 +146,7 @@ final class WorkoutViewModel {
         case .warmUp: text = "Warm Up"
         case .work: text = "Work"
         case .rest: text = "Rest"
+        case .restBetweenRounds: text = "Rest Rounds"
         case .coolDown: text = "Cool Down"
         case .idle: return
         }
@@ -168,13 +169,21 @@ final class WorkoutViewModel {
             speakPhase()
             
         case .work:
-            if currentSet == config.sets && currentRound == config.rounds {
-                phase = .coolDown
-                timeRemaining = config.coolDownTime
-                totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
-                lastIntegerTime = Int(ceil(timeRemaining))
-                speakPhase()
+            if currentSet == config.sets {
+                // End of a Round
+                if currentRound == config.rounds {
+                    // End of Workout -> Cool Down (if enabled)
+                    startCoolDownOrFinish()
+                } else {
+                    // End of Round (but more rounds exist) -> Rest Between Rounds
+                    phase = .restBetweenRounds
+                    timeRemaining = config.restBetweenRounds
+                    totalTime = config.restBetweenRounds > 0 ? config.restBetweenRounds : 1
+                    lastIntegerTime = Int(ceil(timeRemaining))
+                    speakPhase()
+                }
             } else {
+                // End of Set (more sets exist) -> Normal Rest
                 phase = .rest
                 timeRemaining = config.restTime
                 totalTime = config.restTime > 0 ? config.restTime : 1
@@ -183,35 +192,49 @@ final class WorkoutViewModel {
             }
             
         case .rest:
-            if currentSet < config.sets {
-                currentSet += 1
-                phase = .work
-                timeRemaining = config.workTime
-                totalTime = config.workTime > 0 ? config.workTime : 1
-                lastIntegerTime = Int(ceil(timeRemaining))
-                speakPhase()
-            } else if currentRound < config.rounds {
-                currentRound += 1
-                currentSet = 1
-                phase = .work
-                timeRemaining = config.workTime
-                totalTime = config.workTime > 0 ? config.workTime : 1
-                lastIntegerTime = Int(ceil(timeRemaining))
-                speakPhase()
-            } else {
-                phase = .coolDown
-                timeRemaining = config.coolDownTime
-                totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
-                lastIntegerTime = Int(ceil(timeRemaining))
-                speakPhase()
-            }
+            // Normal Rest finished -> Next Set
+            currentSet += 1
+            startWork()
+            
+        case .restBetweenRounds:
+            // Rest Between Rounds finished -> Next Round
+            currentRound += 1
+            currentSet = 1
+            startWork()
             
         case .coolDown:
-            isFinished = true
-            isActive = false
-            timeRemaining = 0
-            SoundManager.shared.speak("Workout Completed")
+            finishWorkout()
         }
+    }
+    
+    private func startWork() {
+        guard let config = config else { return }
+        phase = .work
+        timeRemaining = config.workTime
+        totalTime = config.workTime > 0 ? config.workTime : 1
+        lastIntegerTime = Int(ceil(timeRemaining))
+        speakPhase()
+    }
+    
+    private func startCoolDownOrFinish() {
+        guard let config = config else { return }
+        
+        if config.coolDownTime > 0 {
+            phase = .coolDown
+            timeRemaining = config.coolDownTime
+            totalTime = config.coolDownTime > 0 ? config.coolDownTime : 1
+            lastIntegerTime = Int(ceil(timeRemaining))
+            speakPhase()
+        } else {
+            finishWorkout()
+        }
+    }
+    
+    private func finishWorkout() {
+        isFinished = true
+        isActive = false
+        timeRemaining = 0
+        SoundManager.shared.speak("Workout Completed")
     }
 
     // MARK: - Stats Generation
@@ -224,15 +247,14 @@ final class WorkoutViewModel {
         let totalSegments = config.sets * config.rounds
         let rest = config.restTime * Double(max(0, totalSegments - 1))
         let coolDown = config.coolDownTime
-        let totalDuration = warmUp + work + rest + coolDown
         
         return CompletedWorkout(
-            duration: totalDuration,
+            duration: config.totalDuration,
             totalWarmUp: warmUp,
             totalWork: work,
             totalRest: rest,
             totalCoolDown: coolDown,
-            calories: Int(totalDuration * 0.15),
+            calories: Int(config.totalDuration * 0.15),
             avgHeartRate: Int.random(in: 130...160),
             reps: config.sets * config.rounds,
             rounds: config.rounds

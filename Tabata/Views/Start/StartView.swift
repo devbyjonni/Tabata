@@ -9,8 +9,13 @@ import SwiftUI
 import SwiftData
 
 // MARK: Start View
-/// The main entry point of the app.
-/// Configures the workout (Sets, Rounds, Intervals) and navigates to other screens.
+/// The main entry point and Coordinator of the app.
+///
+/// **Responsibilities:**
+/// *   **Data Guardian**: Initializes default `TabataConfiguration` and `TabataSettings` if missing.
+/// *   **State Sync**: Synchronizes settings to Singleton Managers (`SoundManager`, `HapticManager`) on appear.
+/// *   **Navigation Hub**: Manages navigation to Workout, Stats, and Settings screens.
+/// *   **Layout Composition**: Composes decoupled child views (`TotalDurationView`, `SetsRoundsSelector`, etc.).
 struct StartView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var configurations: [TabataConfiguration]
@@ -113,6 +118,12 @@ struct StartView: View {
                  SoundManager.shared.volume = currentSettings.volume
                  SoundManager.shared.countdownDuration = currentSettings.countdownDuration
                  HapticManager.shared.isHapticsEnabled = currentSettings.isHapticsEnabled
+            }
+            
+            // Warm up engines
+            Task(priority: .background) {
+                SoundManager.shared.prepare()
+                HapticManager.shared.prepare()
             }
         }
     }
