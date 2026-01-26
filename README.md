@@ -20,6 +20,7 @@ A clean and simple Tabata timer for iOS, built for High-Intensity Interval Train
 
 * **Accuracy**: Uses `ContinuousClock` to ensure the timer remains scientifically accurate, preventing temporal drift during long sessions.
 * **Fluidity**: Leverages `TimelineView` to synchronize the UI with the display's native refresh rate for smooth animations.
+* **Architecture**: Implements **SwiftData** for robust persistence and clean MVVM separation, removing legacy view models for a streamlined codebase.
 * **Safety**: Built with **Swift 6** strict concurrency to ensure thread safety across the entire application.
 
 ## Tech Stack
